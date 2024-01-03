@@ -8,7 +8,8 @@
  */
 
 // export const BASE_URL = 'https://api.prastaratech.com/api/';
-export const BASE_URL = 'https://api.greatminds.live/api/';
+export const BASE_URL = "https://api.greatminds.live/api/";
+//export const BASE_URL = "https://49silverstonedrive.ca/webmobischool/api/api/";
 export const VERIFY_MOBILE_NUMBER = `${BASE_URL}authentication/mobile-no`;
 export const VERIFY_OTP = `${BASE_URL}authentication/otp`;
 export const VERIFY_PROFILE = `${BASE_URL}users/profile`;
@@ -35,14 +36,8 @@ export const GET_SUPPORT_DETAIL = `${BASE_URL}support/detailList`;
 export const ADD_SUPPORT_REPLY = `${BASE_URL}support/reply`;
 export const CLOSE_SUPPORT_REQUEST = `${BASE_URL}support/close`;
 export const NOTIFICATION = `${BASE_URL}notification/list`;
-export const SUBJECT_LIST = `${BASE_URL}subject/subjectList`; 
+export const SUBJECT_LIST = `${BASE_URL}subject/subjectList`;
 export const CREATE_ORDER = `${BASE_URL}payment/payment-order`;
 export const GET_PAYMENT_LIST = `${BASE_URL}mobilepay/list?classId=`;
 export const SAVE_PAYMENT = `${BASE_URL}mobilepay/payment-fee`;
 export const GET_CLASS_LIST = `${BASE_URL}classes/list?schoolId=`;
-
-  
-
-
-
-

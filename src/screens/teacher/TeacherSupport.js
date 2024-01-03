@@ -22,7 +22,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import stylesCommon, { SCREEN_WIDTH } from "../../commonTheme/stylesCommon";
 import TeacherSupportTabCommon from "./TeacherSupportTab";
 
-const TeacherSupport = ( navigation ) => {
+const TeacherSupport = (navigation) => {
   const sectionID = navigation.route.params.supportData.id;
   const Tab = createMaterialTopTabNavigator();
 
@@ -93,8 +93,8 @@ const TeacherSupport = ( navigation ) => {
                 backgroundColor: isFocused
                   ? color.WHITE
                   : color.COLOR_SECONDARY,
-                 width: SCREEN_WIDTH / 3.1,
-                
+                width: SCREEN_WIDTH / 3.1,
+
                 paddingTop: 12,
                 borderTopStartRadius: 10,
                 borderTopEndRadius: 10,
@@ -103,7 +103,6 @@ const TeacherSupport = ( navigation ) => {
                 shadowOffset: { width: 0, height: isFocused ? 2 : 0 },
                 shadowOpacity: isFocused ? 0.2 : 0,
                 elevation: isFocused ? 5 : 0,
-               
               }}
             >
               <View
@@ -145,21 +144,29 @@ const TeacherSupport = ( navigation ) => {
           name="SupportNew"
           upperCaseLabel={false}
           component={TeacherSupportTabCommon}
-          initialParams={{ type: "New", role:"teacher", sectionid : sectionID }}
+          initialParams={{ type: "New", role: "teacher", sectionid: sectionID }}
           options={{ tabBarLabel: "New" }}
         />
         <Tab.Screen
           name="SupportReplied"
           upperCaseLabel={false}
           component={TeacherSupportTabCommon}
-          initialParams={{ type: "Replied", role:"teacher",sectionid : sectionID }}
+          initialParams={{
+            type: "Replied",
+            role: "teacher",
+            sectionid: sectionID,
+          }}
           options={{ tabBarLabel: "Replied" }}
         />
         <Tab.Screen
           name="SupportClosed"
           upperCaseLabel={false}
           component={TeacherSupportTabCommon}
-          initialParams={{ type: "Closed", role:"teacher",sectionid : sectionID }}
+          initialParams={{
+            type: "Closed",
+            role: "teacher",
+            sectionid: sectionID,
+          }}
           options={{ tabBarLabel: "Closed" }}
         />
       </Tab.Navigator>
@@ -191,31 +198,34 @@ const TeacherSupport = ( navigation ) => {
     //   </View>
     // </SafeAreaView>
     <>
-    <SafeAreaView style={{ flex: 0, 
-        backgroundColor: color.APP_PRIMARY}} /> 
-    <SafeAreaView style={{ backgroundColor: color.WHITE, flex: 1 }}>
-      <StatusBar backgroundColor={color.APP_PRIMARY}
-       />
-    
-        <SchoolDetailHeaderView
-        titile={AppText.DASHBOARD}
-        type={"teacher"}
-        navigation={navigation.navigation}
-        screen={"TeacherSupport"}
-      /> 
-      <TitileBackgroundView titile={"Support"} />
-      <View
-        style={{
-          alignContent: "center",
-          alignItems: "center",
-          justifyContent: "center",
-        flex:1, backgroundColor:color.COLOR_SECONDARY
+      <SafeAreaView style={{ flex: 0, backgroundColor: color.APP_PRIMARY }} />
+      <SafeAreaView style={{ backgroundColor: color.WHITE, flex: 1 }}>
+        <StatusBar backgroundColor={color.APP_PRIMARY} />
 
-        }}
-      >
-        {MyTabs()}
-      </View> 
-    </SafeAreaView>
+        <SchoolDetailHeaderView
+          titile={AppText.DASHBOARD}
+          type={"teacher"}
+          navigation={navigation.navigation}
+          screen={"TeacherSupport"}
+        />
+        <TitileBackgroundView
+          titile={"Support"}
+          isSecondviewRequired={true}
+          secondViewImage={icon.IC_ADD}
+          tagAddSecond={"Request"}
+        />
+        <View
+          style={{
+            alignContent: "center",
+            alignItems: "center",
+            justifyContent: "center",
+            flex: 1,
+            backgroundColor: color.COLOR_SECONDARY,
+          }}
+        >
+          {MyTabs()}
+        </View>
+      </SafeAreaView>
     </>
   );
 };

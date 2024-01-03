@@ -7,30 +7,31 @@
  * @flow strict-local
  */
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 //Import react-navigation
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // color theme
-import { color } from '../src/constant';
+import { color } from "../src/constant";
 // Navigation screen
-import LandingScreen from '../src/screens/LandingScreen';
-import LoginScreen from '../src/screens/LoginScreen';
-import WelcomScreen from '../src/screens/WelcomScreen';
-import ParentDashboard from '../src/screens/parent/ParentDashboard';
-import ParentDairy from '../src/screens/parent/ParentDairy';
-import ParentTimeTable from '../src/screens/parent/ParentTimeTable';
-import ParentAttendance from '../src/screens/parent/ParentAttendance';
-import TeacherDashboard from '../src/screens/teacher/TeacherDashboard';
-import TeacherDairy from '../src/screens/teacher/TeacherDairy';
-import TeacherTimeTable from '../src/screens/teacher/TeacherTimeTable';
-import Notification from '../src/screens/Notification';
-import ParentSupport from '../src/screens/parent/ParentSupport';
-import Attendance from '../src/screens/teacher/Attendance';
-import ParentSupportDetails from '../src/screens/parent/ParentSupportDetail';
-import AddNewRequest from '../src/screens/parent/ParentAddRequest';
-import TeacherSupport from '../src/screens/teacher/TeacherSupport';
-import PaymentOrderScreen from '../src/screens/parent/Payment';
+import LandingScreen from "../src/screens/LandingScreen";
+import LoginScreen from "../src/screens/LoginScreen";
+import WelcomScreen from "../src/screens/WelcomScreen";
+import ParentDashboard from "../src/screens/parent/ParentDashboard";
+import ParentDairy from "../src/screens/parent/ParentDairy";
+import ParentTimeTable from "../src/screens/parent/ParentTimeTable";
+import ParentAttendance from "../src/screens/parent/ParentAttendance";
+import TeacherDashboard from "../src/screens/teacher/TeacherDashboard";
+import TeacherDairy from "../src/screens/teacher/TeacherDairy";
+import TeacherTimeTable from "../src/screens/teacher/TeacherTimeTable";
+import Notification from "../src/screens/Notification";
+import ParentSupport from "../src/screens/parent/ParentSupport";
+import Attendance from "../src/screens/teacher/Attendance";
+import ParentSupportDetails from "../src/screens/parent/ParentSupportDetail";
+import AddNewRequest from "../src/screens/parent/ParentAddRequest";
+import TeacherSupport from "../src/screens/teacher/TeacherSupport";
+import PaymentOrderScreen from "../src/screens/parent/Payment";
+import TeacherDashboard2 from "../src/screens/teacher/TeacherDashboard2";
 
 const Stack = createNativeStackNavigator();
 
@@ -38,7 +39,6 @@ export default function navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-
         <Stack.Screen
           name="LandingScreen"
           options={{
@@ -74,6 +74,13 @@ export default function navigation() {
             headerShown: false,
           }}
           component={TeacherDashboard}
+        />
+        <Stack.Screen
+          name="TeacherDashboard2"
+          options={{
+            headerShown: false,
+          }}
+          component={TeacherDashboard2}
         />
         <Stack.Screen
           name="Notification"
@@ -131,36 +138,35 @@ export default function navigation() {
           }}
           component={ParentSupport}
         />
-        <Stack.Screen 
-        name="ParentSupportDetails"
-        options={{
-          headerShown: false,
-        }}
-        component={ParentSupportDetails}
-         />
-     <Stack.Screen 
-        name="ParentAddNewRequest"
-        options={{
-          headerShown: false,
-        }}
-        component={AddNewRequest}
-         />
-        <Stack.Screen 
-        name="TeacherSupport"
-        options={{
-          headerShown: false,
-        }}
-        component={TeacherSupport}
-         />
-       <Stack.Screen 
-        name="Payment"
-        options={{
-          headerShown: false,
-        }}
-        component={PaymentOrderScreen}
-       />  
+        <Stack.Screen
+          name="ParentSupportDetails"
+          options={{
+            headerShown: false,
+          }}
+          component={ParentSupportDetails}
+        />
+        <Stack.Screen
+          name="ParentAddNewRequest"
+          options={{
+            headerShown: false,
+          }}
+          component={AddNewRequest}
+        />
+        <Stack.Screen
+          name="TeacherSupport"
+          options={{
+            headerShown: false,
+          }}
+          component={TeacherSupport}
+        />
+        <Stack.Screen
+          name="Payment"
+          options={{
+            headerShown: false,
+          }}
+          component={PaymentOrderScreen}
+        />
       </Stack.Navigator>
-
     </NavigationContainer>
   );
 }

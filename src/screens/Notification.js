@@ -20,7 +20,7 @@ import {
   Platform,
   ActivityIndicator,
   Alert,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
 import { AppText, color, fonts, icon, PreferenceKeys } from "../constant";
 import stylesCommon from "../commonTheme/stylesCommon";
@@ -36,11 +36,11 @@ import { axiosCallAPI } from "../API/axiosCommonService";
 import HTMLView from "react-native-htmlview";
 
 const Notification = ({ navigation }) => {
-    const VIEWABILITY_CONFIG = {
-        minimumViewTime: 3000,
-        viewAreaCoveragePercentThreshold: 100,
-        waitForInteraction: true,
-      };
+  const VIEWABILITY_CONFIG = {
+    minimumViewTime: 3000,
+    viewAreaCoveragePercentThreshold: 100,
+    waitForInteraction: true,
+  };
   const PER_PAGE = 10;
   var PAGE = 1;
   const [listData, setListData] = useState([]);
@@ -57,7 +57,6 @@ const Notification = ({ navigation }) => {
         handleBackButtonClick
       );
     };
-   
   }, [currentPage]);
 
   function handleBackButtonClick() {
@@ -70,15 +69,15 @@ const Notification = ({ navigation }) => {
   // }
 
   async function GetNotificationData(isLoaderShow) {
-  //  console.log(Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + PAGE+", total "+totalPages);
-  
+    //  console.log(Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + PAGE+", total "+totalPages);
+
     let requestOptions = {
       headers: {
         Accept: "application/json",
         Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
       },
     };
- //   Alert.alert("API",Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + PAGE+", total "+totalPages+", "+isLoaderShow);
+    //   Alert.alert("API",Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + PAGE+", total "+totalPages+", "+isLoaderShow);
     axiosCallAPI(
       "get",
       Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + currentPage,
@@ -87,11 +86,11 @@ const Notification = ({ navigation }) => {
       false,
       navigation
     ).then((response) => {
-        console.log(response);
+      console.log(response);
       setTotalPages(response.pages);
       setLoadMore(false);
-        var currentdata = [...listData];
-        var finalarray = currentdata.concat(response.result);
+      var currentdata = [...listData];
+      var finalarray = currentdata.concat(response.result);
       setListData(finalarray);
     });
   }
@@ -155,33 +154,28 @@ const Notification = ({ navigation }) => {
       isRead: false,
     },
   ];
-  function LoadMoreData (){
-   
-  
-        if (currentPage < totalPages) {
-      
-            setCurrentPage(currentPage+1)
-           
-          setLoadMore(true);
-         
-       
-        }
-      
+  function LoadMoreData() {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+
+      setLoadMore(true);
+    }
   }
   const renderFooter = () => (
     <View style={styles.footerText}>
-        {(currentPage < totalPages) && <ActivityIndicator color={color.COLOR_PRIMARY}   size="large"/>}
-        {/* {(currentPage == totalPages) && <Text>No more articles at the moment</Text>} */}
+      {currentPage < totalPages && (
+        <ActivityIndicator color={color.COLOR_PRIMARY} size="large" />
+      )}
+      {/* {(currentPage == totalPages) && <Text>No more articles at the moment</Text>} */}
     </View>
-)
+  );
   const keyExtractor = ({ id }) => String(id);
   const renderItem = ({ item }) => {
     return (
       <View style={stylesCommon.rawMainView}>
         <View
           style={{
-            backgroundColor:
-              item.isRead == "0" ? color.COLOR_SECONDARY : color.WHITE,
+            backgroundColor: item.isRead == "0" ? "#EEEDF8" : color.WHITE,
             flex: 0.75,
             borderRadius: 7,
             paddingStart: 15,
@@ -259,7 +253,6 @@ const Notification = ({ navigation }) => {
 
       {/* Dashboard Header view UI */}
       <SchoolDetailHeaderView
-        titile={AppText.NOTIFICATION}
         type={"parent"}
         navigation={navigation}
         screen={"Notification"}
@@ -268,12 +261,10 @@ const Notification = ({ navigation }) => {
         style={{
           flexDirection: "column",
           marginTop: Platform.OS === "ios" ? -50 : 0,
-          flex:1
+          flex: 1,
         }}
       >
-        {/* <TitileBackgroundView
-                    titile={'Notifications'}
-                /> */}
+        <TitileBackgroundView titile={"Notifications"} />
         <FlatList
           data={listData}
           renderItem={renderItem}
@@ -282,31 +273,29 @@ const Notification = ({ navigation }) => {
             paddingEnd: 20,
             paddingTop: 10,
             paddingBottom: 30,
-          
-          }} 
+          }}
           showsVerticalScrollIndicator={false}
-          onEndReached={ LoadMoreData}
+          onEndReached={LoadMoreData}
           onEndReachedThreshold={0.1}
           keyExtractor={keyExtractor}
           ListFooterComponent={renderFooter}
-        extraData={listData}
+          extraData={listData}
         />
-      
       </View>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
-    footerText: {
-        flex: 1, 
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: 10
-    },
-    loading: {
-        flex: 1, 
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
+  footerText: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+  },
+  loading: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 export default Notification;

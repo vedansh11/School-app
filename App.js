@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, TextInput } from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, Text, View, Button, Alert, TextInput } from "react-native";
 
-import OTPTextView from 'react-native-otp-textinput';
+import OTPTextView from "react-native-otp-textinput";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF",
     padding: 5,
   },
   welcome: {
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: "center",
     margin: 10,
   },
   instructions: {
     fontSize: 22,
-    fontWeight: '500',
-    textAlign: 'center',
-    color: '#333333',
+    fontWeight: "500",
+    textAlign: "center",
+    color: "#333333",
     marginBottom: 20,
   },
   textInputContainer: {
@@ -31,21 +31,21 @@ const styles = StyleSheet.create({
     borderWidth: 4,
   },
   buttonWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginBottom: 20,
-    width: '60%',
+    width: "60%",
   },
   textInput: {
     height: 40,
-    width: '80%',
-    borderColor: '#000',
+    width: "80%",
+    borderColor: "#000",
     borderWidth: 1,
     padding: 10,
     fontSize: 16,
     letterSpacing: 5,
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   buttonStyle: {
     marginHorizontal: 20,
@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
 
 export default class App extends Component {
   state = {
-    otpInput: '',
-    inputText: '',
+    otpInput: "",
+    inputText: "",
   };
 
   alertText = () => {
-    const { otpInput = '' } = this.state;
+    const { otpInput = "" } = this.state;
     if (otpInput) {
       Alert.alert(otpInput);
     }
@@ -105,20 +105,20 @@ export default class App extends Component {
         </View>
         <Text style={styles.instructions}>Customizations</Text>
         <OTPTextView
-          handleTextChange={(e) => { }}
+          handleTextChange={(e) => {}}
           containerStyle={styles.textInputContainer}
           textInputStyle={styles.roundedTextInput}
           inputCount={5}
           inputCellLength={2}
         />
         <OTPTextView
-          handleTextChange={(e) => { }}
+          handleTextChange={(e) => {}}
           containerStyle={styles.textInputContainer}
           textInputStyle={styles.roundedTextInput}
           defaultValue="1234"
         />
         <OTPTextView
-          handleTextChange={(e) => { }}
+          handleTextChange={(e) => {}}
           containerStyle={styles.textInputContainer}
           textInputStyle={[styles.roundedTextInput, { borderRadius: 100 }]}
           tintColor="#000"

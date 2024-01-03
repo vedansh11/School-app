@@ -34,6 +34,8 @@ import {
 import { ExpandableListView } from "react-native-expandable-listview";
 import * as Utills from "../../API/Utills";
 import { axiosCallAPI } from "../../API/axiosCommonService";
+import TeacherDashboard2 from "./TeacherDashboard2";
+import { screenWidth } from "../../Utills/dimesnion";
 
 const TeacherDashboard = ({ navigation }) => {
   const [listDataSource, setListDataSource] = useState([]);
@@ -45,13 +47,12 @@ const TeacherDashboard = ({ navigation }) => {
 
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       schoolListAPI();
       if (clickIndex !== undefined) {
-       // console.log("API call");
+        // console.log("API call");
         teacherClassListAPI(listDataSource[clickIndex].id);
       }
-     
     });
     return () => {
       BackHandler.removeEventListener(
@@ -61,10 +62,10 @@ const TeacherDashboard = ({ navigation }) => {
       unsubscribe;
     };
   }, []);
-  useEffect(() =>{
-    Preference.SetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX, ""+clickIndex);
-  },[clickIndex]);
-//  }, [listDataSource, classListData]);
+  useEffect(() => {
+    Preference.SetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX, "" + clickIndex);
+  }, [clickIndex]);
+  //  }, [listDataSource, classListData]);
 
   function multipleData() {
     setListDataSource([
@@ -130,24 +131,27 @@ const TeacherDashboard = ({ navigation }) => {
     )
       .then((response) => {
         setLoaderView(false);
-        console.log("Response>> "+JSON.stringify(response))
+        console.log("Response>> " + JSON.stringify(response));
 
         if (JSON.stringify(listDataSource) !== JSON.stringify(response))
-        console.log(response);
-          setListDataSource(response);
-          Preference.GetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX).then(index =>{
-            if(index){
+          console.log(response);
+        setListDataSource(response);
+        Preference.GetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX).then(
+          (index) => {
+            if (index) {
+              console.log("The teacherDashboard1 here index is", index);
               setIndex(parseInt(index));
               teacherClassListAPI(listDataSource[parseInt(index)].id);
             }
-          })
+          }
+        );
       })
       .catch((error) => {
         setLoaderView(false);
       });
   }
   async function teacherClassListAPI(Id) {
-  console.log(Id);
+    console.log("Id we are getting in classList", Id);
     setLoaderView(true);
 
     let requestOptions = {
@@ -169,6 +173,7 @@ const TeacherDashboard = ({ navigation }) => {
         setLoaderView(false);
         if (JSON.stringify(classListData) !== JSON.stringify(response.result))
           setClassList(removeDuplicates(response.result, "id"));
+        console.log("Response getting Dashboard 1 is..", response);
       })
       .catch((error) => {
         setLoaderView(false);
@@ -181,27 +186,59 @@ const TeacherDashboard = ({ navigation }) => {
   }
 
   function NavigateToDairy(data) {
-    Preference.SetData(PreferenceKeys.TEACHER_SCHOOL_DETAIL, JSON.stringify(showContent))
+    console.log("The data coming here is...", data);
+    Preference.SetData(
+      PreferenceKeys.TEACHER_SCHOOL_DETAIL,
+      JSON.stringify(showContent)
+    );
+
+    console.log("The preference data i got is ----------");
+    Preference.GetData(PreferenceKeys.TEACHER_SCHOOL_DETAIL).then(function (
+      value
+    ) {
+      console.log("Getting this School info", value);
+    });
+
     navigation.navigate("TeacherDairy", { diaryData: data });
   }
   function NavigateToTimeTable(data) {
-    Preference.SetData(PreferenceKeys.TEACHER_SCHOOL_DETAIL, JSON.stringify(showContent))
+    Preference.SetData(
+      PreferenceKeys.TEACHER_SCHOOL_DETAIL,
+      JSON.stringify(showContent)
+    );
     navigation.navigate("TeacherTimeTable", { teacherData: data });
   }
   function onStudentAttendanceClick(data) {
-    Preference.SetData(PreferenceKeys.TEACHER_SCHOOL_DETAIL, JSON.stringify(showContent))
+    Preference.SetData(
+      PreferenceKeys.TEACHER_SCHOOL_DETAIL,
+      JSON.stringify(showContent)
+    );
     navigation.navigate("Attendance", { attendanceData: data });
   }
-  function NavigateToSupport(data){
+  function NavigateToSupport(data) {
     console.log(data);
-    Preference.SetData(PreferenceKeys.TEACHER_SCHOOL_DETAIL, JSON.stringify(showContent))
+    Preference.SetData(
+      PreferenceKeys.TEACHER_SCHOOL_DETAIL,
+      JSON.stringify(showContent)
+    );
     navigation.navigate("TeacherSupport", { supportData: data });
   }
 
+  function NavigateToDashBoard2(item, index) {
+    teacherClassListAPI(item.id);
+    setIndex(index);
+    navigation.navigate("TeacherDashboard2", {
+      item: item,
+      index: index,
+      data: classListData,
+    });
+  }
   function clickDown(item, index) {
-    
     setIndex(index);
     teacherClassListAPI(item.id);
+    console.log("so this is the item we are getting", item);
+
+    //NavigateToDashBoard2(item, index);
   }
 
   const renderItem = ({ item, index }) => {
@@ -233,7 +270,8 @@ const TeacherDashboard = ({ navigation }) => {
             alignContent: "center",
           }}
           onPress={() => {
-            index === clickIndex ? setIndex() : clickDown(item, index);
+            NavigateToDashBoard2(item, index);
+            // clickDown(item, index);
           }}
         >
           <Image
@@ -247,9 +285,8 @@ const TeacherDashboard = ({ navigation }) => {
           ></Image>
           <View
             style={{
-              flex: 0.60,
+              flex: 0.6,
               alignSelf: "center",
-              
             }}
           >
             <Text
@@ -283,29 +320,29 @@ const TeacherDashboard = ({ navigation }) => {
             >
               <Image
                 style={{
-                  height: 30,
-                  width: 30,
+                  height: 20,
+                  width: 20,
                   marginEnd: 10,
                 }}
-                source={icon.IC_UP}
+                source={icon.IC_DOWN_ARROW}
               ></Image>
             </View>
           ) : (
             <View
               style={{
-                flex: 0.1,
-                end: 0,
+                flex: 1,
+                end: 10,
                 position: "absolute",
                 alignSelf: "center",
+                //transform: [{ rotateX: "180deg" }],
               }}
             >
               <Image
                 style={{
-                  height: 30,
-                  width: 30,
-                  marginEnd: 10,
+                  height: 20,
+                  width: 20,
                 }}
-                source={icon.IC_DOWN}
+                source={icon.IC_SIDE_ARROW}
               ></Image>
             </View>
           )}
@@ -360,20 +397,16 @@ const TeacherDashboard = ({ navigation }) => {
             </View>
           </TouchableOpacity> */}
         </View>
+
         {index === clickIndex ? (
           <View>
             {setShowContent(item)}
-            {/* <View style={{
-                                backgroundColor: color.GREY,
-                                height: 0.6,
-                                width: '100%'
-                            }}></View> */}
 
             <FlatList
               data={classListData}
               style={{
                 marginTop: 7,
-                marginBottom:80
+                marginBottom: 80,
               }}
               ListEmptyComponent={renderEmptyContainer("No data found", true)}
               renderItem={renderItemChild}
@@ -408,28 +441,27 @@ const TeacherDashboard = ({ navigation }) => {
         >
           <View
             style={{
-              backgroundColor: color.COLOR_SECONDARY,
-              flex: 0.75,
+              backgroundColor: "#EEEDF8",
               borderRadius: 7,
-              paddingStart: 15,
-              paddingEnd: 10,
+              paddingHorizontal: screenWidth > 360 ? 15 : 10,
+              paddingTop: 15,
+              paddingBottom: 10,
               flexDirection: "row",
             }}
           >
             <View
               style={{
                 flexDirection: "column",
-                paddingTop: 10,
-                paddingBottom: 10,
+                marginTop: 5,
+                marginEnd: screenWidth > 360 ? 15 : 5,
               }}
             >
               <View
                 style={{
                   backgroundColor: color.INFO_BLUE,
-                  height: 32,
-                  width: 50,
-                  borderTopEndRadius: 8,
-                  borderTopStartRadius: 8,
+                  height: 75,
+                  width: 75,
+                  borderRadius: 50,
                   color: color.WHITE,
                   justifyContent: "center",
                   alignItems: "center",
@@ -437,30 +469,19 @@ const TeacherDashboard = ({ navigation }) => {
               >
                 <Text
                   style={{
-                    fontSize: 22,
+                    fontSize: 24,
                     fontFamily: fonts.LATO_BOLD,
                     color: color.WHITE,
                   }}
                 >
                   {item.className}
                 </Text>
-              </View>
-              <View
-                style={{
-                  backgroundColor: color.GREEN,
-                  height: 25,
-                  width: 50,
-                  marginTop: 1,
-                  borderBottomEndRadius: 4,
-                  borderBottomStartRadius: 4,
-                  color: color.WHITE,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+                <View
+                  style={{ width: 30, height: 1, backgroundColor: color.WHITE }}
+                ></View>
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 24,
                     fontFamily: fonts.LATO_BOLD,
                     color: color.WHITE,
                   }}
@@ -469,50 +490,92 @@ const TeacherDashboard = ({ navigation }) => {
                 </Text>
               </View>
             </View>
+
             <View
               style={{
-                paddingBottom: 7,
-                paddingTop: 7,
                 marginEnd: 10,
-                end: 0,
-                position: "absolute",
-                flexDirection: "row",
               }}
             >
-              <PresentSquareView
-                colorTheme={color.GREEN}
-                textPresent={"P"}
-                value={item.leave.present}
-              ></PresentSquareView>
-              <PresentSquareView
-                colorTheme={color.A_ORENG}
-                textPresent={"L"}
-                value={item.leave.onleave}
-              ></PresentSquareView>
-              <PresentSquareView
-                colorTheme={color.INFO_BLUE}
-                textPresent={"A"}
-                value={item.leave.absent}
-              ></PresentSquareView>
-              <PresentSquareView
-                colorTheme={color.RED}
-                textPresent={"U"}
-                value={item.leave.untrack}
-              ></PresentSquareView>
+              <Text
+                style={{
+                  fontFamily: fonts.INTER_MEDIUM,
+                  fontSize: screenWidth > 360 ? 9 : 8,
+                  color: "#101828",
+                  position: "absolute",
+                  right: 6,
+                  top: screenWidth > 360 ? 10 : 12,
+                }}
+              >
+                Room No : 04
+              </Text>
+              <View
+                style={{
+                  marginEnd: 10,
+                  marginStart: 5,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: fonts.INTER_SEMIBOLD,
+
+                    fontSize: 14,
+                    color: "#101828",
+                  }}
+                >
+                  English
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: fonts.INTER_MEDIUM,
+                    fontSize: screenWidth > 360 ? 10 : 8,
+                    color: "#101828",
+                  }}
+                >
+                  08:00 am - 08:30 am
+                </Text>
+              </View>
+              <View style={{ flexDirection: "row", marginTop: 12 }}>
+                <PresentSquareView
+                  colorTheme={color.GREEN}
+                  textPresent={"Present"}
+                  value={item.leave.present}
+                ></PresentSquareView>
+                <PresentSquareView
+                  colorTheme={color.A_ORENG}
+                  textPresent={"Leave"}
+                  value={item.leave.onleave}
+                ></PresentSquareView>
+                <PresentSquareView
+                  colorTheme={color.INFO_BLUE}
+                  textPresent={"Absent"}
+                  value={item.leave.absent}
+                ></PresentSquareView>
+                <PresentSquareView
+                  colorTheme={color.RED}
+                  textPresent={"Untracked"}
+                  value={item.leave.untrack}
+                ></PresentSquareView>
+              </View>
             </View>
           </View>
           <View style={stylesCommon.lineView}></View>
           <DashboardRawDetailMenu
-            isShowHelp={true}
-            isShowFees={false}
-            isShowTimeTable={true}
-            isShowNote={true}
-            isShowCalendar={false}
-            isShowStudent={true}
-            onNoteClick={() => NavigateToDairy(item)}
+            attendance={true}
+            dairy={true}
+            timetable={true}
             onStudentAttendanceClick={() => onStudentAttendanceClick(item)}
-            onTimeTableClick={() => NavigateToTimeTable(item)}
-            onSupportClick ={() => NavigateToSupport(item)}
+            ontimeTableClick={() => NavigateToTimeTable(item)}
+            onDairyClick={() => NavigateToDairy(item)}
+            // isShowHelp={true}
+            // isShowFees={false}
+            // isShowTimeTable={true}
+            // isShowNote={true}
+            // isShowCalendar={false}
+            // isShowStudent={true}
+            // onNoteClick={() => NavigateToDairy(item)}
+            // onStudentAttendanceClick={() => onStudentAttendanceClick(item)}
+            // onTimeTableClick={() => NavigateToTimeTable(item)}
+            // onSupportClick={() => NavigateToSupport(item)}
           />
         </View>
       </View>
@@ -521,7 +584,7 @@ const TeacherDashboard = ({ navigation }) => {
 
   return (
     <SafeAreaView style={stylesCommon.safeAreaStyle}>
-      <StatusBar backgroundColor={color.APP_PRIMARY} />
+      <StatusBar backgroundColor={"#564CB8"} />
 
       {/* Dashboard Header view UI */}
       <DashboardHeaderView
@@ -531,6 +594,29 @@ const TeacherDashboard = ({ navigation }) => {
       />
 
       <View>
+        <View>
+          <Text
+            style={{
+              marginTop: 35,
+              marginHorizontal: 10,
+              fontFamily: fonts.INTER_MEDIUM,
+              fontSize: 24,
+              color: "#101828",
+            }}
+          >
+            Hi,Mr.Sample Text
+          </Text>
+          <Text
+            style={{
+              marginHorizontal: 10,
+              fontSize: 30,
+              fontFamily: fonts.INTER_SEMIBOLD,
+              color: "#101828",
+            }}
+          >
+            Good Morning
+          </Text>
+        </View>
         <FlatList
           data={listDataSource}
           renderItem={renderItem}
