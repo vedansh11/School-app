@@ -144,8 +144,8 @@ export const SchoolDetailHeaderView = (props) => {
   return (
     <View
       style={
-        props.screen != "TeacherSupport" &&
-        props.screen != "ParentSupport" &&
+        //props.screen != "TeacherSupport" &&
+       // props.screen != "ParentSupport" &&
         props.screen != "Payment"
           ? // && props.screen != 'DairyView'
             stylesCommon.mainBackground
@@ -215,8 +215,8 @@ export const SchoolDetailHeaderView = (props) => {
       {props.screen != "Notification" ? (
         <View
           style={
-            props.screen != "TeacherSupport" &&
-            props.screen != "ParentSupport" &&
+           // props.screen != "TeacherSupport" &&
+            //props.screen != "ParentSupport" &&
             props.screen != "Payment"
               ? stylesCommon.notificationView
               : stylesCommon.notificationView_new

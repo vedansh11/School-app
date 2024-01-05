@@ -460,15 +460,7 @@ const Attendance = ({ route, navigation }) => {
 
           {/* Here the three dots is being configured  */}
 
-          <MenuProvider
-            style={{
-              height: 100,
-              width: 50,
-              position: "absolute",
-              right: -10,
-              top: 10,
-            }}
-          >
+        
             <Menu>
               <MenuTrigger onPress={() => OpenDropDown()}>
                 <Image
@@ -501,7 +493,7 @@ const Attendance = ({ route, navigation }) => {
                 </ScrollView>
               </MenuOptions>
             </Menu>
-          </MenuProvider>
+          
         </View>
 
         // </View>

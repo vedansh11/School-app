@@ -32,11 +32,13 @@ import AddNewRequest from "../src/screens/parent/ParentAddRequest";
 import TeacherSupport from "../src/screens/teacher/TeacherSupport";
 import PaymentOrderScreen from "../src/screens/parent/Payment";
 import TeacherDashboard2 from "../src/screens/teacher/TeacherDashboard2";
+import { MenuProvider } from "react-native-popup-menu";
 
 const Stack = createNativeStackNavigator();
 
 export default function navigation() {
   return (
+    <MenuProvider >
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
@@ -168,5 +170,6 @@ export default function navigation() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </MenuProvider>
   );
 }

@@ -442,7 +442,7 @@ export const RenderItemSupport = (props) => {
           backgroundColor: color.WHITE,
           borderRadius: 7,
           paddingStart: 15,
-          paddingEnd: 10,
+          paddingEnd: 15,
           paddingTop: 10,
           paddingBottom: 10,
           flexDirection: "column",
@@ -474,7 +474,7 @@ export const RenderItemSupport = (props) => {
         <Text
           style={{
             color: color.DARK_TEXT,
-            fontSize: 12,
+            fontSize: 18,
             fontFamily: fonts.LATO_REGULAR,
             marginTop: 2,
           }}
