@@ -38,7 +38,7 @@ const Stack = createNativeStackNavigator();
 
 export default function navigation() {
   return (
-    <MenuProvider >
+    <MenuProvider>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen

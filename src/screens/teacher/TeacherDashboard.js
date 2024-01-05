@@ -31,7 +31,7 @@ import {
   renderEmptyContainer,
   removeDuplicates,
 } from "../../commonTheme/CommonView";
-import { ExpandableListView } from "react-native-expandable-listview";
+
 import * as Utills from "../../API/Utills";
 import { axiosCallAPI } from "../../API/axiosCommonService";
 import TeacherDashboard2 from "./TeacherDashboard2";
