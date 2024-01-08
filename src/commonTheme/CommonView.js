@@ -433,6 +433,7 @@ export const RenderItemSupport = (props) => {
     <TouchableOpacity
       style={[stylesCommon.rawMainView, { justifyContent: "center" }]}
       onPress={() => {
+        console.log("NumberDsp...", props.NumberDSP);
         props.onClick(props.NumberDSP);
       }}
     >
@@ -443,25 +444,43 @@ export const RenderItemSupport = (props) => {
           borderRadius: 7,
           paddingStart: 15,
           paddingEnd: 15,
-          paddingTop: 10,
-          paddingBottom: 10,
+          paddingTop: 15,
+          paddingBottom: 15,
           flexDirection: "column",
         }}
       >
+        <Text
+          style={{
+            color: color.DARK_TEXT,
+            fontSize: 14,
+            fontFamily: fonts.INTER_MEDIUM,
+
+            marginBottom: 2,
+          }}
+        >
+          {"#" + props.NumberDSP}
+        </Text>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Image
+            source={icon.IC_EDIT}
+            style={{ height: 14, width: 14, marginEnd: 5 }}
+          />
+
           <Text
             style={{
-              color: color.DARK_TEXT,
-              fontSize: 16,
-              fontFamily: fonts.LATO_REGULAR,
+              color: "#564CB8",
+              fontSize: 10,
+              fontFamily: fonts.INTER_MEDIUM,
+              marginEnd: 10,
             }}
           >
             {props.createdName}
           </Text>
-          {props.std ? (
+
+          {/* {props.std ? (
             <Text
               style={{
-                fontSize: 14,
+                fontSize: 10,
                 fontFamily: fonts.LATO_BOLD,
                 color: color.COLOR_PRIMARY,
                 marginStart: 5,
@@ -469,24 +488,40 @@ export const RenderItemSupport = (props) => {
             >
               {props.std}
             </Text>
-          ) : null}
+          ) : null} */}
+
+          <View
+            style={{
+              width: 5,
+              height: 5,
+              borderRadius: 50,
+              backgroundColor: "#98A2B3",
+              marginEnd: 10,
+            }}
+          />
+
+          <Image
+            source={icon.IC_CALENDAR}
+            style={{ height: 14, width: 14, marginEnd: 5 }}
+          />
+
+          <Text
+            style={{
+              color: "#667085",
+              fontSize: 10,
+              fontFamily: fonts.INTER,
+            }}
+          >
+            {props.date}
+          </Text>
         </View>
+
         <Text
           style={{
-            color: color.DARK_TEXT,
-            fontSize: 18,
-            fontFamily: fonts.LATO_REGULAR,
-            marginTop: 2,
-          }}
-        >
-          {"#" + props.NumberDSP}
-        </Text>
-        <Text
-          style={{
-            color: color.TEXT_COLOR,
-            fontFamily: fonts.LATO_REGULAR,
+            color: "#667085",
+            fontFamily: fonts.INTER,
             marginTop: 10,
-            fontSize: 11,
+            fontSize: 12,
             marginEnd: 20,
           }}
         >
@@ -506,20 +541,6 @@ export const RenderItemSupport = (props) => {
         }}
         source={icon.IC_SIDE_ARROW}
       ></Image>
-      <Text
-        style={{
-          color: color.GREY,
-          fontSize: 10,
-          fontFamily: fonts.LATO_REGULAR,
-          marginTop: 10,
-          marginEnd: 20,
-          end: 0,
-          top: 0,
-          position: "absolute",
-        }}
-      >
-        {props.date}
-      </Text>
     </TouchableOpacity>
   );
 };

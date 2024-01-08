@@ -14,7 +14,7 @@ import {
   Alert,
   ScrollView,
   KeyboardAvoidingView,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import {
   AppText,
@@ -44,9 +44,9 @@ import {
   EmptyView,
   LoaderViewWithBackground_new,
 } from "../../commonTheme/LoaderView";
-import ImageLoad from 'react-native-image-placeholder';
-import {Linking} from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import ImageLoad from "react-native-image-placeholder";
+import { Linking } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AboveKeyboard from "react-native-above-keyboard";
 
 const ParentSupportDetails = ({ route, navigation }) => {
@@ -104,7 +104,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
   const [isLoadMore, setLoadMore] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loadtype, setLoadType] = useState('first_time')  // 'first_time', 'load_more', 'add_new_msg'
+  const [loadtype, setLoadType] = useState("first_time"); // 'first_time', 'load_more', 'add_new_msg'
 
   useEffect(() => {
     //  setListData(data);
@@ -121,7 +121,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
         setCURRENT_USERID(value);
       });
     }
-    
+
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
     return () => {
@@ -133,26 +133,34 @@ const ParentSupportDetails = ({ route, navigation }) => {
   }, [currentPage]);
 
   useEffect(() => {
-    GetDetailData((loadtype == 'first_time' || loadtype == 'add_new_msg') ? true : false, currentPage );
-  },[CURRENT_USERID]);
+    GetDetailData(
+      loadtype == "first_time" || loadtype == "add_new_msg" ? true : false,
+      currentPage
+    );
+  }, [CURRENT_USERID]);
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', (event) => {
-      console.log(event.endCoordinates.height)
-      if(Platform.OS === 'ios'){
-      setKeyboardStatus(event.endCoordinates.height);
+    const showSubscription = Keyboard.addListener(
+      "keyboardDidShow",
+      (event) => {
+        console.log(event.endCoordinates.height);
+        if (Platform.OS === "ios") {
+          setKeyboardStatus(event.endCoordinates.height);
+        }
       }
-    });
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', (event) => {
-      console.log(event.endCoordinates.height)
-      setKeyboardStatus(0);
-    });
+    );
+    const hideSubscription = Keyboard.addListener(
+      "keyboardDidHide",
+      (event) => {
+        console.log(event.endCoordinates.height);
+        setKeyboardStatus(0);
+      }
+    );
 
     return () => {
       showSubscription.remove();
       hideSubscription.remove();
     };
   }, []);
-
 
   function handleBackButtonClick() {
     navigation.goBack();
@@ -181,39 +189,39 @@ const ParentSupportDetails = ({ route, navigation }) => {
     )
       .then((response) => {
         setMessage("");
-        setLoadType('add_new_msg');
+        setLoadType("add_new_msg");
         //GetDetailData(true,1);
-        GetTempData(true,1);
+        GetTempData(true, 1);
       })
       .catch((error) => {});
   }
-async function GetTempData(loadershow, page){
-  if (loadershow) {
-    setBackgroundLoaderView(true);
-  }
-  console.log(requestID);
-  let requestOptions = {
-    headers: {
-      Accept: "application/json",
-      Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-    },
-  };
-  axiosCallAPI(
-    "get",
-    Utills.GET_SUPPORT_DETAIL +
-      "?id=" +
-      requestID +
-      "&per_page=" +
-      PER_PAGE +
-      "&page=" +
-      page,
-    "",
-    requestOptions,
-    true,
-    navigation
-  )
-    .then((response) => {
-      console.log(response);
+  async function GetTempData(loadershow, page) {
+    if (loadershow) {
+      setBackgroundLoaderView(true);
+    }
+    console.log(requestID);
+    let requestOptions = {
+      headers: {
+        Accept: "application/json",
+        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+      },
+    };
+    axiosCallAPI(
+      "get",
+      Utills.GET_SUPPORT_DETAIL +
+        "?id=" +
+        requestID +
+        "&per_page=" +
+        PER_PAGE +
+        "&page=" +
+        page,
+      "",
+      requestOptions,
+      true,
+      navigation
+    )
+      .then((response) => {
+        console.log(response);
         setBackgroundLoaderView(false);
         if (response !== undefined) {
           setStudentName(
@@ -228,26 +236,20 @@ async function GetTempData(loadershow, page){
           setEmail(response.student_data.email);
           setProfilePic(response.student_data.profilePic_path);
           setLastIndex(response.chat.result[0].id);
-          
-         
-       //   setListData(response.chat.result);
-       setTotalPages(response.chat.pages);
-       setIsDetailVisible(true);
-  
-        
+
+          //   setListData(response.chat.result);
+          setTotalPages(response.chat.pages);
+          setIsDetailVisible(true);
+
           var currentdata = [...listdata];
-          currentdata.splice(0,0,response.chat.result[0]);
-         
-         setListData(currentdata);
-        ref.scrollToIndex({
-          animated: true,
-          index: 0,
-          viewPosition: 0,
-        });
-        
-      
-       
-       
+          currentdata.splice(0, 0, response.chat.result[0]);
+
+          setListData(currentdata);
+          ref.scrollToIndex({
+            animated: true,
+            index: 0,
+            viewPosition: 0,
+          });
         } else {
           //  setBackgroundLoaderView(false)
           //setLoaderView(false)
@@ -257,7 +259,7 @@ async function GetTempData(loadershow, page){
         setBackgroundLoaderView(false);
         //setLoaderView(false)
       });
-}
+  }
   async function GetDetailData(loadershow, page) {
     if (loadershow) {
       setBackgroundLoaderView(true);
@@ -301,41 +303,35 @@ async function GetTempData(loadershow, page){
           setEmail(response.student_data.email);
           setProfilePic(response.student_data.profilePic_path);
           setLastIndex(response.chat.result[0].id);
-          
-         
-       //   setListData(response.chat.result);
-       setTotalPages(response.chat.pages);
-       setIsDetailVisible(true);
-          if(loadtype == 'first_time')
-           { 
+
+          //   setListData(response.chat.result);
+          setTotalPages(response.chat.pages);
+          setIsDetailVisible(true);
+          if (loadtype == "first_time") {
             var currentdata = [...listdata];
             var finalarray = currentdata.concat(response.chat.result);
-          setListData(finalarray);
-          ref.scrollToIndex({
-            animated: true,
-            index: 0,
-            viewPosition: 0,
-          });
-        }
-        else if(loadtype == 'load_more')
-        {
-          var currentdata = [...listdata];
-          var finalarray = currentdata.concat(response.chat.result);
-        setListData(finalarray);
-        }
-        else if(loadtype == 'add_new_msg'){
-          var currentdata = [...listdata];
-          var finalarray = currentdata.splice(0,0,response.chat.result[0]);
-          console.log(finalarray);
-        // setListData(finalarray);
-        // ref.scrollToIndex({
-        //   animated: true,
-        //   index: 0,
-        //   viewPosition: 0,
-        // });
-        }
-      
-       
+            setListData(finalarray);
+            ref.scrollToIndex({
+              animated: true,
+              index: 0,
+              viewPosition: 0,
+            });
+          } else if (loadtype == "load_more") {
+            var currentdata = [...listdata];
+            var finalarray = currentdata.concat(response.chat.result);
+            setListData(finalarray);
+          } else if (loadtype == "add_new_msg") {
+            var currentdata = [...listdata];
+            var finalarray = currentdata.splice(0, 0, response.chat.result[0]);
+            console.log(finalarray);
+            // setListData(finalarray);
+            // ref.scrollToIndex({
+            //   animated: true,
+            //   index: 0,
+            //   viewPosition: 0,
+            // });
+          }
+
           // setListData(response);
           //setLoaderView(false)
           // if (JSON.stringify(dataList) != JSON.stringify(response.result))
@@ -352,7 +348,7 @@ async function GetTempData(loadershow, page){
   }
   function LoadMoreData() {
     if (currentPage < totalPages) {
-      setLoadType('load_more');
+      setLoadType("load_more");
       setCurrentPage(currentPage + 1);
 
       setLoadMore(true);
@@ -367,10 +363,7 @@ async function GetTempData(loadershow, page){
     </View>
   );
 
-
-
   function CloseRequest() {
-
     Alert.alert(
       "Close Request",
       "Are you sure you want to close the request?",
@@ -378,45 +371,38 @@ async function GetTempData(loadershow, page){
         {
           text: "NO",
           onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
+          style: "cancel",
         },
-        { text: "YES", onPress: () => CloseRequestAPI() }
+        { text: "YES", onPress: () => CloseRequestAPI() },
       ]
     );
-
-
-
-  
   }
-async function CloseRequestAPI(){
-  var params = new FormData();
-  params.append("id", requestID);
+  async function CloseRequestAPI() {
+    var params = new FormData();
+    params.append("id", requestID);
 
-  console.log(params);
-  let requestOptions = {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "multipart/form-data",
-      Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-    },
-  };
-  axiosCallAPI(
-    "post",
-    Utills.CLOSE_SUPPORT_REQUEST,
-    params,
-    requestOptions,
-    true,
-    navigation
-  )
-    .then((response) => {
-      setMessage("");
-      navigation.goBack();
-    })
-    .catch((error) => {
-
-    });
-}
-
+    console.log(params);
+    let requestOptions = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+      },
+    };
+    axiosCallAPI(
+      "post",
+      Utills.CLOSE_SUPPORT_REQUEST,
+      params,
+      requestOptions,
+      true,
+      navigation
+    )
+      .then((response) => {
+        setMessage("");
+        navigation.goBack();
+      })
+      .catch((error) => {});
+  }
 
   const keyExtractor = ({ id }) => String(id);
 
@@ -531,301 +517,337 @@ async function CloseRequestAPI(){
 
   return (
     <>
-    <SafeAreaView style={{ flex: 0, 
-        backgroundColor: color.APP_PRIMARY}} /> 
-    <SafeAreaView style={stylesCommon.safeAreaStyle}>
-     <StatusBar backgroundColor={color.APP_PRIMARY} />
-      <SchoolDetailHeaderView
-        titile={AppText.DASHBOARD}
-        type={type}
-        navigation={navigation}
-        screen={type === "teacher" ? "TeacherSupport" : "ParentSupport"}
-      />
+      <SafeAreaView style={{ flex: 0, backgroundColor: color.APP_PRIMARY }} />
+      <SafeAreaView style={stylesCommon.safeAreaStyle}>
+        <StatusBar backgroundColor={color.APP_PRIMARY} />
+        <SchoolDetailHeaderView
+          titile={AppText.DASHBOARD}
+          type={type}
+          navigation={navigation}
+          screen={type === "teacher" ? "TeacherSupport" : "ParentSupport"}
+        />
 
-      <View
-        style={{
-          flexDirection: "column",
-          marginTop: Platform.OS === "ios" ? -0 : 0,
-          flex: 1,
-        }}
-      >
-        {(type == "teacher" && tab != "Closed") ? (
-          <TitileBackgroundView
-            titile={"Request Details"}
-            image={icon.IC_CLOSE}
-            tagAdd={"Close Request"}
-            onClick={CloseRequest}
-          />
-        ) : (
-          <TitileBackgroundView titile={"Request Details"} />
-        )}
-       
-        <View style={{ padding: vh(15), alignItems: "center" }}>
-          <View
-            style={{
-              backgroundColor: color.WHITE,
-              borderRadius: 7,
-              width: "100%",
-              borderColor: color.GREY,
-              borderWidth: 0.5,
-              alignSelf: "center",
-              shadowColor:
-                Platform.OS === "ios" ? color.LIGHT_GREY : color.BLACK,
-              shadowOffset: { width: 2, height: 2 },
-              shadowOpacity: 5,
-              shadowRadius: 1,
-              elevation: 5,
-            }}
-          >
-            <Text
+        <View
+          style={{
+            flexDirection: "column",
+            marginTop: Platform.OS === "ios" ? -0 : 0,
+            flex: 1,
+          }}
+        >
+          {type == "teacher" && tab != "Closed" ? (
+            <TitileBackgroundView
+              titile={"Request Details"}
+              // image={icon.IC_CLOSE}
+              // tagAdd={"Close Request"}
+              onClick={CloseRequest}
+            />
+          ) : (
+            <TitileBackgroundView titile={"Request Details"} />
+          )}
+
+          <View style={{ padding: vh(15), alignItems: "center" }}>
+            <View
               style={{
-                fontSize: 14,
-                fontWeight: "700",
-                fontFamily: fonts.LATO_REGULAR,
-                color: color.TEXT_COLOR,
-                padding: 10,
+                backgroundColor: color.WHITE,
+                padding: 15,
+                borderRadius: 15,
+                width: "100%",
+                //borderColor: color.GREY,
+                //borderWidth: 0.5,
+                alignSelf: "center",
+                // shadowColor:
+                //   Platform.OS === "ios" ? color.LIGHT_GREY : color.BLACK,
+                //  shadowOffset: { width: 2, height: 2 },
+                // shadowOpacity: 5,
+                // shadowRadius: 1,
+                elevation: 4,
               }}
             >
-              {"Request #" + requestID}
-            </Text>
-            <View style={{ backgroundColor: color.GREY, height: 1 }}></View>
-            {isDetailsVisible && (
-              <View
+              <Text
                 style={{
-                  flexDirection: "row",
-                  backgroundColor: color.COLOR_SECONDARY,
-                  borderBottomLeftRadius: 7,
-                  borderBottomRightRadius: 7,
-                  padding:10
+                  fontSize: 14,
+                  fontWeight: "700",
+                  fontFamily: fonts.INTER_MEDIUM,
+                  color: color.TEXT_COLOR,
+                  marginBottom: 15,
                 }}
               >
-                {/* {profilePic.length > 0 ? ( */}
-                  <ImageLoad style={[stylesCommon.studentProfile,{height: 90, width: 90}]}
-                  source={{uri:profilePic}}
-                  loadingStyle={{ size: 'large', color: 'blue' }}
-                  borderRadius={50}
-                  placeholderStyle={stylesCommon.studentProfile}
-                  >
-              </ImageLoad>
-                {/* ) : (
+                {"Request #" + requestID}
+              </Text>
+              <View style={{ backgroundColor: "#EAECF0", height: 1 }}></View>
+              {isDetailsVisible && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    backgroundColor: color.WHITE,
+                    borderBottomLeftRadius: 7,
+                    borderBottomRightRadius: 7,
+                    marginTop: 15,
+                  }}
+                >
+                  {/* {profilePic.length > 0 ? ( */}
+                  <ImageLoad
+                    style={[
+                      stylesCommon.studentProfile,
+                      { height: 80, width: 80 },
+                    ]}
+                    source={{ uri: profilePic }}
+                    loadingStyle={{ size: "large", color: "blue" }}
+                    borderRadius={50}
+                    backgroundColor={color.YELLOW}
+                    placeholderStyle={stylesCommon.studentProfile}
+                  ></ImageLoad>
+                  {/* ) : (
                   <Image
                     style={{ height: 100, width: 100 }}
                     source={icon.IC_GIRL_IMAGE}
                   ></Image>
                 )} */}
 
-                <View style={[{ flex: 1, margin: 10 }]}>
-                  <Text style={stylesCommon.nameText}>{studentName}</Text>
-                  <Text
-                    style={[
-                      stylesCommon.deptmentText,
-                      { color: color.COLOR_PRIMARY, marginTop: 5 },
-                    ]}
-                  >
-                    {section}
-                  </Text>
-
-                  <View style={{ marginTop: 10}}>
-                    <TouchableOpacity style={{}} onPress={()=> 
-                    Linking.openURL(`tel:${phone}`)
-                    }>
+                  <View style={[{ flex: 1, marginStart: 10 }]}>
+                    <Text style={stylesCommon.nameText}>{studentName}</Text>
+                    <Text
+                      style={[
+                        stylesCommon.deptmentText,
+                        { color: "#667085", marginTop: 5 },
+                      ]}
+                    >
+                      {section}
+                    </Text>
                     <View
                       style={{
                         flexDirection: "row",
-                        alignItems: "center",
-                        alignContent: "center",
-                        justifyContent: "center",
-                        
+                        marginTop: 12,
                       }}
                     >
-                      <Image
-                        source={icon.IC_PHONE}
-                        style={{ height: 20, width: 20, resizeMode: "contain" }}
-                      />
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          marginStart: 2,
-                          fontFamily: fonts.LATO_BOLD,
-                          flex: 1,
-                          flexWrap: "wrap",
-                          color: color.DARK_TEXT,
-                        }}
-                      >
-                        {phone}
-                      </Text>
+                      <View style={{ marginEnd: 12 }}>
+                        <Text style={stylesCommon.supportText}>Phone</Text>
+                        <Text style={stylesCommon.supportValueText}>
+                          {phone}
+                        </Text>
+                      </View>
+
+                      <View style={{}}>
+                        <View>
+                          <Text style={stylesCommon.supportText}>Email</Text>
+                          <Text style={stylesCommon.supportValueText}>
+                            {email}
+                          </Text>
+                        </View>
+                      </View>
                     </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{marginTop:5}} onPress={() => 
-                      Linking.openURL(`mailto:${email}`)}>
-                     <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        alignContent: "center",
-                        justifyContent: "center",
-                      }}
-                      
-                    >
-                      <Image
-                        source={icon.IC_ENVELOP}
-                        style={{ height: 20, width: 20, resizeMode: "contain" }}
-                      />
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          marginStart: 5,
-                          fontFamily: fonts.LATO_BOLD,
-                          flex: 1,
-                          flexWrap: "wrap",
-                          color: color.DARK_TEXT,
-                        }}
+                    {/* <View style={{ marginTop: 10 }}>
+                      <TouchableOpacity
+                        style={{}}
+                        onPress={() => Linking.openURL(`tel:${phone}`)}
                       >
-                        {email}
-                      </Text>
-                    </View> 
-                    </TouchableOpacity>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            alignContent: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Image
+                            source={icon.IC_PHONE}
+                            style={{
+                              height: 20,
+                              width: 20,
+                              resizeMode: "contain",
+                            }}
+                          />
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              marginStart: 2,
+                              fontFamily: fonts.LATO_BOLD,
+                              flex: 1,
+                              flexWrap: "wrap",
+                              color: color.DARK_TEXT,
+                            }}
+                          >
+                            {phone}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{ marginTop: 5 }}
+                        onPress={() => Linking.openURL(`mailto:${email}`)}
+                      >
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            alignContent: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Image
+                            source={icon.IC_ENVELOP}
+                            style={{
+                              height: 20,
+                              width: 20,
+                              resizeMode: "contain",
+                            }}
+                          />
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              marginStart: 5,
+                              fontFamily: fonts.LATO_BOLD,
+                              flex: 1,
+                              flexWrap: "wrap",
+                              color: color.DARK_TEXT,
+                            }}
+                          >
+                            {email}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View> */}
                   </View>
                 </View>
-              </View>
-            )}
-          </View>
+              )}
+            </View>
 
-          <Text
+            <Text
+              style={{
+                fontSize: 12,
+                padding: vh(10),
+                marginTop: 5,
+                color: color.TEXT_COLOR,
+                fontFamily: fonts.LATO_BOLD,
+                fontWeight: "600",
+                textAlign: "center",
+              }}
+            >
+              {" "}
+            </Text>
+          </View>
+          <View
             style={{
-              fontSize: 12,
-              padding: vh(10),
-              marginTop: 5,
-              color: color.TEXT_COLOR,
-              fontFamily: fonts.LATO_BOLD,
-              fontWeight: "600",
-              textAlign: "center",
+              backgroundColor: "white",
+              marginBottom: 85,
+              marginTop: vh(-15),
+              marginHorizontal: vh(15),
+              flex: 1,
             }}
           >
-            {" "}
-          </Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: "white",
-            marginBottom: 85,
-            marginTop: vh(-15),
-            marginHorizontal: vh(15),
-            flex: 1,
-          }}
-        >
-          {/* {isLoadMore && (
+            {/* {isLoadMore && (
             <ActivityIndicator
               size="large"
               color={color.COLOR_PRIMARY}
               style={{ margin: 10 }}
             />
           )} */}
-          <FlatList
-            //data={[...listdata].reverse()}
-            data={listdata}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            style={{ backgroundColor: color.WHITE , flex:1 }}
-            ref={(ref) => setRef(ref)}
-            inverted
-            extraData={listdata}
-            onEndReached={LoadMoreData}
-            onEndReachedThreshold={0.1}
-            ListFooterComponent={renderFooter}
-            
-          />
+            <FlatList
+              //data={[...listdata].reverse()}
+              data={listdata}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+              style={{ backgroundColor: color.WHITE, flex: 1 }}
+              ref={(ref) => setRef(ref)}
+              inverted
+              extraData={listdata}
+              onEndReached={LoadMoreData}
+              onEndReachedThreshold={0.1}
+              ListFooterComponent={renderFooter}
+            />
+          </View>
+          {backgroundLoaderView && (
+            <View
+              style={{
+                flex: 1,
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "rgba(52, 52, 52, 0.5)",
+              }}
+            >
+              <LoaderViewWithBackground_new color={color.WHITE} />
+            </View>
+          )}
         </View>
-        {backgroundLoaderView && (
-        <View
-          style={{
-            flex: 1,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(52, 52, 52, 0.5)",
-          }}
-        >
-          <LoaderViewWithBackground_new color={color.WHITE} />
-        </View>
-      )}  
-      </View>
-   
-      {tab != "Closed" ? (
 
-<View style={{ position: "absolute", bottom: keyboardStatus, width: "100%",
-backgroundColor:color.WHITE}}>
-  <View style={{ backgroundColor: color.GREY, height: 1 }}></View>
+        {tab != "Closed" ? (
+          <View
+            style={{
+              position: "absolute",
+              bottom: keyboardStatus,
+              width: "100%",
+              backgroundColor: color.WHITE,
+            }}
+          >
+            <View style={{ backgroundColor: color.GREY, height: 1 }}></View>
 
-  <View style={{ padding: 13, flexDirection: "row" }}>
-    <TextInput
-      style={{
-        borderRadius: 7,
-        borderColor: color.GREY,
-        borderWidth: 1,
-        flex: 1,
-        padding: 8,
-        fontFamily: fonts.LATO_REGULAR,
-        fontWeight: "600",
-      }}
-      placeholder={"Write a Message"}
-      placeholderTextColor={color.TEXT_COLOR}
-      value={message}
-      onChangeText={(text) => setMessage(text)}
-    />
-    <TouchableOpacity
-      style={{
-        borderRadius: 80,
-        height: 50,
-        width: 50,
-        backgroundColor: color.COLOR_PRIMARY,
-        marginStart: 10,
-        alignItems: "center",
-        justifyContent: "center",
-        alignContent: "center",
-      }}
-      onPress={() => {
-        //    var value =  {id:5, name: 'My Data', currentUser: true, time: 'April 2, 2022 04:41 PM', message: "Lorem Ipsum " }
-        //    var temparray = [...listdata];
+            <View style={{ padding: 13, flexDirection: "row" }}>
+              <TextInput
+                style={{
+                  borderRadius: 7,
+                  borderColor: color.GREY,
+                  borderWidth: 1,
+                  flex: 1,
+                  padding: 8,
+                  fontFamily: fonts.LATO_REGULAR,
+                  fontWeight: "600",
+                }}
+                placeholder={"Write a Message"}
+                placeholderTextColor={color.TEXT_COLOR}
+                value={message}
+                onChangeText={(text) => setMessage(text)}
+              />
+              <TouchableOpacity
+                style={{
+                  borderRadius: 80,
+                  height: 50,
+                  width: 50,
+                  backgroundColor: color.COLOR_PRIMARY,
+                  marginStart: 10,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  alignContent: "center",
+                }}
+                onPress={() => {
+                  //    var value =  {id:5, name: 'My Data', currentUser: true, time: 'April 2, 2022 04:41 PM', message: "Lorem Ipsum " }
+                  //    var temparray = [...listdata];
 
-        // listdata.push({ name: 'New Data', currentUser: true, time: 'April 2, 2022 04:41 PM', message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book." })
-        // temparray.splice(3,0,value)
-        //    temparray.push(value);
-        if (message.length > 0) {
-          setLoadType('add_new_msg');
-          AddNewMessage();
-          Keyboard.dismiss();
-        }
-        // setListData(temparray);
-        // ref.scrollToIndex({
-        //     animated: true,
-        //     index: 0,
-        //     viewPosition: 0
-        //   })
-        // console.log(listdata.length);
-        // console.log(listdata);
-      }}
-    >
-      <Image
-        source={icon.IC_SEND}
-        style={{
-          height: 30,
-          width: 30,
-          resizeMode: "contain",
-          marginStart: 5,
-        }}
-      />
-    </TouchableOpacity>
-  </View>
- 
-</View>
-) : null}
-
-    </SafeAreaView>
+                  // listdata.push({ name: 'New Data', currentUser: true, time: 'April 2, 2022 04:41 PM', message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book." })
+                  // temparray.splice(3,0,value)
+                  //    temparray.push(value);
+                  if (message.length > 0) {
+                    setLoadType("add_new_msg");
+                    AddNewMessage();
+                    Keyboard.dismiss();
+                  }
+                  // setListData(temparray);
+                  // ref.scrollToIndex({
+                  //     animated: true,
+                  //     index: 0,
+                  //     viewPosition: 0
+                  //   })
+                  // console.log(listdata.length);
+                  // console.log(listdata);
+                }}
+              >
+                <Image
+                  source={icon.IC_SEND}
+                  style={{
+                    height: 30,
+                    width: 30,
+                    resizeMode: "contain",
+                    marginStart: 5,
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : null}
+      </SafeAreaView>
     </>
   );
 };

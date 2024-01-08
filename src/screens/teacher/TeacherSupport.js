@@ -45,24 +45,23 @@ const TeacherSupport = (navigation) => {
 
   const CreateMyTab = (type) => <TeacherSupportTabCommon type={type} />;
 
-  const VedanshTabBar = ({state,descriptors,navigation,position})=>{
-    return(<Text>Hi</Text>)
-  }
+  const VedanshTabBar = ({ state, descriptors, navigation, position }) => {
+    return <Text>Hi</Text>;
+  };
 
   const MyTabBar = ({ state, descriptors, navigation, position }) => {
     return (
       <View
         style={{
           flexDirection: "row",
-          backgroundColor: '#EEEDF8',
-          borderRadius:50,
-          width:screenWidth-30,
-          
-          justifyContent: "space-evenly",
+          backgroundColor: "#EEEDF8",
+          borderRadius: 50,
+          width: screenWidth - 100,
+          flex: 0.07,
         }}
       >
-        {console.log("Filhal toh yeh mil raha hai bhai...",state.routes)}
-        {console.log("Yeh descripter hai bhai",descriptors)}
+        {console.log("Filhal toh yeh mil raha hai bhai...", state.routes)}
+        {console.log("Yeh descripter hai bhai", descriptors)}
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const label =
@@ -93,154 +92,88 @@ const TeacherSupport = (navigation) => {
           });
 
           return (
-
-          //   <View 
-          //     style = {{padding:5,
-          //     justifyContent:"center",alignItems:'center',paddingHorizontal:10,paddingTop:25,marginTop:30}}>
-          //     <View
-          //   style={{
-          //     width: "100%",
-          //     height: 40,
-          //     backgroundColor: "#EEEDF8",
-          //     flexDirection: "row",
-
-          //     justifyContent: "space-evenly",
-          //     alignItems: "center",
-          //     borderRadius: 50,
-          //   }}
-          // >{label.map}</View>
-          //     </View>
-
-           // <View style={{backgroundColor:color.RED ,borderRadius:50}}>
-          <TouchableOpacity
-          accessibilityRole="button"
-          accessibilityState={isFocused ? { selected: true } : {}}
-          accessibilityLabel={options.tabBarAccessibilityLabel}
-          testID={options.tabBarTestID}
-          onPress={onPress}
-          style={{
-            backgroundColor: isFocused
-              ? color.WHITE
-  :null,
-            width: SCREEN_WIDTH / 3.1,
-            marginStart:6,
-            marginEnd:6,
-            marginVertical:5,
-            paddingVertical: 5,
-           // paddingHorizontal:5,
-            borderRadius:49,
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: isFocused ? 2 : 0 },
-            shadowOpacity: isFocused ? 0.2 : 0,
-            elevation: isFocused ? 5 : 0,
-          }}
-        >
-          
-       
-            <Animated.Text
+            <TouchableOpacity
+              accessibilityRole="button"
+              accessibilityState={isFocused ? { selected: true } : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              testID={options.tabBarTestID}
+              onPress={onPress}
               style={{
-                fontSize: 14,
-                fontFamily: fonts.INTER,
-                fontWeight: "700",
-                color: isFocused ? color.DARK_TEXT : color.GREY,
+                backgroundColor: isFocused ? color.WHITE : null,
+
+                marginStart: 6,
+                marginEnd: 15,
+                marginTop: 5,
+                marginBottom: 5,
+
+                borderRadius: 49,
+                alignItems: "center",
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: isFocused ? 2 : 0 },
+                shadowOpacity: isFocused ? 0.2 : 0,
+                elevation: isFocused ? 2 : 0,
               }}
             >
-              {label}
-            </Animated.Text>
-           
-        {/* </View> */}
-        </TouchableOpacity>
-//</View>
-           
-            // <TouchableOpacity
-            //   accessibilityRole="button"
-            //   accessibilityState={isFocused ? { selected: true } : {}}
-            //   accessibilityLabel={options.tabBarAccessibilityLabel}
-            //   testID={options.tabBarTestID}
-            //   onPress={onPress}
-            //   style={{
-            //     backgroundColor: isFocused
-            //       ? color.WHITE
-            //       : color.COLOR_SECONDARY,
-            //     width: SCREEN_WIDTH / 3.1,
+              <Animated.Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: fonts.INTER,
+                  fontWeight: "700",
+                  color: isFocused ? color.DARK_TEXT : color.GREY,
+                  paddingVertical: 7,
+                  // marginHorizontal:10,
+                  paddingHorizontal: 15,
+                }}
+              >
+                {label}
+              </Animated.Text>
 
-            //     paddingTop: 12,
-            //     borderTopStartRadius: 10,
-            //     borderTopEndRadius: 10,
-            //     alignItems: "center",
-            //     shadowColor: "#000",
-            //     shadowOffset: { width: 0, height: isFocused ? 2 : 0 },
-            //     shadowOpacity: isFocused ? 0.2 : 0,
-            //     elevation: isFocused ? 5 : 0,
-            //   }}
-            // >
-              
-            //   <View
-            //     style={{
-            //       alignItems: "center",
-            //     }}
-            //   >
-            //     <Animated.Text
-            //       style={{
-            //         fontSize: 16,
-            //         fontFamily: fonts.LATO_REGULAR,
-            //         fontWeight: "700",
-            //         color: isFocused ? color.DARK_TEXT : color.GREY,
-            //       }}
-            //     >
-            //       {label}
-            //     </Animated.Text>
-            //     {isFocused ? (
-            //       <View
-            //         style={{
-            //           backgroundColor: color.RED,
-            //           height: 1,
-            //           marginTop: 12,
-            //           width: SCREEN_WIDTH / 8,
-            //         }}
-            //       />
-            //     ) : null}
-            //   </View>
-            // </TouchableOpacity>
-         );
+              {/* </View> */}
+            </TouchableOpacity>
+          );
         })}
       </View>
     );
   };
   const MyTabs = () => {
     return (
-      <Tab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
-        <Tab.Screen
-          name="SupportNew"
-          upperCaseLabel={false}
-          component={TeacherSupportTabCommon}
-          initialParams={{ type: "New", role: "teacher", sectionid: sectionID }}
-          options={{ tabBarLabel: "New" }}
-        />
-        <Tab.Screen
-          name="SupportReplied"
-          upperCaseLabel={false}
-          component={TeacherSupportTabCommon}
-          initialParams={{
-            type: "Replied",
-            role: "teacher",
-            sectionid: sectionID,
-          }}
-          options={{ tabBarLabel: "Replied" }}
-        />
-        <Tab.Screen
-          name="SupportClosed"
-          upperCaseLabel={false}
-          component={TeacherSupportTabCommon}
-          initialParams={{
-            type: "Closed",
-            role: "teacher",
-            sectionid: sectionID,
-          }}
-          options={{ tabBarLabel: "Closed" }}
-        />
-      </Tab.Navigator>
+      <>
+        <Tab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
+          <Tab.Screen
+            name="SupportNew"
+            upperCaseLabel={false}
+            component={TeacherSupportTabCommon}
+            initialParams={{
+              type: "New",
+              role: "teacher",
+              sectionid: sectionID,
+            }}
+            options={{ tabBarLabel: "New" }}
+          />
+          <Tab.Screen
+            name="SupportReplied"
+            upperCaseLabel={false}
+            component={TeacherSupportTabCommon}
+            initialParams={{
+              type: "Replied",
+              role: "teacher",
+              sectionid: sectionID,
+            }}
+            options={{ tabBarLabel: "Replied" }}
+          />
+          <Tab.Screen
+            name="SupportClosed"
+            upperCaseLabel={false}
+            component={TeacherSupportTabCommon}
+            initialParams={{
+              type: "Closed",
+              role: "teacher",
+              sectionid: sectionID,
+            }}
+            options={{ tabBarLabel: "Closed" }}
+          />
+        </Tab.Navigator>
+      </>
     );
   };
   return (
@@ -269,7 +202,7 @@ const TeacherSupport = (navigation) => {
     //   </View>
     // </SafeAreaView>
     <>
-      <SafeAreaView style={{flex:0, backgroundColor: color.APP_PRIMARY }} />
+      <SafeAreaView style={{ flex: 0, backgroundColor: color.APP_PRIMARY }} />
       <SafeAreaView style={stylesCommon.safeAreaStyle}>
         <StatusBar backgroundColor={color.APP_PRIMARY} />
 
@@ -285,19 +218,28 @@ const TeacherSupport = (navigation) => {
           secondViewImage={icon.IC_ADD}
           tagAddSecond={"Request"}
         />
+
         <View
           style={{
-            //alignContent: "center",
-            //alignItems: "center",
-            justifyContent: "center",
-            marginStart:15,
-            marginEnd:15,
-            
+            marginStart: 15,
+            marginEnd: 15,
+            flexDirection: "row",
             flex: 1,
-            backgroundColor: color.COLOR_SECONDARY,
+            backgroundColor: color.WHITE,
           }}
         >
           {MyTabs()}
+          <View
+            style={{
+              backgroundColor: "#EEEDF8",
+              width: screenWidth / 4,
+              height: 40,
+              borderTopEndRadius: 50,
+              borderBottomEndRadius: 50,
+              position: "absolute",
+              right: 0,
+            }}
+          />
         </View>
       </SafeAreaView>
     </>

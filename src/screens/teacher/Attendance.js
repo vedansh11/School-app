@@ -460,61 +460,64 @@ const Attendance = ({ route, navigation }) => {
 
           {/* Here the three dots is being configured  */}
 
-        
-            <Menu>
-              <MenuTrigger onPress={() => OpenDropDown()} style={{position:'absolute' , right:-50}}>
-                <Image
-                  style={{
-                    width: 18,
-                    height: 18,
-                    // position:'absolute',
-                    // right:-50,
-                  }}
-                  source={icon.IC_ATTENDANCE_DOTS}
-                ></Image>
-              </MenuTrigger>
-               
-              <MenuOptions
-                customStyles={{
-                  optionsContainer: {
-                    position: "absolute",
-                    borderRadius: 8,
-                     marginTop: 30,
-                     marginLeft: 60,
-                    height: 120,
-                    width:130,
-                    backgroundColor: '#fff',
-                  },
+          <Menu>
+            <MenuTrigger
+              onPress={() => OpenDropDown()}
+              style={{ position: "absolute", right: -50 }}
+            >
+              <Image
+                style={{
+                  width: 18,
+                  height: 18,
+                  // position:'absolute',
+                  // right:-50,
                 }}
-              >
+                source={icon.IC_ATTENDANCE_DOTS}
+              ></Image>
+            </MenuTrigger>
 
-<View style={{     width: 0,
-     height: 0,
-     backgroundColor: 'transparent',
-     borderStyle: 'solid',
-     borderTopWidth: 0,
-     borderRightWidth: 10,
-     borderBottomWidth: 10,
-     borderLeftWidth: 10,
-     borderTopColor: 'transparent',
-     borderRightColor: 'transparent',
-     borderBottomColor: '#fff',
-     borderLeftColor: 'transparent',
-     zIndex:2,
-     position:'absolute',
-     top:-8,
-     right:9,
-}}></View>
-                <ScrollView>
-                  {AppText.ATTENDANCE_DROP_OPTIONS.map((option) => (
-                    <MenuOption key={option.key}>
-                      <Text style={{marginStart:5}}>{option}</Text>
-                    </MenuOption>
-                  ))}
-                </ScrollView>
-              </MenuOptions>
-            </Menu>
-          
+            <MenuOptions
+              customStyles={{
+                optionsContainer: {
+                  position: "absolute",
+                  borderRadius: 8,
+                  marginTop: 30,
+                  marginLeft: 60,
+                  height: 120,
+                  width: 130,
+                  backgroundColor: "#fff",
+                },
+              }}
+            >
+              <View
+                style={{
+                  width: 0,
+                  height: 0,
+                  backgroundColor: "transparent",
+                  borderStyle: "solid",
+                  borderTopWidth: 0,
+                  borderRightWidth: 10,
+                  borderBottomWidth: 10,
+                  borderLeftWidth: 10,
+                  borderTopColor: "transparent",
+                  borderRightColor: "transparent",
+                  borderBottomColor: "#fff",
+                  borderLeftColor: "transparent",
+                  zIndex: 2,
+                  position: "absolute",
+                  top: -8,
+                  right: 9,
+                }}
+              ></View>
+              <ScrollView>
+                {AppText.ATTENDANCE_DROP_OPTIONS.map((option) => (
+                  <MenuOption key={option.key}>
+                    <Text style={{ marginStart: 5 }}>{option}</Text>
+                  </MenuOption>
+                ))}
+              </ScrollView>
+            </MenuOptions>
+          </Menu>
         </View>
 
         // </View>

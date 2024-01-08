@@ -334,9 +334,9 @@ export default StyleSheet.create({
     margin: 10,
   },
   nameText: {
-    fontSize: 20,
-    fontFamily: fonts.LATO_BOLD,
-    color: color.BLACK,
+    fontSize: 16,
+    fontFamily: fonts.INTER_MEDIUM,
+    color: "#564CB8",
   },
   deptmentText: {
     fontSize: 12,
@@ -686,5 +686,17 @@ export default StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
     borderColor: color.APP_PRIMARY,
+  },
+
+  supportText: {
+    fontFamily: fonts.INTER,
+    fontSize: 10,
+    color: "#667085",
+  },
+
+  supportValueText: {
+    fontFamily: fonts.INTER_SEMIBOLD,
+    fontSize: 10,
+    color: "#101828",
   },
 });

@@ -66,6 +66,7 @@ export const icon = {
   IC_ATTENDANCE_CLOCK: require("../assets/images/attendence-clock.png"),
   IC_ATTENDANCE_LOCATION: require("../assets/images/attendence-location.png"),
   IC_ATTENDANCE_DOTS: require("../assets/images/dots-vertical.png"),
+  IC_EDIT: require("../assets/images/edit-03.png"),
 };
 
 export const fonts = {
