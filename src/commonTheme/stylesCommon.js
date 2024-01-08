@@ -11,7 +11,7 @@ import { StyleSheet } from "react-native";
 import { color, icon, fonts } from "../constant";
 import { Dimensions } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import { normalize, vh, screenHeight } from "../Utills/dimesnion";
+import { normalize, vh, screenHeight, screenWidth } from "../Utills/dimesnion";
 
 export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
   Dimensions.get("window");
@@ -696,7 +696,7 @@ export default StyleSheet.create({
 
   supportValueText: {
     fontFamily: fonts.INTER_SEMIBOLD,
-    fontSize: 10,
+    fontSize: screenWidth > 360 ? 10 : 8,
     color: "#101828",
   },
 });

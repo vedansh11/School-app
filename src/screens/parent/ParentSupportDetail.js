@@ -32,7 +32,12 @@ import {
   TitileBackgroundView,
   RenderItemSupport,
 } from "../../commonTheme/CommonView";
-import { normalize, screenHeight, vh } from "../../Utills/dimesnion";
+import {
+  normalize,
+  screenHeight,
+  screenWidth,
+  vh,
+} from "../../Utills/dimesnion";
 import * as Preference from "../../storeData/Preference";
 import * as Utills from "../../API/Utills";
 import { axiosCallAPI } from "../../API/axiosCommonService";
@@ -411,107 +416,101 @@ const ParentSupportDetails = ({ route, navigation }) => {
       <View
         style={{
           flex: 1,
-          backgroundColor: color.COLOR_SECONDARY,
-          borderRadius: 7,
-          padding: 15,
-          marginLeft: "20%",
-          marginTop: 10,
+          marginTop: 20,
           minHeight: 50,
+          marginLeft: "20%",
+          //paddingVertical: 15,
+          backgroundColor: color.WHITE,
         }}
       >
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            marginBottom: 10,
+            marginBottom: 6,
           }}
         >
-          <Text
-            style={{
-              color: color.COLOR_PRIMARY,
-              fontSize: normalize(12),
-              fontFamily: fonts.LATO_BOLD,
-              fontWeight: "600",
-            }}
-          >
+          <Text style={{ fontFamily: fonts.INTER_MEDIUM, fontSize: 12 }}>
             {item.fullname}
           </Text>
-          <Text
-            style={{
-              color: color.TEXT_COLOR,
-              fontSize: normalize(10),
-              fontFamily: fonts.LATO_ITALIC,
-              fontWeight: "400",
-            }}
-          >
-            {moment(item.createdAt, "YYYY-MM-DD HH:mm:ss").format(
-              "MMMM DD, YYYY hh:mm a"
-            )}
+          <Text style={{ fontFamily: fonts.INTER, fontSize: 10 }}>
+            {moment(item.createdAt, "YYYY-MM-DD HH:mm:ss").format("dddd h:mma")}
           </Text>
         </View>
-        <Text
+        <View
           style={{
-            color: color.DARK_TEXT,
-            fontFamily: fonts.LATO_REGULAR,
-            fontSize: normalize(12),
+            backgroundColor: "#564CB8",
+            paddingVertical: 10,
+            paddingHorizontal: 14,
+            borderTopStartRadius: 8,
+            borderBottomStartRadius: 8,
+            borderBottomEndRadius: 8,
+            borderTopEndRadius: 0,
           }}
         >
-          {item.message}
-        </Text>
+          <Text
+            style={{
+              color: color.WHITE,
+              fontFamily: fonts.INTER,
+              fontSize: normalize(12),
+            }}
+          >
+            {item.message}
+          </Text>
+        </View>
       </View>
     ) : (
       <View
         style={{
-          flex: 1,
+          marginTop: 20,
           backgroundColor: color.WHITE,
-          borderRadius: 7,
-          padding: 10,
-          marginRight: "20%",
-          borderColor: color.GREY,
-          minHeight: 50,
-          borderWidth: 0.5,
-          marginTop: 10,
+          flexDirection: "row",
+          flex: 1,
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginBottom: 10,
-          }}
-        >
-          <Text
-            style={{
-              color: color.COLOR_PRIMARY,
-              fontSize: normalize(12),
-              fontFamily: fonts.LATO_BOLD,
-              fontWeight: "600",
-            }}
-          >
-            {item.fullname}
-          </Text>
-          <Text
-            style={{
-              color: color.TEXT_COLOR,
-              fontSize: normalize(10),
-              fontFamily: fonts.LATO_ITALIC,
-              fontWeight: "400",
-            }}
-          >
-            {moment(item.createdAt, "YYYY-MM-DD HH:mm:ss").format(
-              "MMMM DD, YYYY hh:mm a"
-            )}
-          </Text>
+        <View style={{ marginEnd: 12 }}>
+          <Image source={icon.IC_AVTAR} style={{ width: 40, height: 40 }} />
         </View>
-        <Text
-          style={{
-            color: color.DARK_TEXT,
-            fontFamily: fonts.LATO_REGULAR,
-            fontSize: normalize(12),
-          }}
-        >
-          {item.message}
-        </Text>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: 6,
+            }}
+          >
+            <Text style={{ fontFamily: fonts.INTER_MEDIUM, fontSize: 12 }}>
+              {item.fullname}
+            </Text>
+            <Text style={{ fontFamily: fonts.INTER, fontSize: 10 }}>
+              {" "}
+              {moment(item.createdAt, "YYYY-MM-DD HH:mm:ss").format(
+                "dddd h:mma"
+              )}
+            </Text>
+          </View>
+          <View
+            style={{
+              backgroundColor: "#EEEDF8",
+              paddingHorizontal: 14,
+              paddingVertical: 10,
+              borderTopStartRadius: 0,
+              borderBottomStartRadius: 8,
+              borderBottomEndRadius: 8,
+              borderTopEndRadius: 8,
+            }}
+          >
+            <Text
+              style={{
+                color: "#475467",
+                fontFamily: fonts.INTER,
+                fontSize: normalize(12),
+              }}
+            >
+              {item.message}
+            </Text>
+          </View>
+        </View>
       </View>
     );
 
@@ -545,7 +544,13 @@ const ParentSupportDetails = ({ route, navigation }) => {
             <TitileBackgroundView titile={"Request Details"} />
           )}
 
-          <View style={{ padding: vh(15), alignItems: "center" }}>
+          <View
+            style={{
+              paddingHorizontal: vh(15),
+              paddingBottom: vh(20),
+              alignItems: "center",
+            }}
+          >
             <View
               style={{
                 backgroundColor: color.WHITE,
@@ -589,7 +594,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
                   <ImageLoad
                     style={[
                       stylesCommon.studentProfile,
-                      { height: 80, width: 80 },
+                      { height: 80, width: 80, marginEnd: 10 },
                     ]}
                     source={{ uri: profilePic }}
                     loadingStyle={{ size: "large", color: "blue" }}
@@ -620,19 +625,27 @@ const ParentSupportDetails = ({ route, navigation }) => {
                         marginTop: 12,
                       }}
                     >
-                      <View style={{ marginEnd: 12 }}>
+                      <View style={{ marginEnd: 40 }}>
                         <Text style={stylesCommon.supportText}>Phone</Text>
-                        <Text style={stylesCommon.supportValueText}>
-                          {phone}
-                        </Text>
+                        <TouchableOpacity
+                          onPress={() => Linking.openURL(`tel:${phone}`)}
+                        >
+                          <Text style={stylesCommon.supportValueText}>
+                            {phone}
+                          </Text>
+                        </TouchableOpacity>
                       </View>
 
                       <View style={{}}>
                         <View>
                           <Text style={stylesCommon.supportText}>Email</Text>
-                          <Text style={stylesCommon.supportValueText}>
-                            {email}
-                          </Text>
+                          <TouchableOpacity
+                            onPress={() => Linking.openURL(`mailto:${email}`)}
+                          >
+                            <Text style={stylesCommon.supportValueText}>
+                              {email}
+                            </Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
                     </View>
@@ -714,15 +727,15 @@ const ParentSupportDetails = ({ route, navigation }) => {
             <Text
               style={{
                 fontSize: 12,
-                padding: vh(10),
-                marginTop: 5,
-                color: color.TEXT_COLOR,
+                //padding: vh(10),
+                //marginTop: 5,
+                color: color.YELLOW,
                 fontFamily: fonts.LATO_BOLD,
                 fontWeight: "600",
                 textAlign: "center",
               }}
             >
-              {" "}
+              {""}
             </Text>
           </View>
           <View
@@ -783,35 +796,27 @@ const ParentSupportDetails = ({ route, navigation }) => {
               backgroundColor: color.WHITE,
             }}
           >
-            <View style={{ backgroundColor: color.GREY, height: 1 }}></View>
+            <View style={{ backgroundColor: "#EAECF0", height: 1 }}></View>
 
             <View style={{ padding: 13, flexDirection: "row" }}>
               <TextInput
                 style={{
                   borderRadius: 7,
-                  borderColor: color.GREY,
+                  borderColor: "#D0D5DD",
                   borderWidth: 1,
+                  height: 46,
                   flex: 1,
                   padding: 8,
                   fontFamily: fonts.LATO_REGULAR,
                   fontWeight: "600",
                 }}
-                placeholder={"Write a Message"}
-                placeholderTextColor={color.TEXT_COLOR}
+                placeholder={"Message"}
+                placeholderTextColor={"#667085"}
                 value={message}
                 onChangeText={(text) => setMessage(text)}
               />
               <TouchableOpacity
-                style={{
-                  borderRadius: 80,
-                  height: 50,
-                  width: 50,
-                  backgroundColor: color.COLOR_PRIMARY,
-                  marginStart: 10,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
+                style={{}}
                 onPress={() => {
                   //    var value =  {id:5, name: 'My Data', currentUser: true, time: 'April 2, 2022 04:41 PM', message: "Lorem Ipsum " }
                   //    var temparray = [...listdata];
@@ -837,8 +842,8 @@ const ParentSupportDetails = ({ route, navigation }) => {
                 <Image
                   source={icon.IC_SEND}
                   style={{
-                    height: 30,
-                    width: 30,
+                    height: 50,
+                    width: 50,
                     resizeMode: "contain",
                     marginStart: 5,
                   }}

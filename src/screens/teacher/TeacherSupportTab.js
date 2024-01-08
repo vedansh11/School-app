@@ -21,6 +21,7 @@ import * as Utills from "../../API/Utills";
 import { axiosCallAPI } from "../../API/axiosCommonService";
 import moment from "moment";
 import stylesCommon from "../../commonTheme/stylesCommon";
+import { screenWidth } from "../../Utills/dimesnion";
 
 const TeacherSupportTabCommon = (props) => {
   const [listData, setListData] = useState([]);
@@ -176,6 +177,8 @@ const TeacherSupportTabCommon = (props) => {
   }
 
   function onSupportClick(requestID) {
+    console.log("Bhai yeh hai tere screen is width ---- ", screenWidth);
+
     props.navigation.navigate("ParentSupportDetails", {
       requestID: requestID,
       type: Role,

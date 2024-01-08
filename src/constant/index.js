@@ -54,7 +54,7 @@ export const icon = {
   IC_CLOCK: require("../assets/images/ic-clock.png"),
   IC_PHONE: require("../assets/images/phone-solid.png"),
   IC_ENVELOP: require("../assets/images/envelope.png"),
-  IC_SEND: require("../assets/images/send.png"),
+  IC_SEND: require("../assets/images/sendButton.png"),
   IC_CLOSE: require("../assets/images/times-circle.png"),
   IC_PHONE: require("../assets/images/ic-phone.png"),
   IC_ATTENDANCE: require("../assets/images/user-check-02.png"),
@@ -67,6 +67,7 @@ export const icon = {
   IC_ATTENDANCE_LOCATION: require("../assets/images/attendence-location.png"),
   IC_ATTENDANCE_DOTS: require("../assets/images/dots-vertical.png"),
   IC_EDIT: require("../assets/images/edit-03.png"),
+  IC_AVTAR: require("../assets/images/Avatar.png"),
 };
 
 export const fonts = {
