@@ -43,7 +43,7 @@ import OTPTextView from "react-native-otp-textinput";
 import CheckBox from "@react-native-community/checkbox";
 import CountDown from "react-native-countdown-component";
 import axios from "axios";
-import { screenHeight } from "../Utills/dimesnion";
+import { screenHeight, screenWidth } from "../Utills/dimesnion";
 import OtpAutoFillViewManager from "react-native-otp-auto-fill";
 
 const LoginScreen = ({ navigation }) => {
@@ -58,7 +58,7 @@ const LoginScreen = ({ navigation }) => {
   const [backgroundLoaderView, setBackgroundLoaderView] = useState(false);
   const [showTimer, setTimmer] = useState(false);
   const [showResend, setShowResend] = useState(false);
-  const [otp, setOtp] = useState("");
+  const [getOtpToggle, setGetOtpToggle] = useState(false);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -94,6 +94,7 @@ const LoginScreen = ({ navigation }) => {
   }
 
   function VerifyMobileNumber(clickType) {
+    setGetOtpToggle(true);
     if (ValidationMobileNumber()) {
       VerifyMobilNumberAPI(clickType);
     }
@@ -342,26 +343,35 @@ const LoginScreen = ({ navigation }) => {
         {/* <View style={stylesCommon.backgroundLogoContainer}>
          
         </View> */}
-        <Image style={stylesCommon.backgroundLogo} source={icon.LOGO} />
+        <Image
+          style={[
+            stylesCommon.backgroundLogo,
+            { width: screenWidth / 2.3, height: screenWidth / 2.5, top: 30 },
+          ]}
+          source={icon.LOGO}
+        />
         {/* <Text style={stylesCommon.welcomTextStyle}>
           {" "}
           {AppText.WELCOM_TEXT}{" "}
         </Text> */}
-        <View style={stylesCommon.whiteCornerStyle}>
+        {console.log(getOtpToggle)}
+        <View
+          style={[
+            stylesCommon.whiteCornerStyle,
+            { height: getOtpToggle ? "70%" : "50%", paddingTop: 30 },
+          ]}
+        >
           {/* <View style={stylesCommon.parentViewStyle}>
             <Text style={stylesCommon.continueTextStyle}>
               {" "}
               {AppText.WELCOM_TEXT}{" "}
             </Text>
           </View> */}
-
-          <View style={stylesCommon.parentViewStyle}>
-            <Text style={stylesCommon.welcomTextStyle}>
-              {" "}
-              {AppText.WELCOM_TEXT}{" "}
-            </Text>
-          </View>
-
+          {/* 
+          <View style={stylesCommon.parentViewStyle}></View> */}
+          <Text style={stylesCommon.welcomTextStyle}>
+            {AppText.WELCOM_TEXT}
+          </Text>
           <OutlinedTextField
             tintColor={"#564CB8"}
             selectionColor={"#564CB8"}

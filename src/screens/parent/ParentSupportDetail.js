@@ -563,7 +563,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
                   padding: 15,
                   borderRadius: 15,
                   width: "100%",
-                  // borderColor: color.GREY,
+                  //borderColor: color.GREY,
                   //borderWidth: 0.5,
                   alignSelf: "center",
                   // shadowColor:

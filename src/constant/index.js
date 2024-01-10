@@ -69,6 +69,8 @@ export const icon = {
   IC_EDIT: require("../assets/images/edit-03.png"),
   IC_AVTAR: require("../assets/images/Avatar.png"),
   BOY: require("../assets/images/boy.png"),
+  TEACHER: require("../assets/images/teacher.png"),
+  PARENT: require("../assets/images/parent.png"),
 };
 
 export const fonts = {
@@ -175,7 +177,7 @@ export const AppText = {
   APP_NAME: "GREATE MINDS",
   ALERT_APP_NAME: "Great Minds",
   //WELCOM_TEXT: "Welcome to\n Great Minds",
-  WELCOM_TEXT: "Welcome back,\n Let's sign you in.",
+  WELCOM_TEXT: "Welcome back,\nLet's sign you in.",
 
   CONTINUE_PARENT: "Continue as Parent",
   CONTINUE_TEACHER: "Continue  as Teacher",

@@ -32,6 +32,7 @@ const TeacherSupportTabCommon = (props) => {
   const sectionID = props.route.params.sectionid;
   // const ID = props.route.params.id;
 
+  console.log("Type is", Type);
   useEffect(() => {
     const unsubscribe = props.navigation.addListener("focus", () => {
       // do something
@@ -186,6 +187,7 @@ const TeacherSupportTabCommon = (props) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: color.WHITE }}>
+      {console.log("Here is the list data", listData)}
       <FlatList
         // data={(Type == 'New') ? DATA : (Type == 'Replied') ? DATA_1 : (Type == 'Closed') ? DATA_2 : null }
         data={listData}
@@ -194,6 +196,7 @@ const TeacherSupportTabCommon = (props) => {
             <RenderItemSupport
               createdName={item.item.fullName}
               supportDiscription={item.item.message}
+              type={Type}
               NumberDSP={
                 item.item.parentId == "0" ? item.item.id : item.item.parentId
               }

@@ -429,6 +429,8 @@ export const renderEmptyContainer = (titile, singleLine) => {
   }
 };
 export const RenderItemSupport = (props) => {
+  console.log("Here are ur props Sir...", props.Type);
+
   return (
     <TouchableOpacity
       style={[
