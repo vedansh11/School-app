@@ -431,7 +431,10 @@ export const renderEmptyContainer = (titile, singleLine) => {
 export const RenderItemSupport = (props) => {
   return (
     <TouchableOpacity
-      style={[stylesCommon.rawMainView, { justifyContent: "center" }]}
+      style={[
+        stylesCommon.rawMainView,
+        { justifyContent: "center", borderRadius: 7 },
+      ]}
       onPress={() => {
         console.log("NumberDsp...", props.NumberDSP);
         props.onClick(props.NumberDSP);

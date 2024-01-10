@@ -177,8 +177,6 @@ const TeacherSupportTabCommon = (props) => {
   }
 
   function onSupportClick(requestID) {
-    console.log("Bhai yeh hai tere screen is width ---- ", screenWidth);
-
     props.navigation.navigate("ParentSupportDetails", {
       requestID: requestID,
       type: Role,

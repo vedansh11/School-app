@@ -70,8 +70,6 @@ const TeacherSupport = (navigation) => {
           flex: 0.07,
         }}
       >
-        {console.log("Filhal toh yeh mil raha hai bhai...", state.routes)}
-        {console.log("Yeh descripter hai bhai", descriptors)}
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const label =
@@ -374,8 +372,9 @@ const TeacherSupport = (navigation) => {
           <View
             style={{
               backgroundColor: "#EEEDF8",
+              //  backgroundColor: "#fff",
               width: screenWidth / 4,
-              height: 40,
+              height: 39,
               borderTopEndRadius: 50,
               borderBottomEndRadius: 50,
               position: "absolute",
