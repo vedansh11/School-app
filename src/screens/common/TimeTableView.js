@@ -921,7 +921,7 @@ export function TimeTableView(props) {
             <Text
               style={{
                 color: "#667085",
-                fontWeight: "700",
+                //fontWeight: "700",
                 fontSize: 12,
                 fontFamily: fonts.INTER,
               }}
@@ -931,7 +931,7 @@ export function TimeTableView(props) {
             <Text
               style={{
                 color: "#667085",
-                fontWeight: "700",
+                //fontWeight: "700",
                 fontSize: 12,
                 marginTop: 5,
                 fontFamily: fonts.INTER,
@@ -1125,7 +1125,13 @@ export function TimeTableView(props) {
                       marginEnd: 5,
                     }}
                   >
-                    <Text style={{ color: color.BLACK }}>
+                    <Text
+                      style={{
+                        color: color.BLACK,
+                        fontFamily: fonts.INTER_MEDIUM,
+                        fontSize: 12,
+                      }}
+                    >
                       {day.slice(0, 3)}
                     </Text>
                   </View>

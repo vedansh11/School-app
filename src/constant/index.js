@@ -68,6 +68,7 @@ export const icon = {
   IC_ATTENDANCE_DOTS: require("../assets/images/dots-vertical.png"),
   IC_EDIT: require("../assets/images/edit-03.png"),
   IC_AVTAR: require("../assets/images/Avatar.png"),
+  BOY: require("../assets/images/boy.png"),
 };
 
 export const fonts = {
@@ -247,4 +248,5 @@ export const AppText = {
     "ID Not Scanned",
     "Profile",
   ],
+  AddSupportRequest: "Support Request",
 };

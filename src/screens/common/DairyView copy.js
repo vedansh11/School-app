@@ -775,6 +775,7 @@ export const DairyView = (props) => {
                 backgroundColor: color.BLACK,
               }}
               onClose={() => setTooltip(false)}
+              arrowStyle={{ width: 40 }}
             >
               <TouchableOpacity
                 style={[styles.diaryRowView, { width: "100%" }]}

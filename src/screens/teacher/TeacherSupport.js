@@ -9,6 +9,8 @@ import {
   StatusBar,
   Platform,
   Animated,
+  Modal,
+  ScrollView,
 } from "react-native";
 import { AppText, color, fonts, icon, PreferenceKeys } from "../../constant";
 import { BackHandler } from "react-native";
@@ -17,15 +19,23 @@ import {
   DashboardRawDetailMenu,
   TitileBackgroundView,
   RenderItemSupport,
+  ModelTitleView,
+  ButtonView,
 } from "../../commonTheme/CommonView";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import stylesCommon, { SCREEN_WIDTH } from "../../commonTheme/stylesCommon";
 import TeacherSupportTabCommon from "./TeacherSupportTab";
-import { screenWidth } from "../../Utills/dimesnion";
+import { screenHeight, screenWidth, vh, vw } from "../../Utills/dimesnion";
+import SelectDropdown from "react-native-select-dropdown";
+import { OutlinedTextField } from "react-native-material-textfield-plus";
 
 const TeacherSupport = (navigation) => {
   const sectionID = navigation.route.params.supportData.id;
   const Tab = createMaterialTopTabNavigator();
+
+  const [ModalVisible, setModalVisible] = useState(false);
+  const [schoolName, setSchoolName] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -176,6 +186,135 @@ const TeacherSupport = (navigation) => {
       </>
     );
   };
+
+  const AddSupportRequest = () => {
+    return (
+      <View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={ModalVisible}
+          onRequestClose={() => setModalVisible(!ModalVisible)}
+        >
+          <View
+            style={{
+              height: "100%",
+              position: "absolute",
+              //paddingTop: vh(screenHeight / 50),
+              start: 0,
+              end: 0,
+
+              backgroundColor: "rgba(0,0,0,0.3)",
+              //backgroundColor: color.YELLOW,
+              justifyContent: "center",
+              alignSelf: "center",
+            }}
+          >
+            {/* <ScrollView
+            //keyboardShouldPersistTaps="handled"
+            // keyboardDismissMode={"on-drag"}
+            //showsVerticalScrollIndicator={true}
+            > */}
+            <View style={stylesCommon.supportModalView}>
+              <ModelTitleView
+                tiitle={AppText.AddSupportRequest}
+                onPressClose={() => setModalVisible(false)}
+              />
+              <View style={{ marginBottom: 20, width: "100%" }}>
+                <View style={stylesCommon.inputMainView}>
+                  <SelectDropdown
+                    data={[
+                      "Navrachna Primary School",
+                      "DonBosco School",
+                      "ST Basil",
+                    ]}
+                    onSelect={(selectedItem, index) => {
+                      console.log(selectedItem.id);
+                      //setSchool(selectedItem.id);
+                    }}
+                    defaultButtonText={"Select School"}
+                    // buttonTextAfterSelection={(selectedItem,index)=>{
+                    //   return selectedItem.schoolName
+                    // }}
+                    buttonTextStyle={{
+                      textAlign: "left",
+                      fontSize: 20,
+                      color: color.DARK_TEXT,
+                      fontFamily: fonts.INTER,
+                    }}
+                    buttonStyle={stylesCommon.dropdownStyle}
+                    renderDropdownIcon={(isOpened) => {
+                      return (
+                        <View
+                          style={{
+                            resizeMode: "contain",
+                            height: "100%",
+                            paddingEnd: 15,
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Image
+                            style={stylesCommon.dropImage}
+                            source={icon.IC_DOWN_ARROW}
+                          ></Image>
+                        </View>
+                      );
+                    }}
+                    dropdownIconPosition={"right"}
+                    dropdownStyle={{ backgroundColor: color.WHITE }}
+                    rowStyle={{
+                      backgroundColor: color.WHITE,
+                      borderBottomWidth: 0,
+                    }}
+                    rowTextStyle={{
+                      color: color.DARK_TEXT,
+                      textAlign: "left",
+                      fontFamily: fonts.INTER,
+                      paddingHorizontal: vw(10),
+                    }}
+                  />
+                  <View style={stylesCommon.inputMainView}>
+                    <OutlinedTextField
+                      label={"Message"}
+                      tintColor={color.APP_PRIMARY}
+                      selectionColor={color.APP_PRIMARY}
+                      height={50}
+                      multiline={true}
+                      editable={true}
+                      keyboardShouldPersistTaps={"always"}
+                      keyboardDismissMode={"on-drag"}
+                      returnKeyType="return"
+                      autoFocus={false}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      // backgroundColor: color.YELLOW,
+                      marginTop: 5,
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={stylesCommon.supportPrimaryButtonBackground}
+                    >
+                      <Text style={stylesCommon.primaryButtonText}>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={stylesCommon.supportPrimaryButtonBackground}
+                    >
+                      <Text style={stylesCommon.primaryButtonText}>Submit</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </View>
+            {/* </ScrollView> */}
+          </View>
+        </Modal>
+      </View>
+    );
+  };
   return (
     // <SafeAreaView style={{backgroundColor:color.WHITE}}>
     //   <StatusBar backgroundColor={color.APP_PRIMARY} />
@@ -217,6 +356,9 @@ const TeacherSupport = (navigation) => {
           isSecondviewRequired={true}
           secondViewImage={icon.IC_ADD}
           tagAddSecond={"Request"}
+          onSecondViewClick={() => {
+            setModalVisible(true);
+          }}
         />
 
         <View
@@ -241,6 +383,8 @@ const TeacherSupport = (navigation) => {
             }}
           />
         </View>
+
+        {ModalVisible && AddSupportRequest()}
       </SafeAreaView>
     </>
   );

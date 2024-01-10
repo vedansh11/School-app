@@ -33,143 +33,152 @@ import TeacherSupport from "../src/screens/teacher/TeacherSupport";
 import PaymentOrderScreen from "../src/screens/parent/Payment";
 import TeacherDashboard2 from "../src/screens/teacher/TeacherDashboard2";
 import { MenuProvider } from "react-native-popup-menu";
+import TeacherStudentProfile from "../src/screens/teacher/TeacherStudentProfile";
 
 const Stack = createNativeStackNavigator();
 
 export default function navigation() {
   return (
     <MenuProvider>
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="LandingScreen"
-          options={{
-            headerShown: false,
-          }}
-          component={LandingScreen}
-        />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="LandingScreen"
+            options={{
+              headerShown: false,
+            }}
+            component={LandingScreen}
+          />
 
-        <Stack.Screen
-          name="LoginScreen"
-          options={{
-            headerShown: false,
-          }}
-          component={LoginScreen}
-        />
-        <Stack.Screen
-          name="WelcomScreen"
-          options={{
-            headerShown: false,
-          }}
-          component={WelcomScreen}
-        />
-        <Stack.Screen
-          name="ParentDashboard"
-          options={{
-            headerShown: false,
-          }}
-          component={ParentDashboard}
-        />
-        <Stack.Screen
-          name="TeacherDashboard"
-          options={{
-            headerShown: false,
-          }}
-          component={TeacherDashboard}
-        />
-        <Stack.Screen
-          name="TeacherDashboard2"
-          options={{
-            headerShown: false,
-          }}
-          component={TeacherDashboard2}
-        />
-        <Stack.Screen
-          name="Notification"
-          options={{
-            headerShown: false,
-          }}
-          component={Notification}
-        />
-        <Stack.Screen
-          name="ParentDairy"
-          options={{
-            headerShown: false,
-          }}
-          component={ParentDairy}
-        />
-        <Stack.Screen
-          name="TeacherDairy"
-          options={{
-            headerShown: false,
-          }}
-          component={TeacherDairy}
-        />
-        <Stack.Screen
-          name="TeacherTimeTable"
-          options={{
-            headerShown: false,
-          }}
-          component={TeacherTimeTable}
-        />
-        <Stack.Screen
-          name="ParentTimeTable"
-          options={{
-            headerShown: false,
-          }}
-          component={ParentTimeTable}
-        />
-        <Stack.Screen
-          name="Attendance"
-          options={{
-            headerShown: false,
-          }}
-          component={Attendance}
-        />
-        <Stack.Screen
-          name="ParentAttendance"
-          options={{
-            headerShown: false,
-          }}
-          component={ParentAttendance}
-        />
-        <Stack.Screen
-          name="ParentSupport"
-          options={{
-            headerShown: false,
-          }}
-          component={ParentSupport}
-        />
-        <Stack.Screen
-          name="ParentSupportDetails"
-          options={{
-            headerShown: false,
-          }}
-          component={ParentSupportDetails}
-        />
-        <Stack.Screen
-          name="ParentAddNewRequest"
-          options={{
-            headerShown: false,
-          }}
-          component={AddNewRequest}
-        />
-        <Stack.Screen
-          name="TeacherSupport"
-          options={{
-            headerShown: false,
-          }}
-          component={TeacherSupport}
-        />
-        <Stack.Screen
-          name="Payment"
-          options={{
-            headerShown: false,
-          }}
-          component={PaymentOrderScreen}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen
+            name="LoginScreen"
+            options={{
+              headerShown: false,
+            }}
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            name="WelcomScreen"
+            options={{
+              headerShown: false,
+            }}
+            component={WelcomScreen}
+          />
+          <Stack.Screen
+            name="ParentDashboard"
+            options={{
+              headerShown: false,
+            }}
+            component={ParentDashboard}
+          />
+          <Stack.Screen
+            name="TeacherDashboard"
+            options={{
+              headerShown: false,
+            }}
+            component={TeacherDashboard}
+          />
+          <Stack.Screen
+            name="TeacherDashboard2"
+            options={{
+              headerShown: false,
+            }}
+            component={TeacherDashboard2}
+          />
+          <Stack.Screen
+            name="Notification"
+            options={{
+              headerShown: false,
+            }}
+            component={Notification}
+          />
+          <Stack.Screen
+            name="ParentDairy"
+            options={{
+              headerShown: false,
+            }}
+            component={ParentDairy}
+          />
+          <Stack.Screen
+            name="TeacherDairy"
+            options={{
+              headerShown: false,
+            }}
+            component={TeacherDairy}
+          />
+          <Stack.Screen
+            name="TeacherTimeTable"
+            options={{
+              headerShown: false,
+            }}
+            component={TeacherTimeTable}
+          />
+          <Stack.Screen
+            name="ParentTimeTable"
+            options={{
+              headerShown: false,
+            }}
+            component={ParentTimeTable}
+          />
+          <Stack.Screen
+            name="Attendance"
+            options={{
+              headerShown: false,
+            }}
+            component={Attendance}
+          />
+          <Stack.Screen
+            name="ParentAttendance"
+            options={{
+              headerShown: false,
+            }}
+            component={ParentAttendance}
+          />
+          <Stack.Screen
+            name="ParentSupport"
+            options={{
+              headerShown: false,
+            }}
+            component={ParentSupport}
+          />
+          <Stack.Screen
+            name="ParentSupportDetails"
+            options={{
+              headerShown: false,
+            }}
+            component={ParentSupportDetails}
+          />
+          <Stack.Screen
+            name="ParentAddNewRequest"
+            options={{
+              headerShown: false,
+            }}
+            component={AddNewRequest}
+          />
+          <Stack.Screen
+            name="TeacherSupport"
+            options={{
+              headerShown: false,
+            }}
+            component={TeacherSupport}
+          />
+
+          <Stack.Screen
+            name="TeacherStudentProfile"
+            options={{
+              headerShown: false,
+            }}
+            component={TeacherStudentProfile}
+          />
+          <Stack.Screen
+            name="Payment"
+            options={{
+              headerShown: false,
+            }}
+            component={PaymentOrderScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </MenuProvider>
   );
 }

@@ -121,6 +121,14 @@ export default StyleSheet.create({
     padding: 15,
     alignSelf: "center",
   },
+
+  supportPrimaryButtonBackground: {
+    backgroundColor: "#FF6D4C",
+    borderRadius: 50,
+    width: "46%",
+    padding: 15,
+    alignSelf: "center",
+  },
   primaryButtonText: {
     fontSize: 18,
     textAlign: "center",
@@ -297,12 +305,12 @@ export default StyleSheet.create({
   rawMainView: {
     flex: 1,
     backgroundColor: color.WHITE,
-    borderRadius: 7,
+    borderRadius: 15,
     width: "99%",
     marginTop: 10,
     borderColor: color.GREY,
     borderWidth: 0.5,
-    marginBottom: 10,
+    //marginBottom: 10,
     alignSelf: "center",
     shadowColor: Platform.OS === "ios" ? color.LIGHT_GREY : color.BLACK,
     shadowOffset: { width: 2, height: 2 },
@@ -473,9 +481,9 @@ export default StyleSheet.create({
   modalText: {
     marginBottom: 15,
     fontSize: 22,
-    fontWeight: "700",
+    // fontWeight: "700",
     color: color.DARK_TEXT,
-    fontFamily: fonts.INTER_BOLD,
+    fontFamily: fonts.INTER_SEMIBOLD,
     textAlign: "center",
   },
   closeImageView: {
@@ -533,7 +541,9 @@ export default StyleSheet.create({
   tooltipText: {
     fontSize: 12,
     fontFamily: fonts.INTER_MEDIUM,
-    fontWeight: "700",
+    marginStart: 8,
+    marginEnd: 8,
+    // fontWeight: "700",
     color: color.WHITE,
   },
 
@@ -565,11 +575,13 @@ export default StyleSheet.create({
   tooltipSepretor: {
     width: 2,
     marginVertical: 2,
-    marginHorizontal: 10,
+    marginHorizontal: 8,
+    marginEnd: 5,
     backgroundColor: color.WHITE,
   },
   tooltipContent: {
     flexDirection: "row",
+    width: 100,
   },
   // Attendance screen
 
@@ -698,5 +710,81 @@ export default StyleSheet.create({
     fontFamily: fonts.INTER_SEMIBOLD,
     fontSize: screenWidth > 360 ? 10 : 8,
     color: "#101828",
+    paddingBottom: 5,
+  },
+
+  supportModalView: {
+    backgroundColor: "white",
+    borderRadius: 15,
+    alignSelf: "center",
+    position: "absolute",
+    top: 80,
+    padding: 20,
+    height: 380,
+    width: "90%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+
+  dropdownStyle: {
+    width: "100%",
+    height: vh(50),
+    borderRadius: 4,
+    borderWidth: 1,
+    marginBottom: vh(15),
+    backgroundColor: color.WHITE,
+    borderColor: color.GREY,
+  },
+
+  sNameProfileText: {
+    fontFamily: fonts.INTER_SEMIBOLD,
+    color: "#4D44A6",
+    fontSize: 14,
+  },
+
+  sClassText: {
+    fontSize: 12,
+    fontFamily: fonts.INTER,
+  },
+  sSubHeading: {
+    color: "#98A2B3",
+    fontFamily: fonts.INTER,
+    fontSize: 12,
+  },
+  sSubText: {
+    color: "#1D2939",
+    fontFamily: fonts.INTER_SEMIBOLD,
+    fontSize: 12,
+  },
+  sProfileHeading: {
+    fontFamily: fonts.INTER_SEMIBOLD,
+    fontSize: 12,
+    color: "#1D2939",
+  },
+  sPersonalText: {
+    fontFamily: fonts.INTER_MEDIUM,
+    fontSize: 12,
+    color: "#98A2B3",
+  },
+  sPersonalValue: {
+    fontFamily: fonts.INTER_MEDIUM,
+    fontSize: 12,
+    color: "#667085",
+  },
+  sParentText: {
+    fontFamily: fonts.INTER_MEDIUM,
+    fontSize: 14,
+    color: "#667085",
+  },
+  sParentSideText: {
+    fontFamily: fonts.INTER,
+    fontSize: 12,
+    color: "#564CB8",
   },
 });

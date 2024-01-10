@@ -178,8 +178,7 @@ const Notification = ({ navigation }) => {
             backgroundColor: item.isRead == "0" ? "#EEEDF8" : color.WHITE,
             flex: 0.75,
             borderRadius: 7,
-            paddingStart: 15,
-            paddingEnd: 10,
+            padding: 15,
             minHeight: 60,
             flexDirection: "row",
           }}
@@ -224,23 +223,47 @@ const Notification = ({ navigation }) => {
           )}
 
           <View style={stylesCommon.margin10View}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: fonts.INTER_MEDIUM,
+                  color: "#564CB8",
+                }}
+              >
+                {item.type}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: fonts.INTER,
+                  fontSize: 10,
+                  color: "#98A2B3",
+                }}
+              >
+                June 26, 2023 | 04:41 PM
+              </Text>
+            </View>
             <Text
               style={{
-                fontSize: 14,
-                fontFamily: fonts.LATO_BOLD,
-                color: color.BLACK,
+                marginTop: 2,
+                fontFamily: fonts.INTER,
+                fontSize: 12,
+                color: "#667085",
               }}
             >
-              {item.type}
+              {item.notificationText}
             </Text>
-            {/* <Text style={{
-                            fontSize: 12,
-                            marginTop: 2,
-                            marginEnd: 50,
-                            fontFamily: fonts.LATO_BOLD,
-                            color: color.TEXT_COLOR,
-                        }}>{item.notificationText}</Text> */}
-            <HTMLView value={"<p>" + item.notificationText + "</p>"} />
+            {/* <HTMLView
+              value={"<p>" + item.notificationText + "</p>"}
+              style={{
+                marginTop: 2,
+                fontFamily: fonts.INTER,
+                fontSize: 12,
+                color: "#667085",
+              }}
+            /> */}
           </View>
         </View>
       </View>
@@ -265,14 +288,30 @@ const Notification = ({ navigation }) => {
         }}
       >
         <TitileBackgroundView titile={"Notifications"} />
+        <View
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 50,
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            right: 15,
+            top: 15,
+            borderWidth: 1,
+            borderColor: "#564CB8",
+          }}
+        >
+          <Image
+            style={{ width: 14, height: 14, padding: 8 }}
+            source={icon.IC_ATTENDANCE_DOTS}
+          />
+        </View>
         <FlatList
           data={listData}
           renderItem={renderItem}
           style={{
-            paddingStart: 20,
-            paddingEnd: 20,
-            paddingTop: 10,
-            paddingBottom: 30,
+            paddingHorizontal: 15,
           }}
           showsVerticalScrollIndicator={false}
           onEndReached={LoadMoreData}
