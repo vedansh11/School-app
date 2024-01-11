@@ -67,6 +67,94 @@ export const PresentSquareView = (props) => {
   );
 };
 
+export const DashboardDetailMenu = (props) => {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        backgroundColor: "white",
+        flex: 1,
+        justifyContent: "space-between",
+      }}
+    >
+      {props.attendance ? (
+        <TouchableOpacity
+          style={[stylesCommon.mainDashView, { backgroundColor: "#C6F2DD" }]}
+          onPress={props.onStudentAttendanceClick}
+        >
+          <Image
+            style={stylesCommon.dashboardImageView}
+            source={icon.CALENDAR}
+          ></Image>
+
+          <Text style={[stylesCommon.dashboardMenuText, { color: "#194B33" }]}>
+            Attendance
+          </Text>
+        </TouchableOpacity>
+      ) : null}
+
+      {props.dairy ? (
+        <TouchableOpacity
+          style={[stylesCommon.mainDashView, { backgroundColor: "#FDC9C9" }]}
+          onPress={props.onDairyClick}
+        >
+          <Image
+            style={stylesCommon.dashboardImageView}
+            source={icon.DAIRY}
+          ></Image>
+          <Text style={[stylesCommon.dashboardMenuText, { color: "#99412E" }]}>
+            Dairy
+          </Text>
+        </TouchableOpacity>
+      ) : null}
+
+      {props.isShowTimeTable ? (
+        <TouchableOpacity
+          style={[stylesCommon.mainDashView, { backgroundColor: "#FCE4C8" }]}
+          onPress={props.onTimeTableClick}
+        >
+          <Image
+            style={stylesCommon.dashboardImageView}
+            source={icon.CLOCK}
+          ></Image>
+          <Text style={[stylesCommon.dashboardMenuText, { color: "#563A1B" }]}>
+            Time Table
+          </Text>
+        </TouchableOpacity>
+      ) : null}
+
+      {props.isShowFees ? (
+        <TouchableOpacity
+          onPress={props.onPaymentClick}
+          style={[stylesCommon.mainDashView, { backgroundColor: "#FDC9C9" }]}
+        >
+          <Image
+            style={stylesCommon.feesImageView}
+            source={icon.IC_FEES}
+          ></Image>
+          <Text style={[stylesCommon.dashboardMenuText, { color: "#953030" }]}>
+            Fees
+          </Text>
+        </TouchableOpacity>
+      ) : null}
+
+      {props.isShowHelp ? (
+        <TouchableOpacity
+          style={[stylesCommon.mainDashView, { backgroundColor: "#C1F4FF" }]}
+          onPress={props.onSupportClick}
+        >
+          <Image
+            style={stylesCommon.dashboardImageView}
+            source={icon.IC_HELP}
+          ></Image>
+          <Text style={[stylesCommon.dashboardMenuText, { color: "#144D59" }]}>
+            Help
+          </Text>
+        </TouchableOpacity>
+      ) : null}
+    </View>
+  );
+};
 export const DashboardRawDetailMenu = (props) => {
   // type - set type which user login teacher or prent?
 

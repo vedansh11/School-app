@@ -310,8 +310,24 @@ export default StyleSheet.create({
   // Dashboard
   dashList: {
     marginTop: Platform.OS === "ios" ? -40 : 10,
-    marginStart: 20,
-    marginEnd: 20,
+    marginHorizontal: 15,
+    marginVertical: 10,
+    // marginStart: 20,
+    // marginEnd: 20,
+  },
+  mainMenu: {
+    flex: 1,
+    backgroundColor: color.WHITE,
+    borderRadius: 15,
+    width: "100%",
+    marginTop: 10,
+    padding: 15,
+    marginBottom: 10,
+    elevation: 2,
+    borderColor: "#EAECF0",
+    //borderColor: "#564CB8",
+    borderWidth: 1,
+    alignSelf: "center",
   },
   rawMainView: {
     flex: 1,
@@ -319,7 +335,9 @@ export default StyleSheet.create({
     borderRadius: 15,
     width: "99%",
     marginTop: 10,
+    //padding: 15,
     marginBottom: 10,
+    elevation: 2,
     borderColor: "#EAECF0",
     //borderColor: "#564CB8",
     borderWidth: 1,
@@ -329,8 +347,8 @@ export default StyleSheet.create({
     // shadowOpacity: 5,
     // shadowRadius: 1,
     //elevation: 1,
-    marginStart: 5,
-    marginEnd: 5,
+    // marginStart: 5,
+    //marginEnd: 5,
   },
   studentInfoView: {
     backgroundColor: color.COLOR_SECONDARY,
@@ -341,9 +359,10 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
   studentProfile: {
-    height: 70,
-    width: 70,
-    alignSelf: "center",
+    height: 80,
+    width: 80,
+    paddingEnd: 20,
+    //alignSelf: "center",
   },
   studentProfile_atten: {
     height: 50,
@@ -355,13 +374,13 @@ export default StyleSheet.create({
   },
   nameText: {
     fontSize: 16,
-    fontFamily: fonts.INTER_MEDIUM,
+    fontFamily: fonts.INTER_SEMIBOLD,
     color: "#564CB8",
   },
   deptmentText: {
     fontSize: 12,
     marginTop: 2,
-    fontFamily: fonts.INTER,
+    fontFamily: fonts.INTER_MEDIUM,
     color: "#667085",
   },
   infoRaw: {
@@ -394,16 +413,33 @@ export default StyleSheet.create({
     borderBottomStartRadius: 15,
     borderBottomEndRadius: 15,
   },
+
   itemView: {
     justifyContent: "center",
     alignContent: "center",
     paddingVertical: 10,
-    paddingHorizontal: 1,
+    paddingHorizontal: 3,
     width: 65.6,
     height: 58,
-    backgroundColor: "#C1F4FF",
+    //width: screenWidth / 7,
+    //height: screenWidth / 7,
+    // backgroundColor: "#C1F4FF",
     borderRadius: 5,
-    margin: 6,
+    //marginTop: 15,
+  },
+
+  mainDashView: {
+    justifyContent: "center",
+    alignContent: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 1,
+    //  width: 65.6,
+    // height: 58,
+    width: screenWidth / 7,
+    height: screenWidth / 7,
+    // backgroundColor: "#C1F4FF",
+    borderRadius: 5,
+    //marginTop: 15,
   },
   attendanceView: {
     justifyContent: "center",
@@ -465,7 +501,7 @@ export default StyleSheet.create({
     height: 20,
     width: 20,
     alignSelf: "center",
-    marginBottom: 4,
+    //marginBottom: 4,
   },
   timetableImageView: {
     height: 20,
@@ -478,10 +514,24 @@ export default StyleSheet.create({
     width: 25,
     alignSelf: "center",
   },
+
+  dashboardMenuText: {
+    fontFamily: fonts.INTER,
+    fontSize: 8,
+    textAlign: "center",
+    marginTop: 6,
+    color: "#FDC9C9",
+  },
+  dashboardImageView: {
+    height: 20,
+    width: 20,
+    alignSelf: "center",
+  },
   lineView: {
-    backgroundColor: color.GREY,
-    height: 0.5,
+    backgroundColor: "#EAECF0",
+    height: 1,
     width: "100%",
+    marginVertical: 15,
   },
   // model content
   modelTileView: {

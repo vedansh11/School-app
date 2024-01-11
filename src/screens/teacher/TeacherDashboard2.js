@@ -114,7 +114,6 @@ export default function TeacherDashboard2({ navigation, route }) {
   console.log("The data foun in Navigation2 is ", classListData);
 
   async function teacherClassListAPI(Id) {
-    console.log("Id we are getting in classList", Id);
     setLoaderView(true);
 
     let requestOptions = {
@@ -194,7 +193,6 @@ export default function TeacherDashboard2({ navigation, route }) {
             borderRadius: 15,
             width: "92%",
             marginTop: 5,
-
             marginBottom: 5,
             alignSelf: "center",
 
