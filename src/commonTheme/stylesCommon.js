@@ -567,9 +567,9 @@ export default StyleSheet.create({
   },
   textFieldView: {
     marginEnd: 30,
-    fontSize: 20,
-    color: color.DARK_TEXT,
-    fontFamily: fonts.LATO_BOLD,
+    fontSize: 16,
+    color: "#101828",
+    fontFamily: fonts.INTER,
   },
   dropdownView: {
     resizeMode: "contain",
@@ -848,5 +848,44 @@ export default StyleSheet.create({
     fontFamily: fonts.INTER,
     fontSize: 12,
     color: "#564CB8",
+  },
+
+  line: {
+    height: 32,
+    width: 5,
+  },
+
+  dView: {
+    width: 150,
+    height: 32,
+    borderTopEndRadius: 50,
+    borderBottomEndRadius: 50,
+  },
+
+  StatsTextView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginStart: 15,
+    marginEnd: 5,
+  },
+
+  StatsText: {
+    marginTop: 4,
+    fontFamily: fonts.INTER,
+    fontSize: 12,
+  },
+
+  StatsCircle: {
+    borderRadius: 50,
+    width: 26,
+    justifyContent: "center",
+    height: 26,
+  },
+
+  StatsCircleText: {
+    textAlign: "center",
+    color: "#FFFFFF",
+    fontFamily: fonts.INTER_BOLD,
+    fontSize: 12,
   },
 });

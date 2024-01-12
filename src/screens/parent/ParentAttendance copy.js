@@ -132,14 +132,8 @@ const ParentAttendance = ({ route, navigation }) => {
       <View
         style={{
           flexDirection: "row",
-          borderRadius: 50,
-          width: screenWidth - 150,
-          flex: 0.075,
-          backgroundColor: "#EEEDF8",
-          marginTop: 25,
-          marginEnd: 20,
-          marginStart: screenWidth / 2.6,
-          //  justifyContent: "space-around",
+          backgroundColor: color.COLOR_SECONDARY,
+          justifyContent: "space-around",
         }}
       >
         {state.routes.map((route, index) => {
@@ -179,20 +173,13 @@ const ParentAttendance = ({ route, navigation }) => {
               testID={options.tabBarTestID}
               onPress={onPress}
               style={{
-                backgroundColor: isFocused ? color.WHITE : null,
-                width: SCREEN_WIDTH / 3.7,
-                height: 30,
-                // paddingTop: 12,
-                // paddingVertical: 5,
-                marginStart: 5,
-                // marginEnd: 5,
-                marginVertical: 5,
-                //paddingHorizontal: 10,
-                justifyContent: "center",
-                alignContent: "center",
-                borderRadius: 50,
-                // borderTopStartRadius: 10,
-                // borderTopEndRadius: 10,
+                backgroundColor: isFocused
+                  ? color.WHITE
+                  : color.COLOR_SECONDARY,
+                width: SCREEN_WIDTH / 2.3,
+                paddingTop: 12,
+                borderTopStartRadius: 10,
+                borderTopEndRadius: 10,
                 alignItems: "center",
                 shadowColor: "#000",
                 shadowOffset: { width: 0, height: isFocused ? 2 : 0 },
@@ -207,15 +194,15 @@ const ParentAttendance = ({ route, navigation }) => {
               >
                 <Animated.Text
                   style={{
-                    fontSize: 10,
-                    textAlign: "center",
-                    fontFamily: fonts.INTER_MEDIUM,
-                    color: isFocused ? "#101828" : "#98A2B3",
+                    fontSize: 16,
+                    fontFamily: fonts.LATO_REGULAR,
+                    fontWeight: "700",
+                    color: isFocused ? color.DARK_TEXT : color.GREY,
                   }}
                 >
                   {label}
                 </Animated.Text>
-                {/* {isFocused ? (
+                {isFocused ? (
                   <View
                     style={{
                       backgroundColor: color.COLOR_PRIMARY,
@@ -224,100 +211,12 @@ const ParentAttendance = ({ route, navigation }) => {
                       width: SCREEN_WIDTH / 8,
                     }}
                   />
-                ) : null} */}
+                ) : null}
               </View>
             </TouchableOpacity>
           );
         })}
       </View>
-      // <View
-      //   style={{
-      //     flexDirection: "row",
-      //     backgroundColor: color.COLOR_SECONDARY,
-      //     justifyContent: "space-around",
-      //   }}
-      // >
-      //   {state.routes.map((route, index) => {
-      //     const { options } = descriptors[route.key];
-      //     const label =
-      //       options.tabBarLabel !== undefined
-      //         ? options.tabBarLabel
-      //         : options.title !== undefined
-      //         ? options.title
-      //         : route.name;
-
-      //     const isFocused = state.index === index;
-
-      //     const onPress = () => {
-      //       const event = navigation.emit({
-      //         type: "tabPress",
-      //         target: route.key,
-      //         canPreventDefault: true,
-      //       });
-
-      //       if (!isFocused && !event.defaultPrevented) {
-      //         navigation.navigate({ name: route.name, merge: true });
-      //       }
-      //     };
-
-      //     const inputRange = state.routes.map((_, i) => i);
-      //     const opacity = position.interpolate({
-      //       inputRange,
-      //       outputRange: inputRange.map((i) => (i === index ? 1 : 0)),
-      //     });
-
-      //     return (
-      //       <TouchableOpacity
-      //         accessibilityRole="button"
-      //         accessibilityState={isFocused ? { selected: true } : {}}
-      //         accessibilityLabel={options.tabBarAccessibilityLabel}
-      //         testID={options.tabBarTestID}
-      //         onPress={onPress}
-      //         style={{
-      //           backgroundColor: isFocused
-      //             ? color.WHITE
-      //             : color.COLOR_SECONDARY,
-      //           width: SCREEN_WIDTH / 2.3,
-      //           paddingTop: 12,
-      //           borderTopStartRadius: 10,
-      //           borderTopEndRadius: 10,
-      //           alignItems: "center",
-      //           shadowColor: "#000",
-      //           shadowOffset: { width: 0, height: isFocused ? 2 : 0 },
-      //           shadowOpacity: isFocused ? 0.2 : 0,
-      //           elevation: isFocused ? 5 : 0,
-      //         }}
-      //       >
-      //         <View
-      //           style={{
-      //             alignItems: "center",
-      //           }}
-      //         >
-      //           <Animated.Text
-      //             style={{
-      //               fontSize: 16,
-      //               fontFamily: fonts.LATO_REGULAR,
-      //               fontWeight: "700",
-      //               color: isFocused ? color.DARK_TEXT : color.GREY,
-      //             }}
-      //           >
-      //             {label}
-      //           </Animated.Text>
-      //           {isFocused ? (
-      //             <View
-      //               style={{
-      //                 backgroundColor: color.COLOR_PRIMARY,
-      //                 height: 1,
-      //                 marginTop: 12,
-      //                 width: SCREEN_WIDTH / 8,
-      //               }}
-      //             />
-      //           ) : null}
-      //         </View>
-      //       </TouchableOpacity>
-      //     );
-      //   })}
-      // </View>
     );
   };
 
@@ -502,8 +401,8 @@ const ParentAttendance = ({ route, navigation }) => {
             setModalVisible(!modalVisible);
           }}
         >
-          <View style={[styles.centeredView, { height: "100%" }]}>
-            <View style={[styles.modalView, { height: "60%" }]}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
               <ModelTitleView
                 tiitle={AppText.APPLY_FOR_LEAVE}
                 onPressClose={() => renderCloseClick()}
@@ -553,56 +452,37 @@ const ParentAttendance = ({ route, navigation }) => {
         navigation={navigation}
         screen={"ParentAttendance"}
       />
-      {modalVisible && AddLeaveModel()}
-      <Text
+      <View
         style={{
-          position: "absolute",
-          top: 128,
-          left: 15,
-          zIndex: 10,
-          fontFamily: fonts.INTER_SEMIBOLD,
-          color: "#1D2939",
-          fontSize: 16,
+          flexDirection: "column",
+          marginTop: Platform.OS === "ios" ? -50 : 0,
         }}
       >
-        Attendance
-      </Text>
-
-      {MyTabs()}
-      <TouchableOpacity onPress={handleClick}>
-        <View
-          style={{
-            marginStart: 10,
-            borderWidth: 1,
-            width: "95%",
-            height: 50,
-            borderRadius: 50,
-            borderColor: "#564CB8",
-            justifyContent: "center",
-            //backgroundColor: color.RED,
-            // marginBottom: 33,
-            marginVertical: 10,
-          }}
-        >
-          <Text
-            style={{
-              textAlign: "center",
-              fontFamily: fonts.INTER,
-              fontSize: 18,
-              color: "#564CB8",
-            }}
-          >
-            Apply Leave
-          </Text>
-        </View>
-      </TouchableOpacity>
+        <TitileBackgroundView
+          titile={AppText.ATTENDANCE}
+          navigation={navigation}
+          image={icon.IC_ADD}
+          tagAdd={AppText.LEAVE}
+          onClick={handleClick}
+          isShowClass={false}
+        />
+        {modalVisible && AddLeaveModel()}
+      </View>
+      <View
+        style={{
+          height: "100%",
+          backgroundColor: color.WHITE,
+        }}
+      >
+        {MyTabs()}
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   centeredView: {
-    height: "100x%",
+    height: "100%",
     position: "absolute",
     bottom: 0,
     start: 0,
@@ -618,7 +498,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     top: 20,
     padding: 20,
-
     width: "90%",
     alignItems: "center",
     shadowColor: "#000",

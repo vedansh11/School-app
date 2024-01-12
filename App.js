@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Button, Alert, TextInput } from "react-native";
 
 import OTPTextView from "react-native-otp-textinput";
+import { Svg, Rect, Circle } from "react-native-svg";
 
 const styles = StyleSheet.create({
   container: {

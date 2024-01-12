@@ -145,8 +145,8 @@ const LoginScreen = ({ navigation }) => {
   function verifyOTP_API() {
     setLoaderView(true);
     var loginFormData = new FormData();
-    loginFormData.append("mobile_no", mobileNumber);
-    loginFormData.append("otp", otpInput);
+    loginFormData.append("mobile_no", 9033903436);
+    loginFormData.append("otp", 1111);
 
     let requestOptions = {
       headers: {
