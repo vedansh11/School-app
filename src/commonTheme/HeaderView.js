@@ -145,11 +145,11 @@ export const SchoolDetailHeaderView = (props) => {
     <View
       style={
         //props.screen != "TeacherSupport" &&
-       // props.screen != "ParentSupport" &&
-        props.screen != "Payment"
-          ? // && props.screen != 'DairyView'
-            stylesCommon.mainBackground
-          : stylesCommon.mainBackground_custome
+        // props.screen != "ParentSupport" &&
+        // props.screen != "Payment" ?
+        // && props.screen != 'DairyView'
+        stylesCommon.mainBackground
+        //: stylesCommon.mainBackground_custome
       }
     >
       <View style={stylesCommon.scoopCorner} />
@@ -199,10 +199,11 @@ export const SchoolDetailHeaderView = (props) => {
         ) : (
           <Text
             style={{
-              alignContent: "center",
-              fontSize: 16,
+              // alignContent: "center",
+              fontSize: 18,
+              paddingBottom: 14,
               color: color.WHITE,
-              fontFamily: fonts.LATO_BOLD,
+              fontFamily: fonts.INTER,
             }}
           >
             {studentInfo.student_name}
@@ -215,11 +216,11 @@ export const SchoolDetailHeaderView = (props) => {
       {props.screen != "Notification" ? (
         <View
           style={
-           // props.screen != "TeacherSupport" &&
+            // props.screen != "TeacherSupport" &&
             //props.screen != "ParentSupport" &&
-            props.screen != "Payment"
-              ? stylesCommon.notificationView
-              : stylesCommon.notificationView_new
+            // props.screen != "Payment" ?
+            stylesCommon.notificationView
+            //  : stylesCommon.notificationView_new
           }
         >
           {props.type === "teacher" && props.screen != "TeacherSupport" ? (

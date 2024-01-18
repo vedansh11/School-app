@@ -544,34 +544,34 @@ const ParentSupportDetails = ({ route, navigation }) => {
             <TitileBackgroundView titile={"Request Details"} />
           )}
 
-          <TouchableOpacity
-            style={{}}
-            onPress={() => {
-              navigation.navigate("TeacherStudentProfile");
+          <View
+            style={{
+              paddingHorizontal: vh(15),
+              paddingBottom: vh(20),
+              alignItems: "center",
             }}
           >
             <View
               style={{
-                paddingHorizontal: vh(15),
-                paddingBottom: vh(20),
-                alignItems: "center",
+                backgroundColor: color.WHITE,
+                padding: 15,
+                borderRadius: 15,
+                width: "100%",
+                //borderColor: color.GREY,
+                //borderWidth: 0.5,
+                // alignSelf: "center",
+                // shadowColor:
+                //   Platform.OS === "ios" ? color.LIGHT_GREY : color.BLACK,
+                // shadowOffset: { width: 2, height: 2 },
+                // shadowOpacity: 5,
+                // shadowRadius: 1,
+                elevation: 2,
               }}
             >
-              <View
-                style={{
-                  backgroundColor: color.WHITE,
-                  padding: 15,
-                  borderRadius: 15,
-                  width: "100%",
-                  //borderColor: color.GREY,
-                  //borderWidth: 0.5,
-                  alignSelf: "center",
-                  // shadowColor:
-                  //   Platform.OS === "ios" ? color.LIGHT_GREY : color.BLACK,
-                  // shadowOffset: { width: 2, height: 2 },
-                  // shadowOpacity: 5,
-                  // shadowRadius: 1,
-                  elevation: 2,
+              <TouchableOpacity
+                style={{ width: "100%" }}
+                onPress={() => {
+                  navigation.navigate("TeacherStudentProfile");
                 }}
               >
                 <Text
@@ -590,7 +590,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
                   <View
                     style={{
                       flexDirection: "row",
-                      backgroundColor: color.WHITE,
+
                       borderBottomLeftRadius: 7,
                       borderBottomRightRadius: 7,
                       marginTop: 15,
@@ -728,23 +728,24 @@ const ParentSupportDetails = ({ route, navigation }) => {
                     </View>
                   </View>
                 )}
-              </View>
-
-              <Text
-                style={{
-                  fontSize: 12,
-                  //padding: vh(10),
-                  //marginTop: 5,
-                  color: color.YELLOW,
-                  fontFamily: fonts.LATO_BOLD,
-                  fontWeight: "600",
-                  textAlign: "center",
-                }}
-              >
-                {""}
-              </Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
+
+            <Text
+              style={{
+                fontSize: 12,
+                //padding: vh(10),
+                //marginTop: 5,
+                color: color.YELLOW,
+                fontFamily: fonts.LATO_BOLD,
+                fontWeight: "600",
+                textAlign: "center",
+              }}
+            >
+              {""}
+            </Text>
+          </View>
+
           <View
             style={{
               backgroundColor: "white",

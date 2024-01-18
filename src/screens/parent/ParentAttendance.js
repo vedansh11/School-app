@@ -503,39 +503,53 @@ const ParentAttendance = ({ route, navigation }) => {
           }}
         >
           <View style={[styles.centeredView, { height: "100%" }]}>
-            <View style={[styles.modalView, { height: "60%" }]}>
+            <View style={[styles.modalView, { height: "65%" }]}>
               <ModelTitleView
                 tiitle={AppText.APPLY_FOR_LEAVE}
                 onPressClose={() => renderCloseClick()}
+                style={{
+                  fontSize: 16,
+                  fontFamily: fonts.INTER_SEMIBOLD,
+                  color: "#1D2939",
+                  marginBottom: 15,
+                }}
               />
-              <ScrollView
+              {/* <ScrollView
                 style={{
                   width: "100%",
                 }}
                 keyboardShouldPersistTaps={"always"}
                 keyboardDismissMode={"on-drag"}
+              > */}
+              <View
+                style={{
+                  marginBottom: 20,
+                  width: "100%",
+                }}
               >
                 <View
                   style={{
-                    marginBottom: 20,
+                    height: 1,
                     width: "100%",
+                    backgroundColor: "#D0D5DD",
+                    marginBottom: 20,
                   }}
-                >
-                  {InputView(AppText.FROM, false, icon.IC_CALENDAR, false)}
-                  {InputView(AppText.TO, false, icon.IC_CALENDAR, false)}
-                  {InputView(AppText.DESCRIPTION, true, "", true)}
-                </View>
+                />
+                {InputView(AppText.FROM, false, icon.IC_CALENDAR, false)}
+                {InputView(AppText.TO, false, icon.IC_CALENDAR, false)}
+                {InputView(AppText.DESCRIPTION, true, "", true)}
+              </View>
 
-                {loaderView === true ? (
-                  <LoaderButtonView />
-                ) : (
-                  <ButtonView
-                    tiitle={AppText.SUBMIT}
-                    onClick={() => saveBtnClick()}
-                  />
-                )}
-                <View style={{ padding: screenWidth / 4 }} />
-              </ScrollView>
+              {loaderView === true ? (
+                <LoaderButtonView />
+              ) : (
+                <ButtonView
+                  tiitle={AppText.SUBMIT}
+                  onClick={() => saveBtnClick()}
+                />
+              )}
+              <View style={{ padding: screenWidth / 4 }} />
+              {/* </ScrollView> */}
             </View>
           </View>
         </Modal>
@@ -567,7 +581,6 @@ const ParentAttendance = ({ route, navigation }) => {
       >
         Attendance
       </Text>
-
       {MyTabs()}
       <TouchableOpacity onPress={handleClick}>
         <View

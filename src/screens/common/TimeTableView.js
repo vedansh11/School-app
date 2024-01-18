@@ -1014,44 +1014,134 @@ export function TimeTableView(props) {
       ) : null}
     </View>
   );
-  const renderItemWeekDays = ({ item, index }) => (
-    <View
-      style={{
-        alignSelf: "center",
-      }}
-    >
-      <Text
+
+  return props.dairyType == "parent" ? (
+    <SafeAreaView style={stylesCommon.safeAreaStyle}>
+      <StatusBar backgroundColor={color.APP_PRIMARY} />
+
+      {/* Dashboard Header view UI */}
+      <SchoolDetailHeaderView
+        titile={AppText.DASHBOARD}
+        type={props.dairyType}
+        navigation={props.navigation}
+        screen={"DairyView"}
+      />
+      <View
         style={{
-          color: color.GREY,
-          fontWeight: "700",
-          fontSize: 20,
-          fontFamily: fonts.LATO_REGULAR,
+          flexDirection: "column",
+          marginTop: Platform.OS === "ios" ? -50 : 0,
         }}
       >
-        {item.day}
-      </Text>
-    </View>
-  );
-  const isCloseToBottom = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }) => {
-    return (
-      layoutMeasurement.height + contentOffset.y >= selectedIndex * ITEM_SIZE
-    );
-  };
-  function handleInfinityScroll(event) {
-    let mHeight = event.nativeEvent.layoutMeasurement.height;
-    let cSize = event.nativeEvent.contentSize.height;
-    let Y = event.nativeEvent.contentOffset.y;
-    if (Math.ceil(mHeight + Y) >= cSize) return true;
-    return false;
-  }
+        <TitileBackgroundView
+          titile={"Timetable"}
+          navigation={props.navigation}
+        />
+        {/* yaha se bhai hai dekh len  */}
+        <View
+          style={{
+            padding: 0,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: 10,
+            marginTop: 10,
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              height: 40,
+              backgroundColor: "#EEEDF8",
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+              borderRadius: 50,
+            }}
+          >
+            {AppText.WEEKDAYS.map((day) => {
+              const isSelected = SelectedWeek === day;
 
-  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 10 });
+              return (
+                <TouchableOpacity
+                  key={day}
+                  style={{
+                    elevation: 10,
+                    shadowColor: "rgba(142, 152, 168, 0.3)",
+                  }}
+                  onPress={() => setSelectedWeek(day)}
+                >
+                  <View
+                    style={{
+                      borderRadius: 50,
+                      backgroundColor: isSelected ? color.WHITE : null,
+                      paddingHorizontal: 12,
+                      paddingVertical: 6,
+                      marginStart: 5,
+                      marginEnd: 5,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: color.BLACK,
+                        fontFamily: fonts.INTER_MEDIUM,
+                        fontSize: 12,
+                      }}
+                    >
+                      {day.slice(0, 3)}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
 
-  return (
+        <View
+          style={{
+            height: "100%",
+          }}
+        >
+          <FlatList
+            data={dateList}
+            renderItem={renderItem}
+            contentContainerStyle={{ minHeight: "100%" }}
+            showsVerticalScrollIndicator={false}
+            style={{
+              marginHorizontal: 15,
+              marginVertical: 15,
+            }}
+            keyExtractor={(item, index) => index}
+            ListEmptyComponent={renderEmptyContainer("No data found", true)}
+          />
+          {loaderView && (
+            <View
+              style={{
+                alignSelf: "center",
+                position: "absolute",
+                height: "100%",
+                width: "100%",
+              }}
+            >
+              <LoaderViewWithBackground color={color.WHITE} />
+            </View>
+          )}
+
+          {deleteloaderView && (
+            <View
+              style={{
+                top: 200,
+                alignSelf: "center",
+                position: "absolute",
+              }}
+            >
+              <LoaderViewWithBackground color={color.WHITE} />
+            </View>
+          )}
+        </View>
+
+        {modalVisible && TeacherAddPeriodModel()}
+      </View>
+    </SafeAreaView>
+  ) : (
     <SafeAreaView style={stylesCommon.safeAreaStyle}>
       <StatusBar backgroundColor={color.APP_PRIMARY} />
 
@@ -1078,7 +1168,7 @@ export function TimeTableView(props) {
           onSecondViewClick={() => handleClick()}
           isShowClass={props.isShowClass}
         />
-
+        {/* yaha se bhai hai dekh len  */}
         <View
           style={{
             padding: 5,

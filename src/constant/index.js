@@ -72,8 +72,11 @@ export const icon = {
   IC_EDIT: require("../assets/images/edit-03.png"),
   IC_AVTAR: require("../assets/images/Avatar.png"),
   BOY: require("../assets/images/boy.png"),
+  GIFT: require("../assets/images/gift.png"),
   TEACHER: require("../assets/images/teacher.png"),
   PARENT: require("../assets/images/parent.png"),
+  IC_CHECK: require("../assets/images/check.png"),
+  IC_ALERT: require("../assets/images/alert-triangle.png"),
 };
 
 export const fonts = {
@@ -154,14 +157,14 @@ export const color = {
   PROGRESS_GREY: "#C5C3D6",
   PER_GREY: "#7F7C9E",
   // Attendace colors
-  U_BG: "#FEEEEE",
-  U_BR: "#DF4848",
-  A_BG: "#CBC8E9",
-  A_BR: "#564CB8",
+  U_BG: "#F5A74C",
+  U_BR: "#F5A74C",
+  A_BG: "#F85050",
+  A_BR: "#F85050",
   O_BG: "#FEF6ED",
   O_BR: "#DD9644",
-  P_BG: "#EDFBF4",
-  P_BR: "#3AAB75",
+  P_BG: "#FFF",
+  P_BR: "#41C183",
 };
 
 export const ROLEID = {

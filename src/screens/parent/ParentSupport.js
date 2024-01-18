@@ -33,16 +33,19 @@ import { DairyView } from "../common/DairyView";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import TeacherSupportTabCommon from "../teacher/TeacherSupportTab";
 import stylesCommon, { SCREEN_WIDTH } from "../../commonTheme/stylesCommon";
+import { screenWidth } from "../../Utills/dimesnion";
 const ParentSupport = ({ navigation }) => {
-    const Tab = createMaterialTopTabNavigator();
-    var StudentID;
-    var sectionId;
+  const Tab = createMaterialTopTabNavigator();
+  var StudentID;
+  var sectionId;
   useEffect(() => {
-    Preference.GetData(PreferenceKeys.STUDENT_DETAIL).then((student_details) => {
+    Preference.GetData(PreferenceKeys.STUDENT_DETAIL).then(
+      (student_details) => {
         StudentID = JSON.parse(student_details).id;
         sectionId = JSON.parse(student_details).sectionId;
-        console.log(">>>>>"+student_details);
-    })
+        console.log(">>>>>" + student_details);
+      }
+    );
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
     return () => {
@@ -126,6 +129,7 @@ const ParentSupport = ({ navigation }) => {
       isRead: false,
     },
   ];
+
   const renderItem = ({ item }) => {
     return (
       <View>
@@ -198,8 +202,10 @@ const ParentSupport = ({ navigation }) => {
       <View
         style={{
           flexDirection: "row",
-          backgroundColor: color.COLOR_SECONDARY,
-          justifyContent: "space-around",
+          backgroundColor: "#EEEDF8",
+          borderRadius: 50,
+          width: screenWidth - 100,
+          flex: 0.07,
         }}
       >
         {state.routes.map((route, index) => {
@@ -239,48 +245,36 @@ const ParentSupport = ({ navigation }) => {
               testID={options.tabBarTestID}
               onPress={onPress}
               style={{
-                backgroundColor: isFocused
-                  ? color.WHITE
-                  : color.COLOR_SECONDARY,
-                 width: SCREEN_WIDTH / 3.1,
-                
-                paddingTop: 12,
-                borderTopStartRadius: 10,
-                borderTopEndRadius: 10,
+                backgroundColor: isFocused ? color.WHITE : null,
+
+                marginStart: 6,
+                marginEnd: 15,
+                marginTop: 5,
+                marginBottom: 5,
+
+                borderRadius: 49,
                 alignItems: "center",
                 shadowColor: "#000",
                 shadowOffset: { width: 0, height: isFocused ? 2 : 0 },
                 shadowOpacity: isFocused ? 0.2 : 0,
-                elevation: isFocused ? 5 : 0,
-               
+                elevation: isFocused ? 2 : 0,
               }}
             >
-              <View
+              <Animated.Text
                 style={{
-                  alignItems: "center",
+                  fontSize: 12,
+                  fontFamily: fonts.INTER,
+                  fontWeight: "700",
+                  color: isFocused ? color.DARK_TEXT : color.GREY,
+                  paddingVertical: 7,
+                  // marginHorizontal:10,
+                  paddingHorizontal: 15,
                 }}
               >
-                <Animated.Text
-                  style={{
-                    fontSize: 16,
-                    fontFamily: fonts.LATO_REGULAR,
-                    fontWeight: "700",
-                    color: isFocused ? color.DARK_TEXT : color.GREY,
-                  }}
-                >
-                  {label}
-                </Animated.Text>
-                {isFocused ? (
-                  <View
-                    style={{
-                      backgroundColor: color.COLOR_PRIMARY,
-                      height: 1,
-                      marginTop: 12,
-                      width: SCREEN_WIDTH / 8,
-                    }}
-                  />
-                ) : null}
-              </View>
+                {label}
+              </Animated.Text>
+
+              {/* </View> */}
             </TouchableOpacity>
           );
         })}
@@ -294,21 +288,36 @@ const ParentSupport = ({ navigation }) => {
           name="SupportNew"
           upperCaseLabel={false}
           component={TeacherSupportTabCommon}
-          initialParams={{ type: "New", role:"parent", id:StudentID, sectionID: sectionId  }}
+          initialParams={{
+            type: "New",
+            role: "parent",
+            id: StudentID,
+            sectionID: sectionId,
+          }}
           options={{ tabBarLabel: "New" }}
         />
         <Tab.Screen
           name="SupportReplied"
           upperCaseLabel={false}
           component={TeacherSupportTabCommon}
-          initialParams={{ type: "Replied",role:"parent", id:StudentID, sectionID: sectionId }}
+          initialParams={{
+            type: "Replied",
+            role: "parent",
+            id: StudentID,
+            sectionID: sectionId,
+          }}
           options={{ tabBarLabel: "Replied" }}
         />
         <Tab.Screen
           name="SupportClosed"
           upperCaseLabel={false}
           component={TeacherSupportTabCommon}
-          initialParams={{ type: "Closed",role:"parent",id:StudentID, sectionID: sectionId }}
+          initialParams={{
+            type: "Closed",
+            role: "parent",
+            id: StudentID,
+            sectionID: sectionId,
+          }}
           options={{ tabBarLabel: "Closed" }}
         />
       </Tab.Navigator>
@@ -317,41 +326,54 @@ const ParentSupport = ({ navigation }) => {
 
   return (
     <>
-    <SafeAreaView style={{ flex: 0, 
-        backgroundColor: color.APP_PRIMARY}} /> 
-    <SafeAreaView style={stylesCommon.safeAreaStyle}>
-      <StatusBar backgroundColor={color.APP_PRIMARY} />
-      <SchoolDetailHeaderView
-        titile={AppText.DASHBOARD}
-        type={"parent"}
-        navigation={navigation}
-        screen={"ParentSupport"}
-      />
-      <View
-        style={{
-          flexDirection: "column",
-          marginTop: Platform.OS === "ios" ? -0 : 0,
-          flex:1
-        }}
-      >
-        <TitileBackgroundView
-          titile={"Support"}
-          tagAdd={"Add Request"}
-          image={icon.IC_ADD}
-          onClick={AddNewRequest}
+      <SafeAreaView style={{ flex: 0, backgroundColor: color.APP_PRIMARY }} />
+      <SafeAreaView style={stylesCommon.safeAreaStyle}>
+        <StatusBar backgroundColor={color.APP_PRIMARY} />
+        <SchoolDetailHeaderView
+          titile={AppText.DASHBOARD}
+          type={"parent"}
+          navigation={navigation}
+          screen={"ParentSupport"}
         />
         <View
           style={{
-            alignContent: "center",
-            alignItems: "center",
-            justifyContent: "center",
+            flexDirection: "column",
+            marginTop: Platform.OS === "ios" ? -0 : 0,
             flex: 1,
-            backgroundColor: color.COLOR_SECONDARY,
           }}
         >
-          {MyTabs()}
-        </View>
-        {/* <FlatList
+          <TitileBackgroundView
+            titile={"Support"}
+            secondViewImage={icon.IC_ADD}
+            isSecondviewRequired={true}
+            tagAddSecond={"Request"}
+            onSecondViewClick={AddNewRequest}
+          />
+          <View
+            style={{
+              marginStart: 15,
+              marginEnd: 15,
+              flexDirection: "row",
+              flex: 1,
+              backgroundColor: color.WHITE,
+            }}
+          >
+            {MyTabs()}
+
+            <View
+              style={{
+                backgroundColor: "#EEEDF8",
+                //  backgroundColor: "#fff",
+                width: screenWidth / 4,
+                height: 39,
+                borderTopEndRadius: 50,
+                borderBottomEndRadius: 50,
+                position: "absolute",
+                right: 0,
+              }}
+            />
+          </View>
+          {/* <FlatList
                     data={DATA}
                     renderItem={(item) =>
                         <RenderItemSupport
@@ -369,8 +391,8 @@ const ParentSupport = ({ navigation }) => {
                     }}
                     showsVerticalScrollIndicator={false}
                 /> */}
-      </View>
-    </SafeAreaView>
+        </View>
+      </SafeAreaView>
     </>
   );
 };

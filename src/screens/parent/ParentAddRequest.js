@@ -10,9 +10,16 @@ import {
   Platform,
   TextInput,
   StyleSheet,
-  Alert
+  Alert,
 } from "react-native";
-import { AppText, color, fonts, icon, PreferenceKeys,RECEIVER_TYPE } from "../../constant";
+import {
+  AppText,
+  color,
+  fonts,
+  icon,
+  PreferenceKeys,
+  RECEIVER_TYPE,
+} from "../../constant";
 import stylesCommon from "../../commonTheme/stylesCommon";
 import { BackHandler } from "react-native";
 import { SchoolDetailHeaderView } from "../../commonTheme/HeaderView";
@@ -26,13 +33,13 @@ import SelectDropdown from "react-native-select-dropdown";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
 import { LoaderButtonView } from "../../commonTheme/LoaderView";
 import { ButtonView } from "../../commonTheme/CommonView";
-import * as Preference from '../../storeData/Preference';
-import * as Utills from '../../API/Utills';
-import { axiosCallAPI } from '../../API/axiosCommonService';
+import * as Preference from "../../storeData/Preference";
+import * as Utills from "../../API/Utills";
+import { axiosCallAPI } from "../../API/axiosCommonService";
 const AddNewRequest = ({ navigation }) => {
   const [loaderView, setLoaderView] = useState(false);
   const [receiverId, setReceiverID] = useState(-1);
-  const [msg, setMsg] = useState('');
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -49,8 +56,7 @@ const AddNewRequest = ({ navigation }) => {
     return true;
   }
 
-  async function AddNewSupport(ID, sectionId, classId){
-
+  async function AddNewSupport(ID, sectionId, classId) {
     // const params ={
     //   studentId: ID,
     //   receiverType : receiverId,
@@ -58,30 +64,35 @@ const AddNewRequest = ({ navigation }) => {
     // }
 
     var params = new FormData();
-    params.append("studentId",ID)
-    params.append("receiverType",receiverId)
-    params.append("message",msg)
+    params.append("studentId", ID);
+    params.append("receiverType", receiverId);
+    params.append("message", msg);
     params.append("sectionId", sectionId);
     params.append("classId", classId);
 
-
     let requestOptions = {
       headers: {
-          "Accept": 'application/json',
-          "Content-Type": "multipart/form-data",
-          "Authorization": await Preference.GetData(PreferenceKeys.TOKEN)
-      }
-
-  };
- console.log(params);
-    axiosCallAPI('post', Utills.ADD_SUPPORT_DATA, params, requestOptions, true, navigation)
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+      },
+    };
+    console.log(params);
+    axiosCallAPI(
+      "post",
+      Utills.ADD_SUPPORT_DATA,
+      params,
+      requestOptions,
+      true,
+      navigation
+    )
       // axiosCallAPI('get', Utills.GET_SUPPORT_DATA, p.toString(), requestOptions, true, props.navigation)
-      .then(response => {
+      .then((response) => {
         navigation.goBack();
-      }).catch(error => {
-        setLoaderView(false)
+      })
+      .catch((error) => {
+        setLoaderView(false);
       });
-
   }
   const InputView = (label, isEnable, image, multiline) => {
     return (
@@ -112,7 +123,7 @@ const AddNewRequest = ({ navigation }) => {
                   onSelect={(selectedItem, index) => {
                     //  setValue(selectedItem)
                     //console.log(selectedItem+", "+index);
-                    setReceiverID(index+1);
+                    setReceiverID(index + 1);
                   }}
                   defaultButtonText={"Select"}
                   buttonTextAfterSelection={(selectedItem, index) => {
@@ -225,74 +236,94 @@ const AddNewRequest = ({ navigation }) => {
   };
   return (
     <>
-    <SafeAreaView style={{ flex: 0, 
-        backgroundColor: color.APP_PRIMARY}} /> 
-    <SafeAreaView style={stylesCommon.safeAreaStyle}>
-      <StatusBar backgroundColor={color.APP_PRIMARY} />
-      <SchoolDetailHeaderView
-        titile={AppText.DASHBOARD}
-        type={"parent"}
-        navigation={navigation}
-        screen={"ParentSupport"}
-      />
-      <View
-        style={{
-          flexDirection: "column",
-          marginTop: Platform.OS === "ios" ? -0 : 0,
-        }}
-      >
-        <TitileBackgroundView titile={"Support"} />
-        <View style={{ padding: 15 }}>
-          {InputView(AppText.FROM, false, icon.IC_SIDE_ARROW, false)}
-          {InputView(AppText.DESCRIPTION, true, "", true)}
+      <SafeAreaView style={{ flex: 0, backgroundColor: color.APP_PRIMARY }} />
+      <SafeAreaView style={stylesCommon.safeAreaStyle}>
+        <StatusBar backgroundColor={color.APP_PRIMARY} />
+        <SchoolDetailHeaderView
+          titile={AppText.DASHBOARD}
+          type={"parent"}
+          navigation={navigation}
+          screen={"ParentSupport"}
+        />
+        <View
+          style={{
+            padding: 10,
+            flexDirection: "column",
+            marginTop: Platform.OS === "ios" ? -0 : 0,
+          }}
+        >
+          <TitileBackgroundView titile={"Support"} />
           <View
-            style={{ flexDirection: "row", justifyContent: "space-between", marginTop:20 }}
-          >
-            <TouchableOpacity
-              style={{ backgroundColor: color.PROGRESS_GREY,
-                borderRadius: 10,
-                flex:1,
-                padding: 15,
-                marginEnd:10,
-                alignSelf: 'center'}}
-              onPress={() =>{navigation.goBack()}}
-            >
-              <Text style={stylesCommon.primaryButtonText}>{"Cancel"}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-               style={{ backgroundColor: color.COLOR_PRIMARY,
-                borderRadius: 10,
-                flex:1,
-                padding: 15,
-                marginStart:10,
-                alignSelf: 'center'}}
-              onPress={() => {
-                if (receiverId < 0) {
-                  Alert.alert(
-                    AppText.ALERT_APP_NAME,
-                    "Please select option before submit.");
-                }else if(msg === ''){
-                  Alert.alert(
-                    AppText.ALERT_APP_NAME,
-                    "Please enter message before submit.");
-                }else {
-                  Preference.GetData(PreferenceKeys.STUDENT_DETAIL).then((student_details) => {
-                   
-                    const StudentID = JSON.parse(student_details).id;
-                    const sectionId = JSON.parse(student_details).sectionId;
-                    const classId = JSON.parse(student_details).classId;
-                    AddNewSupport(StudentID, sectionId,classId);
-                  })
-
-                }
+            style={{
+              height: 1,
+              width: "90%",
+              backgroundColor: "#D0D5DD",
+              marginHorizontal: 15,
+            }}
+          />
+          <View style={{ padding: 15 }}>
+            {InputView(AppText.FROM, false, icon.IC_DOWN_ARROW, false)}
+            {InputView(AppText.DESCRIPTION, true, "", true)}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 20,
               }}
             >
-              <Text style={stylesCommon.primaryButtonText}>{'Submit'}</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#CBC8E9",
+                  borderRadius: 50,
+                  flex: 1,
+                  padding: 15,
+                  marginEnd: 10,
+                  alignSelf: "center",
+                }}
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              >
+                <Text style={stylesCommon.primaryButtonText}>{"Cancel"}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#FF6D4C",
+                  borderRadius: 50,
+                  flex: 1,
+                  padding: 15,
+                  marginStart: 10,
+                  alignSelf: "center",
+                }}
+                onPress={() => {
+                  if (receiverId < 0) {
+                    Alert.alert(
+                      AppText.ALERT_APP_NAME,
+                      "Please select option before submit."
+                    );
+                  } else if (msg === "") {
+                    Alert.alert(
+                      AppText.ALERT_APP_NAME,
+                      "Please enter message before submit."
+                    );
+                  } else {
+                    Preference.GetData(PreferenceKeys.STUDENT_DETAIL).then(
+                      (student_details) => {
+                        const StudentID = JSON.parse(student_details).id;
+                        const sectionId = JSON.parse(student_details).sectionId;
+                        const classId = JSON.parse(student_details).classId;
+                        AddNewSupport(StudentID, sectionId, classId);
+                      }
+                    );
+                  }
+                }}
+              >
+                <Text style={stylesCommon.primaryButtonText}>{"Submit"}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
     </>
   );
 };

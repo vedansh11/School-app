@@ -474,6 +474,8 @@ const AttendanceDetailStatus = ({ route, navigation }) => {
                       marking != undefined
                         ? marking.selectedColor
                         : color.WHITE,
+
+                    // backgroundColor: color.BLACK,
                     borderColor: color.PROGRESS_GREY,
                   }}
                 >

@@ -43,9 +43,6 @@ const AttendanceTrends = ({ route, navigation }) => {
         progressRefMonth.current.reAnimate();
         progressRefYear.current.reAnimate();
       }
-      return () => {
-        // Cleanup function if needed
-      };
     }, [progressRefMonth.current, progressRefYear.current])
   );
 

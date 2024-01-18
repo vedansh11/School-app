@@ -144,7 +144,7 @@ export default StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     color: color.WHITE,
-    fontFamily: fonts.LATO_BOLD,
+    fontFamily: fonts.INTER_BOLD,
   },
   // Welcom styles
   continueTextStyle: {
@@ -543,7 +543,6 @@ export default StyleSheet.create({
   modalText: {
     marginBottom: 15,
     fontSize: 22,
-    // fontWeight: "700",
     color: color.DARK_TEXT,
     fontFamily: fonts.INTER_SEMIBOLD,
     textAlign: "center",
@@ -887,5 +886,17 @@ export default StyleSheet.create({
     color: "#FFFFFF",
     fontFamily: fonts.INTER_BOLD,
     fontSize: 12,
+  },
+
+  PaymentTextTitle: {
+    fontFamily: fonts.INTER_MEDIUM,
+    fontSize: 14,
+    color: "#fff",
+  },
+
+  PaymentNo: {
+    fontFamily: fonts.INTER_SEMIBOLD,
+    fontSize: 24,
+    color: "#fff",
   },
 });

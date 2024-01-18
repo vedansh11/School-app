@@ -378,11 +378,15 @@ export const TitileBackgroundView = (props) => {
         >
           {props.image != undefined && props.image != "" ? (
             <Image
-              style={{
-                height: 16,
-                width: 16,
-                tintColor: "#000000",
-              }}
+              style={
+                props.imageStyle
+                  ? props.imageStyle
+                  : {
+                      height: 16,
+                      width: 16,
+                      tintColor: "#000000",
+                    }
+              }
               source={props.image}
             />
           ) : null}
@@ -464,7 +468,9 @@ export const ButtonView = (props) => {
 export const ModelTitleView = (props) => {
   return (
     <View style={stylesCommon.modelTileView}>
-      <Text style={stylesCommon.modalText}>{props.tiitle}</Text>
+      <Text style={props.style ? props.style : stylesCommon.modalText}>
+        {props.tiitle}
+      </Text>
       <TouchableOpacity onPress={props.onPressClose}>
         <Image
           style={stylesCommon.closeImageView}

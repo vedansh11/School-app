@@ -748,8 +748,8 @@ export const DairyView = (props) => {
         backgroundColor: color.COLOR_SECONDARY,
         marginTop: 10,
         marginBottom: 10,
-        padding: 10,
-        borderRadius: 10,
+        padding: 15,
+        borderRadius: 15,
       },
     });
     return (
@@ -833,13 +833,40 @@ export const DairyView = (props) => {
             </TouchableOpacity>
           )
         ) : (
+          // <View style={styles.diaryRowView}>
+          //   {/* <Text style={stylesCommon.diaryRowTitle}>{item.titile}</Text> */}
+          //   <View style={stylesCommon.dairyParent}>
+
+          //   </View>
+          //   <Text style={stylesCommon.diaryRowTitle}>{item.subjectName}</Text>
+          //   <Text style={stylesCommon.diaryRowDescription}>
+          //     {item.description}
+          //   </Text>
+          //   <Text style={stylesCommon.diaryTimeView}>{item.dueDate}</Text>
+          // </View>
+
           <View style={styles.diaryRowView}>
-            {/* <Text style={stylesCommon.diaryRowTitle}>{item.titile}</Text> */}
-            <Text style={stylesCommon.diaryRowTitle}>{item.subjectName}</Text>
-            <Text style={stylesCommon.diaryRowDescription}>
-              {item.description}
-            </Text>
-            <Text style={stylesCommon.diaryTimeView}>{item.dueDate}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Image
+                style={{
+                  width: 29,
+                  height: 28,
+
+                  marginEnd: 20,
+                  alignContent: "center",
+                }}
+                source={icon.IC_EDIT}
+              ></Image>
+              <View style={{ flexDirection: "column" }}>
+                <Text style={stylesCommon.diaryRowTitle}>
+                  {item.subjectName}
+                </Text>
+                <Text style={stylesCommon.diaryRowDescription}>
+                  {item.description}
+                </Text>
+              </View>
+              <Text style={stylesCommon.diaryTimeView}>{item.dueDate}</Text>
+            </View>
           </View>
         )}
       </View>
@@ -869,6 +896,7 @@ export const DairyView = (props) => {
             titile={"Diary"}
             navigation={props.navigation}
             image={props.image}
+            imageStyle={props.imageStyle}
             secondViewImage={props.secondViewImage}
             isSecondviewRequired={props.isSecondviewRequired}
             tagAdd={props.tagAdd}
@@ -903,7 +931,7 @@ export const DairyView = (props) => {
           <View
             style={{
               flexDirection: "row",
-              marginTop: 60,
+              marginTop: props.dairyType == "parent" ? 20 : 60,
               paddingStart: 15,
               paddingEnd: 15,
               //marginTop: (props.dairyType === 'teacher') ? - 25 : 5,
@@ -928,7 +956,7 @@ export const DairyView = (props) => {
                 editable={false}
                 style={{
                   fontSize: 16,
-                  fontFamily: fonts.LATO_BOLD,
+                  fontFamily: fonts.INTER,
                 }}
                 onChangeText={(text) => setDate(text)}
               />
