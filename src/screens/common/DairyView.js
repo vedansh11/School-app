@@ -428,6 +428,7 @@ export const DairyView = (props) => {
               defaultButtonText={
                 noteTypeSelected === "" ? "Select note type" : noteTypeSelected
               }
+              rowTextStyle={{ fontFamily: fonts.INTER_BOLD }}
               //    defaultButtonText={'Select note type'}
               // defaultValueByIndex={0}
               buttonTextAfterSelection={(selectedItem, index) => {
@@ -536,6 +537,10 @@ export const DairyView = (props) => {
               ref={effectiveFieldRef}
               baseColor={color.APP_PRIMARY}
               style={stylesCommon.textFieldView}
+              labelTextStyle={{
+                fontFamily: fonts.INTER_SEMIBOLD,
+                fontSize: 10,
+              }}
               tintColor={color.APP_PRIMARY}
               selectionColor={color.APP_PRIMARY}
               label={effectiveDateTEXT}
@@ -607,6 +612,10 @@ export const DairyView = (props) => {
               tintColor={color.APP_PRIMARY}
               selectionColor={color.APP_PRIMARY}
               label={label}
+              labelTextStyle={{
+                fontFamily: fonts.INTER_SEMIBOLD,
+                fontSize: 10,
+              }}
               height={50}
               multiline={multiline}
               editable={isEnable}
@@ -640,6 +649,10 @@ export const DairyView = (props) => {
               baseColor={color.APP_PRIMARY}
               tintColor={color.APP_PRIMARY}
               selectionColor={color.APP_PRIMARY}
+              labelTextStyle={{
+                fontFamily: fonts.INTER_SEMIBOLD,
+                fontSize: 10,
+              }}
               label={dueDateTEXT}
               height={80}
               multiline={multiline}
@@ -1096,9 +1109,9 @@ const styles = StyleSheet.create({
   },
   dropdownBtnTxtStyle: {
     textAlign: "left",
-    fontSize: 20,
+    fontSize: 16,
     color: color.DARK_TEXT,
-    fontFamily: fonts.LATO_BOLD,
+    fontFamily: fonts.INTER,
   },
   dropdownStyle: {
     backgroundColor: color.WHITE,

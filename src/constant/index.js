@@ -131,6 +131,7 @@ export const color = {
   // COLOR_SECONDARY: '#FFF5DB',
   // colors main
   APP_PRIMARY: "#564CB8",
+  APP_LIGHT_PRIMARY: "#EEEDF8",
   APP_SECONDARY: "#FF715B",
   // color change app theme
   COLOR_PRIMARY: "#0BB5BF",

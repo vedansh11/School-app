@@ -254,7 +254,7 @@ export default StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#41398A",
+    backgroundColor: color.APP_LIGHT_PRIMARY_LIGHT_PRIMARY,
   },
   homeicon: {
     height: 21,
@@ -423,7 +423,7 @@ export default StyleSheet.create({
     height: 58,
     //width: screenWidth / 7,
     //height: screenWidth / 7,
-    // backgroundColor: "#C1F4FF",
+    backgroundColor: "#C1F4FF",
     borderRadius: 5,
     //marginTop: 15,
   },

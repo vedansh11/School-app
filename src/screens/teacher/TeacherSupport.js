@@ -124,13 +124,13 @@ const TeacherSupport = (navigation) => {
             >
               <Animated.Text
                 style={{
-                  fontSize: 12,
-                  fontFamily: fonts.INTER,
-                  fontWeight: "700",
+                  fontSize: 14,
+                  fontFamily: fonts.INTER_MEDIUM,
+
                   color: isFocused ? color.DARK_TEXT : color.GREY,
-                  paddingVertical: 7,
+                  paddingVertical: 5,
                   // marginHorizontal:10,
-                  paddingHorizontal: 15,
+                  paddingHorizontal: 12,
                 }}
               >
                 {label}
@@ -368,16 +368,18 @@ const TeacherSupport = (navigation) => {
             backgroundColor: color.WHITE,
           }}
         >
-          {MyTabs()}
+          <View style={{ flex: 1, zIndex: 10 }}>{MyTabs()}</View>
           <View
             style={{
               backgroundColor: "#EEEDF8",
               //  backgroundColor: "#fff",
               width: screenWidth / 4,
               height: 39,
+              borderTopStartRadius: 0,
               borderTopEndRadius: 50,
               borderBottomEndRadius: 50,
               position: "absolute",
+              zIndex: 2,
               right: 0,
             }}
           />

@@ -105,7 +105,10 @@ export default function TeacherDashboard2({ navigation, route }) {
   }
 
   function handleBackButtonClick() {
-    props.navigation.goBack();
+    console.log("====================================");
+    console.log("BHai daba diya");
+    console.log("====================================");
+    navigation.goBack();
     return true;
   }
 
@@ -115,7 +118,6 @@ export default function TeacherDashboard2({ navigation, route }) {
 
   async function teacherClassListAPI(Id) {
     setLoaderView(true);
-
     let requestOptions = {
       headers: {
         Accept: "application/json",
@@ -349,7 +351,7 @@ export default function TeacherDashboard2({ navigation, route }) {
       <StatusBar backgroundColor={"#564CB8"} />
 
       {/* Dashboard Header view UI */}
-      <DashboardHeaderView
+      <SchoolDetailHeaderView
         titile={AppText.DASHBOARD}
         type={"teacher"}
         navigation={navigation}
@@ -366,7 +368,6 @@ export default function TeacherDashboard2({ navigation, route }) {
         <View
           style={{
             backgroundColor: color.WHITE,
-
             borderRadius: 15,
             width: "92%",
             marginStart: 14,

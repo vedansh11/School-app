@@ -226,7 +226,7 @@ const TeacherDashboard = ({ navigation }) => {
 
   function NavigateToDashBoard2(item, index) {
     teacherClassListAPI(item.id);
-    setIndex(index);
+    //setIndex(index);
     navigation.navigate("TeacherDashboard2", {
       item: item,
       index: index,
@@ -237,7 +237,6 @@ const TeacherDashboard = ({ navigation }) => {
     setIndex(index);
     teacherClassListAPI(item.id);
     console.log("so this is the item we are getting", item);
-
     //NavigateToDashBoard2(item, index);
   }
 
@@ -250,7 +249,7 @@ const TeacherDashboard = ({ navigation }) => {
           borderRadius: 7,
           width: "100%",
           marginTop: 10,
-          borderColor: color.GREY,
+          borderColor: "#667085",
           borderWidth: 1,
           marginBottom: 10,
           alignSelf: "center",
