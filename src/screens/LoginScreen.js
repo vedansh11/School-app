@@ -388,6 +388,7 @@ const LoginScreen = ({ navigation }) => {
             }
             keyboardType="phone-pad"
             onChangeText={onChangeText}
+            maxLength={10}
           />
 
           <View
