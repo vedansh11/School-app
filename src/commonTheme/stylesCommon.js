@@ -191,13 +191,23 @@ export default StyleSheet.create({
     height: Platform.OS === "ios" ? 125 : 95,
 
     width: "100%",
-    alignContent: "center",
-    alignItems: "center",
+
     flexDirection: "row",
-    paddingTop: Platform.OS === "ios" ? 40 : 0,
+    paddingTop: Platform.OS === "ios" ? 40 : 20,
     top: Platform.OS === "ios" ? -50 : 0,
     backgroundColor: "#564CB8",
     borderBottomLeftRadius: 25,
+  },
+  otherBackground: {
+    height: Platform.OS === "ios" ? 125 : 185,
+
+    width: "100%",
+
+    flexDirection: "row",
+    paddingTop: Platform.OS === "ios" ? 40 : 20,
+    top: Platform.OS === "ios" ? -50 : 0,
+    backgroundColor: "#564CB8",
+    //borderBottomLeftRadius: 25,
   },
   // curve: {
   //   position: "absolute",
@@ -207,7 +217,8 @@ export default StyleSheet.create({
 
   buttonContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    //  alignItems: "center",
+    //  paddingTop: Platform.OS === "ios" ? 40 : -20,
     justifyContent: "space-between",
     flex: 1,
   },
@@ -248,13 +259,14 @@ export default StyleSheet.create({
   homeView: {
     height: 40,
     width: 40,
-    margin: 15,
+    paddingHorizontal: 15,
+    marginHorizontal: 15,
     marginTop: 0,
     borderRadius: 100,
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: color.APP_LIGHT_PRIMARY_LIGHT_PRIMARY,
+    backgroundColor: color.Header_Back_BG,
   },
   homeicon: {
     height: 21,
@@ -262,7 +274,10 @@ export default StyleSheet.create({
   },
   titleHeader: {
     position: "absolute",
-    top: 6,
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
+
     left: 65,
     fontSize: 18,
     color: color.WHITE,
@@ -270,7 +285,7 @@ export default StyleSheet.create({
   },
   notificationView: {
     margin: 20,
-    top: Platform.OS === "ios" ? 28 : -12,
+
     alignContent: "center",
     position: "absolute",
     flexDirection: "row",
@@ -287,6 +302,7 @@ export default StyleSheet.create({
   notificationIcon: {
     height: 24,
     width: 24,
+    marginStart: 15,
 
     // marginTop: 10,
   },
@@ -298,13 +314,13 @@ export default StyleSheet.create({
     height: 8,
     width: 8,
     position: "absolute",
-    end: 0,
+    end: -15,
     top: 0,
   },
 
   supportIcon: {
-    height: 20,
-    width: 20,
+    height: 24,
+    width: 24,
   },
 
   // Dashboard
@@ -331,17 +347,17 @@ export default StyleSheet.create({
   },
   rawMainView: {
     flex: 1,
-    backgroundColor: color.WHITE,
+    //backgroundColor: color.WHITE,
     borderRadius: 15,
-    width: "99%",
+    width: "100%",
     marginTop: 10,
     //padding: 15,
     marginBottom: 10,
-    elevation: 2,
-    borderColor: "#EAECF0",
+    gap: 10,
+    // borderColor: "#EAECF0",
     //borderColor: "#564CB8",
-    borderWidth: 1,
-    alignSelf: "center",
+    // borderWidth: 1,
+    //alignSelf: "center",
     // shadowColor: Platform.OS === "ios" ? color.LIGHT_GREY : color.BLACK,
     // shadowOffset: { width: 2, height: 2 },
     // shadowOpacity: 5,
@@ -370,7 +386,8 @@ export default StyleSheet.create({
     alignSelf: "center",
   },
   margin10View: {
-    margin: 10,
+    // margin: 10,
+    flex: 1,
   },
   nameText: {
     fontSize: 16,
@@ -406,9 +423,9 @@ export default StyleSheet.create({
     backgroundColor: color.WHITE,
     flex: 0.6,
     paddingStart: 18,
-    padding: 15,
+    padding: 8,
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     alignItems: "center",
     borderBottomStartRadius: 15,
     borderBottomEndRadius: 15,
@@ -444,36 +461,37 @@ export default StyleSheet.create({
   attendanceView: {
     justifyContent: "center",
     alignContent: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 1,
+    // paddingVertical: 10,
+    // paddingHorizontal: 1,
     width: 65.6,
     height: 58,
     backgroundColor: "#C6F2DD",
     borderRadius: 5,
-    margin: 6,
+    marginEnd: 10,
+    // margin: 6,
   },
   dairyView: {
     justifyContent: "center",
     alignContent: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 1,
+    // paddingVertical: 10,
+    // paddingHorizontal: 1,
     width: 65.6,
     height: 58,
-
+    marginEnd: 10,
     backgroundColor: "#C1F4FF",
     borderRadius: 5,
-    margin: 6,
+    // margin: 6,
   },
   timetableView: {
     justifyContent: "center",
     alignContent: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 1,
+    // paddingVertical: 10,
+    // paddingHorizontal: 1,
     width: 65.6,
     height: 58,
     backgroundColor: "#FCE4C8",
     borderRadius: 5,
-    margin: 6,
+    // margin: 6,
   },
   imageView: {
     height: 20,
@@ -526,6 +544,7 @@ export default StyleSheet.create({
     height: 20,
     width: 20,
     alignSelf: "center",
+    resizeMode: "contain",
   },
   lineView: {
     backgroundColor: "#EAECF0",
@@ -542,7 +561,7 @@ export default StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
-    fontSize: 22,
+    fontSize: 18,
     color: color.DARK_TEXT,
     fontFamily: fonts.INTER_SEMIBOLD,
     textAlign: "center",
@@ -575,7 +594,8 @@ export default StyleSheet.create({
     position: "absolute",
     height: "100%",
     paddingEnd: 10,
-    paddingBottom: 5,
+    paddingBottom: 10,
+
     justifyContent: "center",
     end: 0,
   },
@@ -589,8 +609,8 @@ export default StyleSheet.create({
     bottom: 4,
   },
   dropImage: {
-    height: 18,
-    width: 18,
+    height: 16,
+    width: 16,
     resizeMode: "contain",
   },
   padding15View: {
@@ -698,6 +718,7 @@ export default StyleSheet.create({
   searchTextFeild: {
     marginEnd: 30,
     fontSize: 16,
+
     color: color.DARK_TEXT,
     fontFamily: fonts.INTER,
   },
@@ -707,6 +728,7 @@ export default StyleSheet.create({
     fontFamily: fonts.INTER_MEDIUM,
     color: color.DARK_TEXT,
     fontSize: normalize(12),
+    flex: 0.8,
   },
   diaryRowDescription: {
     fontFamily: fonts.INTER,
@@ -718,12 +740,8 @@ export default StyleSheet.create({
   diaryTimeView: {
     fontFamily: fonts.LATO_REGULAR,
     color: color.DARK_TEXT,
-    marginTop: 5,
-    marginBottom: 5,
+
     fontSize: normalize(12),
-    position: "absolute",
-    end: -10,
-    paddingEnd: 20,
   },
   // loader view
   loaderView: {
@@ -831,12 +849,12 @@ export default StyleSheet.create({
   sPersonalText: {
     fontFamily: fonts.INTER_MEDIUM,
     fontSize: 12,
-    color: "#98A2B3",
+    color: "#667085",
   },
   sPersonalValue: {
     fontFamily: fonts.INTER_MEDIUM,
     fontSize: 12,
-    color: "#667085",
+    color: "#101828",
   },
   sParentText: {
     fontFamily: fonts.INTER_MEDIUM,
@@ -883,20 +901,20 @@ export default StyleSheet.create({
 
   StatsCircleText: {
     textAlign: "center",
-    color: "#FFFFFF",
+    color: "white",
     fontFamily: fonts.INTER_BOLD,
     fontSize: 12,
   },
 
   PaymentTextTitle: {
     fontFamily: fonts.INTER_MEDIUM,
-    fontSize: 14,
+    fontSize: 12,
     color: "#fff",
   },
 
   PaymentNo: {
     fontFamily: fonts.INTER_SEMIBOLD,
-    fontSize: 24,
+    fontSize: 22,
     color: "#fff",
   },
 });

@@ -7,9 +7,13 @@
  * @flow strict-local
  */
 
-// export const BASE_URL = 'https://api.prastaratech.com/api/';
-export const BASE_URL = "https://api.greatminds.live/api/";
-//export const BASE_URL = "https://49silverstonedrive.ca/webmobischool/api/api/";
+//for testing purpose
+export const BASE_URL =
+  "https://webmobitechnologies.in/webmobischool_dev/api/api/";
+
+//for demo
+//export const BASE_URL ="https://webmobitechnologies.in/webmobischool/"
+
 export const VERIFY_MOBILE_NUMBER = `${BASE_URL}authentication/mobile-no`;
 export const VERIFY_OTP = `${BASE_URL}authentication/otp`;
 export const VERIFY_PROFILE = `${BASE_URL}users/profile`;

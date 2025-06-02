@@ -22,7 +22,10 @@ import { LoaderView } from "../../commonTheme/LoaderView";
 import { AppText, color, fonts, icon, PreferenceKeys } from "../../constant";
 import stylesCommon from "../../commonTheme/stylesCommon";
 import { BackHandler } from "react-native";
-import { DashboardHeaderView } from "../../commonTheme/HeaderView";
+import {
+  DashboardHeaderView,
+  SchoolDetailHeaderView,
+} from "../../commonTheme/HeaderView";
 import {
   DashboardDetailMenu,
   DashboardRawDetailMenu,
@@ -214,11 +217,11 @@ const ParentDashboard = ({ navigation }) => {
     <SafeAreaView style={stylesCommon.safeAreaStyle}>
       <StatusBar backgroundColor={color.APP_PRIMARY} />
 
-      {/* Dashboard Header view UI */}
-      <DashboardHeaderView
+      <SchoolDetailHeaderView
         titile={AppText.DASHBOARD}
         type={"parent"}
         navigation={navigation}
+        showLogout={true}
       />
 
       <FlatList

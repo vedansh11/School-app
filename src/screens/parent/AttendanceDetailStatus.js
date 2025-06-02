@@ -404,8 +404,9 @@ const AttendanceDetailStatus = ({ route, navigation }) => {
                       flexDirection: "row",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      width: "100%",
+                      //width: "100%",
                       marginVertical: 10,
+                      marginHorizontal: 10,
                     }}
                   >
                     <Text
@@ -617,7 +618,7 @@ const AttendanceDetailStatus = ({ route, navigation }) => {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  marginBottom: 30,
+                  marginBottom: 10,
                 }}
               >
                 <View style={{ flexDirection: "row" }}>
@@ -673,6 +674,42 @@ const AttendanceDetailStatus = ({ route, navigation }) => {
                       >
                         <Text style={stylesCommon.StatsCircleText}>26</Text>
                       </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+
+              <View style={{ flexDirection: "row", marginBottom: 30 }}>
+                <View
+                  style={[stylesCommon.line, { backgroundColor: "#667085" }]}
+                />
+                <View
+                  style={[
+                    stylesCommon.dView,
+                    {
+                      backgroundColor: "#EAECF0",
+                      justifyContent: "center",
+                    },
+                  ]}
+                >
+                  <View style={stylesCommon.StatsTextView}>
+                    <Text style={stylesCommon.StatsText}>Week Off</Text>
+                    <View
+                      style={[
+                        stylesCommon.StatsCircle,
+                        {
+                          backgroundColor: "#D0D5DD",
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          stylesCommon.StatsCircleText,
+                          { color: "#667085" },
+                        ]}
+                      >
+                        4
+                      </Text>
                     </View>
                   </View>
                 </View>

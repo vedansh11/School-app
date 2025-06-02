@@ -54,6 +54,7 @@ export default function TeacherStudentProfile({ navigation }) {
         // titile={AppText.DASHBOARD}
         type={"teacher"}
         navigation={navigation}
+        screen={"TeacherStudentProfile"}
         //navigation={props.navigation}
       />
       {/* <SchoolDetailHeaderView
@@ -76,8 +77,8 @@ export default function TeacherStudentProfile({ navigation }) {
               width: "92%",
               marginStart: 14,
               position: "absolute",
-              top: -25,
-              elevation: 3,
+              top: -82,
+              elevation: 2,
               zIndex: 2,
               //marginBottom: 10,
             }}
@@ -159,12 +160,14 @@ export default function TeacherStudentProfile({ navigation }) {
             <View
               style={{
                 backgroundColor: color.WHITE,
-                marginTop: screenWidth / 2.9,
+                marginTop: 75,
                 //top: screenWidth / 2.9,
                 marginHorizontal: 15,
                 padding: 15,
                 borderRadius: 15,
-                elevation: 5,
+                // elevation: 1,
+                borderColor: "#E6E4F4",
+                borderWidth: 1,
               }}
             >
               <View>
@@ -212,7 +215,9 @@ export default function TeacherStudentProfile({ navigation }) {
                 marginHorizontal: 15,
                 padding: 15,
                 borderRadius: 15,
-                elevation: 5,
+                // elevation: 1,
+                borderColor: "#E6E4F4",
+                borderWidth: 1,
               }}
             >
               <View>
@@ -258,13 +263,13 @@ export default function TeacherStudentProfile({ navigation }) {
                 marginHorizontal: 15,
                 padding: 15,
                 borderRadius: 15,
-                elevation: 5,
+                //  elevation: 1,
+                borderColor: "#E6E4F4",
+                borderWidth: 1,
               }}
             >
               <View>
-                <Text style={stylesCommon.sProfileHeading}>
-                  Contact Details
-                </Text>
+                <Text style={stylesCommon.sProfileHeading}>Parents</Text>
               </View>
 
               <View

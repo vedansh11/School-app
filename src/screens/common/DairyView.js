@@ -85,13 +85,102 @@ export const DairyView = (props) => {
     AppText.EFFECTIVE_DATE
   );
   const [dueDateTEXT, setDueDateTEXT] = useState(AppText.DUE_DATE);
+  const [dateText, setDateText] = useState("");
+  const dummySubjectList = [
+    { subject: "English", subjectName: "English" },
+    { subject: "Math", subjectName: "Mathematics" },
+    { subject: "Science", subjectName: "Science" },
+  ];
+
+  const dummyData = [
+    {
+      date: "2025-04-23",
+      records: [
+        {
+          id: "101",
+          noteType: "1", // Homework
+          subjectName: "Math",
+          description: "Complete exercises on fractions",
+          createdAt: "2025-04-23 09:15:00",
+          updatedAt: "2025-04-23 09:15:00",
+          dueDate: "2025-04-24",
+          effectiveDate: "2025-04-23",
+          deletedAt: "0000-00-00 00:00:00",
+          sectionId: "8",
+          subject: "2",
+          isRead: "1",
+        },
+        {
+          id: "102",
+          noteType: "1", // Homework
+          subjectName: "Science",
+          description: "Revise chapter on Solar System",
+          createdAt: "2025-04-23 10:30:00",
+          updatedAt: "2025-04-23 10:30:00",
+          dueDate: "2025-04-25",
+          effectiveDate: "2025-04-23",
+          deletedAt: "0000-00-00 00:00:00",
+          sectionId: "8",
+          subject: "1",
+          isRead: "0",
+        },
+        {
+          id: "103",
+          noteType: "2", // Notification
+          subjectName: "Notification subject title goes here.",
+          description: "Tomorrow is a half-day due to teacher meeting.",
+          createdAt: "2025-04-23 11:00:00",
+          updatedAt: "2025-04-23 11:00:00",
+          dueDate: "2025-04-23",
+          effectiveDate: "2025-04-23",
+          deletedAt: "0000-00-00 00:00:00",
+          sectionId: "8",
+          subject: "0",
+          isRead: "0",
+        },
+        {
+          id: "104",
+          noteType: "3", // Activity
+          subjectName: "Activity",
+          description: "Drawing competition in the art room.",
+          createdAt: "2025-04-23 12:00:00",
+          updatedAt: "2025-04-23 12:00:00",
+          dueDate: "2025-04-23",
+          effectiveDate: "2025-04-23",
+          deletedAt: "0000-00-00 00:00:00",
+          sectionId: "8",
+          subject: "5",
+          isRead: "1",
+        },
+      ],
+    },
+    {
+      date: "2025-04-22",
+      records: [
+        {
+          id: "105",
+          noteType: "1", // Homework
+          subjectName: "English",
+          description: "Write an essay on 'My Favorite Season'.",
+          createdAt: "2025-04-22 10:21:58",
+          updatedAt: "2025-04-22 10:21:58",
+          dueDate: "2025-04-22",
+          effectiveDate: "2025-04-22",
+          deletedAt: "0000-00-00 00:00:00",
+          sectionId: "8",
+          subject: "3",
+          isRead: "0",
+        },
+      ],
+    },
+  ];
 
   useEffect(() => {
     TeacherDiaryAPI("");
 
     if (props.dairyType === "teacher") {
       NoteTypeListAPI();
-      GetSubjectList();
+      // GetSubjectList();
     }
 
     fieldRef?.current?.setValue(moment(date).format("DD/MM/YYYY"));
@@ -216,7 +305,8 @@ export const DairyView = (props) => {
         if (response !== undefined) {
           setScreenLoaderView(false);
           if (JSON.stringify(dateList) != JSON.stringify(response.result))
-            setDateList(response.result);
+            console.log("Here is the date", response.result);
+          setDateList(response.result);
         } else {
           setScreenLoaderView(false);
         }
@@ -231,14 +321,13 @@ export const DairyView = (props) => {
     setTooltip(true);
   };
   const renderItem = ({ item, index }) => {
+    console.log("Here is the item", item);
     var mainIndex = index;
     return (
       <View
-        style={
-          {
-            // flex: 1
-          }
-        }
+        style={{
+          flex: 1,
+        }}
       >
         <Text
           style={{
@@ -353,14 +442,25 @@ export const DairyView = (props) => {
       setNoteTypeSelected("");
     }
     if (item.subject !== "0") {
-      subjectList.map((subjectItem) => {
-        console.log("Subject>>" + JSON.stringify(subjectItem));
-        if (item.subject === subjectItem.subjectId) {
-          console.log(item.subject);
-          setSubjectSelected(subjectItem.subjectName);
+      // subjectList.map((subjectItem) => {
+      //   console.log("Subject>>" + JSON.stringify(subjectItem));
+      //   if (item.subject === subjectItem.subjectId) {
+      //     console.log(item.subject);
+      //     setSubjectSelected(subjectItem.subjectName);
+      //     setSubjectSelectedName(subjectItem.subjectId);
+      //   }
+      // });
+
+      if (dummySubjectList && dummySubjectList.length > 0) {
+        dummySubjectList.map((subjectItem) => {
+          console.log("Subject>>" + JSON.stringify(subjectItem), item.subject);
+          if (item.subjectId === subjectItem.subjectId)
+            setSubjectSelected(subjectItem.subjectName);
           setSubjectSelectedName(subjectItem.subjectId);
-        }
-      });
+        });
+      } else {
+        console.log("subjectList is not available");
+      }
     } else {
       setSubjectSelected("");
       setSubjectSelectedName("");
@@ -475,7 +575,8 @@ export const DairyView = (props) => {
         {label == AppText.SUBJECT && (
           <View style={stylesCommon.inputMainView}>
             <SelectDropdown
-              data={subjectList}
+              // data={subjectList}
+              data={dummySubjectList}
               onSelect={(selectedItem, index) => {
                 // setNoteTypeID(selectedItem.id)
                 setISSubject(-1);
@@ -535,7 +636,7 @@ export const DairyView = (props) => {
           >
             <OutlinedTextField
               ref={effectiveFieldRef}
-              baseColor={color.APP_PRIMARY}
+              //baseColor={color.APP_PRIMARY}
               style={stylesCommon.textFieldView}
               labelTextStyle={{
                 fontFamily: fonts.INTER_SEMIBOLD,
@@ -548,7 +649,8 @@ export const DairyView = (props) => {
               multiline={multiline}
               editable={isEnable}
               returnKeyType="done"
-              autoFocus={false}
+
+              //  autoFocus={true}
             />
             {image != "" ? (
               <View style={stylesCommon.dropdownView}>
@@ -646,7 +748,6 @@ export const DairyView = (props) => {
             <OutlinedTextField
               ref={dueFieldRef}
               style={stylesCommon.textFieldView}
-              baseColor={color.APP_PRIMARY}
               tintColor={color.APP_PRIMARY}
               selectionColor={color.APP_PRIMARY}
               labelTextStyle={{
@@ -758,7 +859,12 @@ export const DairyView = (props) => {
   const renderItemChild = (item, index, mainIndex) => {
     const styles = StyleSheet.create({
       diaryRowView: {
-        backgroundColor: color.COLOR_SECONDARY,
+        backgroundColor:
+          item.noteType === "1"
+            ? color.DAIRY_HW_BG
+            : item.noteType === "2"
+            ? color.DAIRY_NOTI_BG
+            : color.DAIRY_ACTIVITY_BG,
         marginTop: 10,
         marginBottom: 10,
         padding: 15,
@@ -803,7 +909,7 @@ export const DairyView = (props) => {
                       marginEnd: 20,
                       alignContent: "center",
                     }}
-                    source={icon.IC_CLOCK}
+                    source={icon.IC_EDIT_NOTE}
                   ></Image>
                   <View style={{ flexDirection: "column" }}>
                     <Text style={stylesCommon.diaryRowTitle}>
@@ -823,25 +929,69 @@ export const DairyView = (props) => {
               onPress={() => handleClick(index, mainIndex)}
             >
               <View style={{ flexDirection: "row" }}>
-                <Image
+                <View
                   style={{
-                    width: 29,
-                    height: 28,
-
-                    marginEnd: 20,
-                    alignContent: "center",
+                    width: 40,
+                    height: 40,
+                    backgroundColor: "white",
+                    borderRadius: 100,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginEnd: 15,
                   }}
-                  source={icon.IC_CLOCK}
-                ></Image>
-                <View style={{ flexDirection: "column" }}>
-                  <Text style={stylesCommon.diaryRowTitle}>
-                    {item.subjectName}
-                  </Text>
+                >
+                  <Image
+                    style={{
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+
+                      alignContent: "center",
+
+                      tintColor: item.noteType === "2" ? color.APP_PRIMARY : "",
+                    }}
+                    source={
+                      item.noteType === "1"
+                        ? icon.IC_EDIT_NOTE
+                        : item.noteType === "2"
+                        ? icon.IC_NOTIFICATION
+                        : icon.IC_ACITVITY
+                    }
+                  ></Image>
+                  {item.isRead === "0" && (
+                    <Image
+                      source={icon.IC_NOTIFICATION_POINT}
+                      style={[
+                        stylesCommon.notificationPoint,
+                        { top: 8, end: -2 },
+                      ]}
+                    ></Image>
+                  )}
+                </View>
+
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      flex: 1,
+
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={stylesCommon.diaryRowTitle}>
+                      {item.subjectName}
+                    </Text>
+                    <Text style={stylesCommon.diaryTimeView}>
+                      {moment(item.createdAt, "YYYY-MM-DD HH:mm:ss").format(
+                        "HH:mm"
+                      )}
+                    </Text>
+                  </View>
                   <Text style={stylesCommon.diaryRowDescription}>
                     {item.description}
                   </Text>
                 </View>
-                <Text style={stylesCommon.diaryTimeView}>{item.dueDate}</Text>
               </View>
             </TouchableOpacity>
           )
@@ -860,32 +1010,79 @@ export const DairyView = (props) => {
 
           <View style={styles.diaryRowView}>
             <View style={{ flexDirection: "row" }}>
-              <Image
+              <View
                 style={{
-                  width: 29,
-                  height: 28,
-
-                  marginEnd: 20,
-                  alignContent: "center",
+                  width: 40,
+                  height: 40,
+                  backgroundColor: "white",
+                  borderRadius: 100,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginEnd: 15,
                 }}
-                source={icon.IC_EDIT}
-              ></Image>
-              <View style={{ flexDirection: "column" }}>
-                <Text style={stylesCommon.diaryRowTitle}>
-                  {item.subjectName}
-                </Text>
+              >
+                <Image
+                  style={{
+                    width: 20,
+                    height: 20,
+                    justifyContent: "center",
+
+                    alignContent: "center",
+
+                    tintColor: item.noteType === "2" ? color.APP_PRIMARY : "",
+                  }}
+                  source={
+                    item.noteType === "1"
+                      ? icon.IC_EDIT_NOTE
+                      : item.noteType === "2"
+                      ? icon.IC_NOTIFICATION
+                      : icon.IC_ACITVITY
+                  }
+                ></Image>
+                {item.isRead === "0" && (
+                  <Image
+                    source={icon.IC_NOTIFICATION_POINT}
+                    style={[
+                      stylesCommon.notificationPoint,
+                      { top: 8, end: -2 },
+                    ]}
+                  ></Image>
+                )}
+              </View>
+
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flex: 1,
+
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={stylesCommon.diaryRowTitle}>
+                    {item.subjectName}
+                  </Text>
+                  <Text style={stylesCommon.diaryTimeView}>
+                    {moment(item.createdAt, "YYYY-MM-DD HH:mm:ss").format(
+                      "HH:mm"
+                    )}
+                  </Text>
+                </View>
                 <Text style={stylesCommon.diaryRowDescription}>
                   {item.description}
                 </Text>
               </View>
-              <Text style={stylesCommon.diaryTimeView}>{item.dueDate}</Text>
             </View>
           </View>
         )}
       </View>
     );
   };
-
+  function NavigateToSupport() {
+    Preference.SetData(PreferenceKeys.TEACHER_SCHOOL_DETAIL);
+    props.navigation.navigate("TeacherSupport");
+  }
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: color.APP_PRIMARY }} />
@@ -898,7 +1095,10 @@ export const DairyView = (props) => {
           type={props.dairyType}
           navigation={props.navigation}
           screen={"DairyView"}
+          showAddress={true}
+          onSupportClick={() => NavigateToSupport()}
         />
+
         <View
           style={{
             flex: 1,
@@ -944,7 +1144,7 @@ export const DairyView = (props) => {
           <View
             style={{
               flexDirection: "row",
-              marginTop: props.dairyType == "parent" ? 20 : 60,
+              marginTop: props.dairyType == "parent" ? 20 : 100,
               paddingStart: 15,
               paddingEnd: 15,
               //marginTop: (props.dairyType === 'teacher') ? - 25 : 5,
@@ -973,17 +1173,44 @@ export const DairyView = (props) => {
                 }}
                 onChangeText={(text) => setDate(text)}
               />
-              <Image
-                style={{
-                  width: 15,
-                  height: 16,
-                  end: 0,
-                  marginEnd: 20,
-                  alignContent: "center",
-                  position: "absolute",
-                }}
-                source={icon.IC_CALENDAR}
-              ></Image>
+              {dateText !== "" ? (
+                <TouchableOpacity
+                  style={{
+                    width: 24,
+                    height: 24,
+                    position: "absolute",
+                    top: 15,
+                    right: 20,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  onPress={() => {
+                    setDate(new Date()); // resets to today
+                    setFilterDate(false);
+                    setDateText("");
+                    fieldRef?.current?.setValue(""); // clears UI input
+                  }}
+                >
+                  <Image
+                    style={{ width: 24, height: 24 }}
+                    source={icon.IC_DAIRY_CLOSE}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <Image
+                  style={{
+                    width: 15,
+                    height: 16,
+                    end: 0,
+                    marginEnd: 20,
+
+                    top: 20,
+                    alignContent: "center",
+                    position: "absolute",
+                  }}
+                  source={icon.IC_CALENDAR}
+                ></Image>
+              )}
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -995,12 +1222,14 @@ export const DairyView = (props) => {
                 setDate(new Date());
                 TeacherDiaryAPI(new Date());
                 setFilterDate(true);
+                setDateText(moment(new Date()).format("DD/MM/YYYY"));
                 fieldRef?.current?.setValue(
                   moment(new Date()).format("DD/MM/YYYY")
                 );
               }}
             ></TouchableOpacity>
           </View>
+
           <DatePicker
             modal
             mode="date"
@@ -1012,6 +1241,9 @@ export const DairyView = (props) => {
               setDate(date);
               setFilterDate(true);
               TeacherDiaryAPI(date);
+              const formatted = moment(date).format("DD/MM/YYYY");
+              setDateText(formatted);
+
               fieldRef?.current?.setValue(moment(date).format("DD/MM/YYYY"));
             }}
             onCancel={() => {
@@ -1021,7 +1253,8 @@ export const DairyView = (props) => {
 
           <FlatList
             style={{ paddingStart: 15, paddingEnd: 15 }}
-            data={dateList}
+            //data={dateList}
+            data={dummyData}
             scrollEnabled={true}
             //contentContainerStyle={{ minHeight: '100%' }}
             showsVerticalScrollIndicator={false}

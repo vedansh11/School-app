@@ -298,7 +298,8 @@ export const TitileBackgroundView = (props) => {
     <View>
       <View
         style={{
-          height: 60,
+          marginTop: 20,
+          marginBottom: 8,
           alignContent: "center",
           flexDirection: "row",
         }}
@@ -327,8 +328,10 @@ export const TitileBackgroundView = (props) => {
           >
             <View
               style={{
-                width: 100,
-                height: 28,
+                // width: 100,
+                //height: 28,
+                paddingVertical: 6,
+                paddingHorizontal: 5,
                 borderColor: "#564CB8",
                 flex: 1,
                 flexDirection: "row",
@@ -345,6 +348,7 @@ export const TitileBackgroundView = (props) => {
                   style={{
                     height: 16,
                     width: 16,
+                    resizeMode: "contain",
                   }}
                   source={props.secondViewImage}
                 />
@@ -357,6 +361,7 @@ export const TitileBackgroundView = (props) => {
                     alignSelf: "center",
                     fontSize: 13,
                     marginStart: 10,
+                    flex: 1,
                   }}
                 >
                   {props.tagAddSecond}
@@ -424,7 +429,7 @@ export const TitileBackgroundView = (props) => {
             elevation: 5,
             height: 70,
             width: 70,
-            marginTop: 30,
+            marginTop: 65,
             position: "absolute",
           }}
         >
@@ -467,7 +472,16 @@ export const ButtonView = (props) => {
 };
 export const ModelTitleView = (props) => {
   return (
-    <View style={stylesCommon.modelTileView}>
+    <View
+      style={[
+        stylesCommon.modelTileView,
+        {
+          borderBottomWidth: 1,
+          borderBottomColor: "#D0D5DD",
+          marginBottom: 15,
+        },
+      ]}
+    >
       <Text style={props.style ? props.style : stylesCommon.modalText}>
         {props.tiitle}
       </Text>
@@ -523,7 +537,7 @@ export const renderEmptyContainer = (titile, singleLine) => {
   }
 };
 export const RenderItemSupport = (props) => {
-  console.log("Here are ur props Sir...", props.Type);
+  console.log("Here are ur props Sir...", props.type);
 
   return (
     <TouchableOpacity
@@ -540,12 +554,15 @@ export const RenderItemSupport = (props) => {
         style={{
           flex: 0.95,
           backgroundColor: color.WHITE,
-          borderRadius: 7,
+          borderColor: props.type === "New" ? color.APP_PRIMARY : "#EAECF0",
+          borderWidth: 1,
+          borderRadius: 15,
           paddingStart: 15,
           paddingEnd: 15,
           paddingTop: 15,
           paddingBottom: 15,
           flexDirection: "column",
+          opacity: props.type === "Closed" ? 0.5 : 1,
         }}
       >
         <Text
@@ -637,6 +654,7 @@ export const RenderItemSupport = (props) => {
           alignSelf: "baseline",
           end: 0,
           position: "absolute",
+          opacity: props.type === "Closed" ? 0.3 : 1,
         }}
         source={icon.IC_SIDE_ARROW}
       ></Image>

@@ -27,6 +27,9 @@ export const icon = {
   IC_FEES: require("../assets/images/fees.png"),
   IC_TIME_TABLE: require("../assets/images/time-table.png"),
   IC_NOTES: require("../assets/images/notes.png"),
+  IC_EDIT_NOTE: require("../assets/images/edit_note.png"),
+  IC_ACITVITY: require("../assets/images/activity_note.png"),
+
   IC_DATE_CAL: require("../assets/images/date-cal.png"),
   IC_GIRL_IMAGE: require("../assets/images/GIRL-IMAGE.png"),
   IC_UP: require("../assets/images/angle-up.png"),
@@ -39,6 +42,7 @@ export const icon = {
   IC_NOTIFICATION_ROUND: require("../assets/images/IC_Notification.png"),
   IC_CALENDAR: require("../assets/images/date-calendar.png"),
   IC_SYNC: require("../assets/images/sync.png"),
+  IC_DUMMY_GIRL: require("../assets/images/dummy_girl.png"),
   IC_ADD: require("../assets/images/plus.png"),
   IC_CANCEL: require("../assets/images/ic_cancel.png"),
   IC_CALENDAR: require("../assets/images/calendar.png"),
@@ -76,7 +80,21 @@ export const icon = {
   TEACHER: require("../assets/images/teacher.png"),
   PARENT: require("../assets/images/parent.png"),
   IC_CHECK: require("../assets/images/check.png"),
+  IC_DAIRY_CLOSE: require("../assets/images/x-close.png"),
   IC_ALERT: require("../assets/images/alert-triangle.png"),
+  IC_SCHOOL: require("../assets/images/school_icon.png"),
+
+  IC_BAG: require("../assets/images/bag.png"),
+  IC_CATEGORY: require("../assets/images/category_icon.png"),
+  IC_FILTER: require("../assets/images/filter_icon.png"),
+  IC_SHIRT: require("../assets/images/shirt_icon.png"),
+  IC_SHOE: require("../assets/images/shoe_icon.png"),
+  IC_STAR: require("../assets/images/star_icon.png"),
+
+  PRODUCT_1: require("../assets/images/books.png"),
+  PRODUCT_2: require("../assets/images/girls.png"),
+  IC_CART: require("../assets/images/shopping-cart.png"),
+  IC_CART_EDIT: require("../assets/images/edit_cart.png"),
 };
 
 export const fonts = {
@@ -152,20 +170,25 @@ export const color = {
   YELLOW_LIGHT: "#FFF5DB",
   TEXT_COLOR: "#5E6A6D",
   DARK_TEXT: "#264653",
+  DARK_TEXT_TAB: "#101828",
   GREEN: "#4CB877",
   A_ORENG: "#FF8C6C",
   RED: "#EB5757",
   PROGRESS_GREY: "#C5C3D6",
   PER_GREY: "#7F7C9E",
+  DAIRY_HW_BG: "#E4F9EF",
+  DAIRY_NOTI_BG: "#EEEDF8",
+  DAIRY_ACTIVITY_BG: "#EBFBFF",
+  Header_Back_BG: "#41398A",
   // Attendace colors
-  U_BG: "#F5A74C",
-  U_BR: "#F5A74C",
-  A_BG: "#F85050",
-  A_BR: "#F85050",
+  U_BG: "#FEEEEE",
+  U_BR: "#DF4848",
+  A_BG: "#EEEDF8",
+  A_BR: "#564CB8",
   O_BG: "#FEF6ED",
-  O_BR: "#DD9644",
-  P_BG: "#FFF",
-  P_BR: "#41C183",
+  O_BR: "#FCE4C8",
+  P_BG: "#EDFBF4",
+  P_BR: "#3AAB75",
 };
 
 export const ROLEID = {
@@ -181,9 +204,9 @@ export const RECEIVER_TYPE = ["Class Teacher", "Class Admin", "Apps Support"];
 
 export const AppText = {
   // application text
-  APP_NAME: "GREATE MINDS",
-  ALERT_APP_NAME: "Great Minds",
-  //WELCOM_TEXT: "Welcome to\n Great Minds",
+  APP_NAME: "Academica",
+  ALERT_APP_NAME: "Academica",
+
   WELCOM_TEXT: "Welcome back,\nLet's sign you in.",
 
   CONTINUE_PARENT: "Continue as Parent",
@@ -258,4 +281,6 @@ export const AppText = {
     "Profile",
   ],
   AddSupportRequest: "Support Request",
+  START_DATE: "Start Date",
+  END_DATE: "End Date",
 };

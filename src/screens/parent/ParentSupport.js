@@ -18,6 +18,7 @@ import {
   StatusBar,
   Platform,
   Animated,
+  Modal,
 } from "react-native";
 import { AppText, color, fonts, icon, PreferenceKeys } from "../../constant";
 
@@ -27,15 +28,19 @@ import {
   DashboardRawDetailMenu,
   TitileBackgroundView,
   RenderItemSupport,
+  ModelTitleView,
 } from "../../commonTheme/CommonView";
 import * as Preference from "../../storeData/Preference";
-import { DairyView } from "../common/DairyView";
+
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import TeacherSupportTabCommon from "../teacher/TeacherSupportTab";
 import stylesCommon, { SCREEN_WIDTH } from "../../commonTheme/stylesCommon";
-import { screenWidth } from "../../Utills/dimesnion";
+import { screenHeight, screenWidth, vh, vw } from "../../Utills/dimesnion";
+import SelectDropdown from "react-native-select-dropdown";
+import { OutlinedTextField } from "react-native-material-textfield-plus";
 const ParentSupport = ({ navigation }) => {
   const Tab = createMaterialTopTabNavigator();
+  const [ModalVisible, setModalVisible] = useState(false);
   var StudentID;
   var sectionId;
   useEffect(() => {
@@ -43,7 +48,6 @@ const ParentSupport = ({ navigation }) => {
       (student_details) => {
         StudentID = JSON.parse(student_details).id;
         sectionId = JSON.parse(student_details).sectionId;
-        console.log(">>>>>" + student_details);
       }
     );
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -69,134 +73,6 @@ const ParentSupport = ({ navigation }) => {
     navigation.navigate("ParentAddNewRequest");
   }
 
-  const DATA = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Item",
-      isRead: true,
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Item",
-      isRead: true,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-    {
-      title: "Second Item",
-      isRead: false,
-    },
-  ];
-
-  const renderItem = ({ item }) => {
-    return (
-      <View>
-        <RenderItemSupport />
-      </View>
-      // <View style={[stylesCommon.rawMainView,{justifyContent:'center'}]}>
-      // <View style={{
-      //     flex:0.95,
-      //     backgroundColor: color.WHITE,
-      //     borderRadius: 7,
-      //     paddingStart: 15,
-      //     paddingEnd: 10,
-      //     paddingTop:10,
-      //     paddingBottom:10,
-      //     flexDirection: 'column',
-      // }}>
-      //     <Text style={{
-      //         color:color.DARK_TEXT,
-      //         fontSize:16,
-      //         fontFamily:fonts.LATO_REGULAR
-      //     }}>
-      //     Created by Mr. Aadarsh Solanki
-      //     </Text>
-      //     <Text style={{
-      //         color:color.DARK_TEXT,
-      //         fontSize:12,
-      //         fontFamily:fonts.LATO_REGULAR,
-      //         marginTop:2
-      //     }}>
-      //     #DPSJ45286
-      //     </Text>
-      //     <Text style={{
-      //         color:color.TEXT_COLOR,
-      //         fontFamily:fonts.LATO_REGULAR,
-      //         marginTop:10,
-      //         fontSize:11,
-      //         marginEnd:20,
-      //     }}>
-      //   {'Amet minim mollit non deserunt ullamco est sit\naliqua dolor do amet sint. ..'}
-      //     </Text>
-      // </View>
-
-      // <Image style={{
-      //     height:16,
-      //     width:10,
-      //     resizeMode:'contain',
-      //     marginEnd:20,
-      //     alignSelf:'baseline',
-      //     end:0,
-      //     position:'absolute'
-      // }}
-      // source={icon.IC_SIDE_ARROW}></Image>
-      // <Text style={{
-      //         color:color.GREY,
-      //         fontSize:10,
-      //         fontFamily:fonts.LATO_REGULAR,
-      //         marginTop:10,
-      //         marginEnd:20,
-      //         end:0,
-      //         top:0,
-      //         position:'absolute'
-      //     }}>
-      //    April  2, 2022
-      //     </Text>
-      // </View>
-    );
-  };
   const MyTabBar = ({ state, descriptors, navigation, position }) => {
     return (
       <View
@@ -204,7 +80,7 @@ const ParentSupport = ({ navigation }) => {
           flexDirection: "row",
           backgroundColor: "#EEEDF8",
           borderRadius: 50,
-          width: screenWidth - 100,
+          width: screenWidth - 30,
           flex: 0.07,
         }}
       >
@@ -265,7 +141,7 @@ const ParentSupport = ({ navigation }) => {
                   fontSize: 12,
                   fontFamily: fonts.INTER,
                   fontWeight: "700",
-                  color: isFocused ? color.DARK_TEXT : color.GREY,
+                  color: isFocused ? color.DARK_TEXT_TAB : color.GREY,
                   paddingVertical: 7,
                   // marginHorizontal:10,
                   paddingHorizontal: 15,
@@ -324,6 +200,153 @@ const ParentSupport = ({ navigation }) => {
     );
   };
 
+  const AddSupportRequest = () => {
+    return (
+      <View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={ModalVisible}
+          onRequestClose={() => setModalVisible(!ModalVisible)}
+        >
+          <View
+            style={{
+              height: "100%",
+              position: "absolute",
+
+              start: 0,
+              end: 0,
+
+              backgroundColor: "rgba(0,0,0,0.3)",
+
+              justifyContent: "center",
+              alignSelf: "center",
+            }}
+          >
+            <View style={stylesCommon.supportModalView}>
+              <ModelTitleView
+                tiitle={AppText.AddSupportRequest}
+                onPressClose={() => setModalVisible(false)}
+              />
+              <View style={{ marginBottom: 20, width: "100%" }}>
+                <View style={stylesCommon.inputMainView}>
+                  <SelectDropdown
+                    data={[
+                      "Navrachna Primary School",
+                      "DonBosco School",
+                      "ST Basil",
+                    ]}
+                    onSelect={(selectedItem, index) => {
+                      //setSchool(selectedItem.id);
+                    }}
+                    defaultButtonText={"Select School"}
+                    // buttonTextAfterSelection={(selectedItem,index)=>{
+                    //   return selectedItem.schoolName
+                    // }}
+                    buttonTextStyle={{
+                      textAlign: "left",
+                      fontSize: 20,
+                      color: color.DARK_TEXT,
+                      fontFamily: fonts.INTER,
+                    }}
+                    buttonStyle={stylesCommon.dropdownStyle}
+                    renderDropdownIcon={(isOpened) => {
+                      return (
+                        <View
+                          style={{
+                            resizeMode: "contain",
+                            height: "100%",
+                            paddingEnd: 15,
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Image
+                            style={stylesCommon.dropImage}
+                            source={icon.IC_DOWN_ARROW}
+                          ></Image>
+                        </View>
+                      );
+                    }}
+                    dropdownIconPosition={"right"}
+                    dropdownStyle={{ backgroundColor: color.WHITE }}
+                    rowStyle={{
+                      backgroundColor: color.WHITE,
+                      borderBottomWidth: 0,
+                    }}
+                    rowTextStyle={{
+                      color: color.DARK_TEXT,
+                      textAlign: "left",
+                      fontFamily: fonts.INTER,
+                      paddingHorizontal: vw(10),
+                    }}
+                  />
+                  <View style={stylesCommon.inputMainView}>
+                    <OutlinedTextField
+                      label={"Message"}
+                      tintColor={color.APP_PRIMARY}
+                      selectionColor={color.APP_PRIMARY}
+                      height={50}
+                      multiline={true}
+                      editable={true}
+                      keyboardShouldPersistTaps={"always"}
+                      keyboardDismissMode={"on-drag"}
+                      returnKeyType="return"
+                      autoFocus={false}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+
+                      marginTop: 5,
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "#FF6D4C",
+                        borderRadius: 50,
+                        paddingVertical: 15,
+                        paddingHorizontal: 20,
+                        alignSelf: "center",
+                        backgroundColor: "#CBC8E9",
+                      }}
+                    >
+                      <Text
+                        style={
+                          ([stylesCommon.primaryButtonText],
+                          {
+                            color: "#272253",
+                            textAlign: "center",
+                            fontFamily: fonts.INTER_SEMIBOLD,
+                            fontSize: 16,
+                          })
+                        }
+                      >
+                        Cancel
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "#FF6D4C",
+                        borderRadius: 50,
+                        paddingVertical: 15,
+                        paddingHorizontal: 55,
+                        alignSelf: "center",
+                      }}
+                    >
+                      <Text style={stylesCommon.primaryButtonText}>Submit</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    );
+  };
+
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: color.APP_PRIMARY }} />
@@ -334,6 +357,7 @@ const ParentSupport = ({ navigation }) => {
           type={"parent"}
           navigation={navigation}
           screen={"ParentSupport"}
+          showAddress={true}
         />
         <View
           style={{
@@ -347,51 +371,24 @@ const ParentSupport = ({ navigation }) => {
             secondViewImage={icon.IC_ADD}
             isSecondviewRequired={true}
             tagAddSecond={"Request"}
-            onSecondViewClick={AddNewRequest}
+            onSecondViewClick={() => {
+              setModalVisible(true);
+            }}
           />
           <View
             style={{
               marginStart: 15,
+              marginTop: 10,
               marginEnd: 15,
+
               flexDirection: "row",
               flex: 1,
-              backgroundColor: color.WHITE,
             }}
           >
             {MyTabs()}
-
-            <View
-              style={{
-                backgroundColor: "#EEEDF8",
-                //  backgroundColor: "#fff",
-                width: screenWidth / 4,
-                height: 39,
-                borderTopEndRadius: 50,
-                borderBottomEndRadius: 50,
-                position: "absolute",
-                right: 0,
-              }}
-            />
           </View>
-          {/* <FlatList
-                    data={DATA}
-                    renderItem={(item) =>
-                        <RenderItemSupport
-                            createdName={'Created by Mr. Aadarsh Solanki'}
-                            supportDiscription={'Amet minim mollit non deserunt ullamco est sit\naliqua dolor do amet sint. ..'}
-                            NumberDSP={'#DPSJ45286'}
-                            date={'April  2, 2022'}
-                            onClick = {onSupportClick}
-                        />}
-                    style={{
-                        marginStart: 20,
-                        marginEnd: 20,
-                        marginTop: 10,
-                        marginBottom: 30,
-                    }}
-                    showsVerticalScrollIndicator={false}
-                /> */}
         </View>
+        {ModalVisible && AddSupportRequest()}
       </SafeAreaView>
     </>
   );

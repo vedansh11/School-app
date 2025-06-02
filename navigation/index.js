@@ -34,6 +34,9 @@ import PaymentOrderScreen from "../src/screens/parent/Payment";
 import TeacherDashboard2 from "../src/screens/teacher/TeacherDashboard2";
 import { MenuProvider } from "react-native-popup-menu";
 import TeacherStudentProfile from "../src/screens/teacher/TeacherStudentProfile";
+import Products from "../src/screens/ecommerce/Products";
+import ProductDetails from "../src/screens/ecommerce/ProductDetails";
+import Cart from "../src/screens/ecommerce/Cart";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +45,27 @@ export default function navigation() {
     <MenuProvider>
       <NavigationContainer>
         <Stack.Navigator>
+          {/* <Stack.Screen
+            name="Products"
+            options={{
+              headerShown: false,
+            }}
+            component={Products}
+          />
+          <Stack.Screen
+            name="Cart"
+            options={{
+              headerShown: false,
+            }}
+            component={Cart}
+          />
+          <Stack.Screen
+            name="ProductDetails"
+            options={{
+              headerShown: false,
+            }}
+            component={ProductDetails}
+          /> */}
           <Stack.Screen
             name="LandingScreen"
             options={{

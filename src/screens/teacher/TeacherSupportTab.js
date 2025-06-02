@@ -31,6 +31,113 @@ const TeacherSupportTabCommon = (props) => {
   const Role = props.route.params.role;
   const sectionID = props.route.params.sectionid;
   // const ID = props.route.params.id;
+  //  New Messages
+  const DATA = [
+    {
+      id: "201",
+      senderId: "1",
+      receiverId: "49",
+      message: "How do I access the online class?",
+      createdAt: "2025-05-08 09:00:00",
+      updatedAt: "2025-05-08 09:00:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "0",
+      sectionId: "8",
+      section: "A",
+      className: "I",
+      fullName: "Kandarp Rajpara",
+      status: "0",
+    },
+    {
+      id: "202",
+      senderId: "1",
+      receiverId: "38",
+      message: "When will the test result be published?",
+      createdAt: "2025-05-08 09:05:00",
+      updatedAt: "2025-05-08 09:05:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "0",
+      sectionId: "8",
+      section: "A",
+      className: "I",
+      fullName: "Kandarp Rajpara",
+      status: "0",
+    },
+  ];
+
+  //  Replied Messages
+  const DATA_1 = [
+    {
+      id: "203",
+      senderId: "1",
+      receiverId: "38",
+      message: "Thanks for the update!",
+      createdAt: "2025-05-08 09:10:00",
+      updatedAt: "2025-05-08 09:10:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "202",
+      sectionId: "8",
+      section: "A",
+      className: "I",
+      fullName: "Kandarp Rajpara",
+      status: "1",
+    },
+    {
+      id: "204",
+      senderId: "38",
+      receiverId: "1",
+      message: "Results will be out by next week.",
+      createdAt: "2025-05-08 09:15:00",
+      updatedAt: "2025-05-08 09:15:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "202",
+      sectionId: "8",
+      section: "A",
+      className: "I",
+      fullName: "Teacher A",
+      status: "1",
+    },
+  ];
+
+  // Closed Messages
+  const DATA_2 = [
+    {
+      id: "205",
+      senderId: "1",
+      receiverId: "38",
+      message: "Issue resolved. Thank you!",
+      createdAt: "2025-05-08 09:20:00",
+      updatedAt: "2025-05-08 09:20:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "202",
+      sectionId: "8",
+      section: "A",
+      className: "I",
+      fullName: "Kandarp Rajpara",
+      status: "2",
+    },
+    {
+      id: "206",
+      senderId: "38",
+      receiverId: "1",
+      message: "You're welcome!",
+      createdAt: "2025-05-08 09:22:00",
+      updatedAt: "2025-05-08 09:22:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "202",
+      sectionId: "8",
+      section: "A",
+      className: "I",
+      fullName: "Teacher A",
+      status: "2",
+    },
+  ];
 
   console.log("Type is", Type);
   useEffect(() => {
@@ -95,6 +202,7 @@ const TeacherSupportTabCommon = (props) => {
         if (response !== undefined) {
           if (response.result.length > 0) {
             setNoData(false);
+            console.log("Here is the response list", response.result);
             setListData(response.result);
           } else {
             setNoData(true);
@@ -179,7 +287,9 @@ const TeacherSupportTabCommon = (props) => {
 
   function onSupportClick(requestID) {
     props.navigation.navigate("ParentSupportDetails", {
-      requestID: requestID,
+      requestID: 119,
+      //puttingStatic for testing
+      //requestID: requestID,
       type: Role,
       tab: Type,
     });
@@ -189,8 +299,16 @@ const TeacherSupportTabCommon = (props) => {
     <View style={{ flex: 1, backgroundColor: color.WHITE }}>
       {console.log("Here is the list data", listData)}
       <FlatList
-        // data={(Type == 'New') ? DATA : (Type == 'Replied') ? DATA_1 : (Type == 'Closed') ? DATA_2 : null }
-        data={listData}
+        data={
+          Type == "New"
+            ? DATA
+            : Type == "Replied"
+            ? DATA_1
+            : Type == "Closed"
+            ? DATA_2
+            : null
+        }
+        // data={listData}
         renderItem={
           (item) => (
             <RenderItemSupport
@@ -207,10 +325,14 @@ const TeacherSupportTabCommon = (props) => {
               onClick={onSupportClick}
             />
           )
+
           // Role == 'parent' ? null :
         }
+        showsVerticalScrollIndicator={false}
       />
-      {noData && <EmptyView />}
+      {/* For Testing purpose commenting the below line please remove while real data  */}
+
+      {/* {noData && <EmptyView />} */}
 
       {backgroundLoaderView && (
         <View

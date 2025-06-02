@@ -91,7 +91,7 @@ export function TimeTableView(props) {
   const [endTime, setEndTime] = useState(new Date());
   const [endTimeOpen, setEndTimeOpen] = useState(false);
   const [isSaveData, setSaveData] = useState();
-  const [value, setValue] = useState(AppText.WEEKDAYS[today.getDay()]);
+
   const [timetableID, setTimetableID] = useState(0);
   const [clickIndex, setIndex] = useState();
   const [refreshList, setRefreshList] = useState(false);
@@ -101,13 +101,105 @@ export function TimeTableView(props) {
   const [selectedIndex, setSelectedIndex] = useState();
   const [isVisible, setIsVisible] = useState(true);
   const [subjectList, setSubjectList] = useState([]);
-  const [subjectSelected, setSubjectSelected] = useState("");
+
   const [subjectSelectedName, setSubjectSelectedName] = useState("");
   const [startTimeTEXT, setStartTimeTEXT] = useState(AppText.START_TIME);
   const [endTimeTEXT, setEndTimeTEXT] = useState(AppText.END_TIME);
-  const [isSubject, setISSubject] = useState(-1);
+
+  const [subjectSelected, setSubjectSelected] = useState(""); // For Subject dropdown
+  const [value, setValue] = useState(""); // For Day dropdown
+  const [isSubject, setISSubject] = useState(0);
 
   const scrollY = useRef(new Animated.Value(0)).current;
+
+  const dummySubjectList = [
+    { subjectId: "ENG101", subjectName: "English" },
+    { subjectId: "MATH201", subjectName: "Mathematics" },
+    { subjectId: "SCI301", subjectName: "Science" },
+    { subjectId: "SOC501", subjectName: "Social Study" },
+    { subjectId: "HIN401", subjectName: "Hindi" },
+    { subjectId: "DRAW601", subjectName: "Drawing" },
+  ];
+
+  const dummyData = [
+    {
+      id: "1",
+      subjectId: "MATH201",
+      subjectName: "Maths",
+      startTime: "07:40 AM",
+      endTime: "08:25 AM",
+      roomNo: "04",
+      topic: "Integration and derivation",
+      isBreak: false,
+    },
+    {
+      id: "2",
+      subjectId: "SCI301",
+      subjectName: "Science",
+      startTime: "09:45 AM",
+      endTime: "10:30 AM",
+      roomNo: "04",
+      topic:
+        "<p>Due date for the term fee is 26 July, 2023. Your prompt attention to this matter is greatly appreciated.</p>",
+      isBreak: false,
+    },
+    {
+      id: "3",
+      subjectName: "Break",
+      startTime: "10:30 AM",
+      duration: "15 Mins",
+      roomNo: "",
+      isBreak: true,
+    },
+    {
+      id: "4",
+      subjectId: "ENG101",
+      subjectName: "English",
+      startTime: "10:45 AM",
+      endTime: "11:30 AM",
+      roomNo: "04",
+      topic: "<p>Grammar Practice: Tenses</p>",
+      isBreak: false,
+    },
+    {
+      id: "5",
+      subjectId: "SOC501",
+      subjectName: "Social Study",
+      startTime: "11:40 AM",
+      endTime: "12:25 PM",
+      roomNo: "04",
+      topic: "<p>Geography: Indian Rivers</p>",
+      isBreak: false,
+    },
+    {
+      id: "6",
+      subjectName: "Lunch",
+      startTime: "12:30 PM",
+      duration: "15 Mins",
+      roomNo: "",
+      isBreak: true,
+    },
+    {
+      id: "7",
+      subjectId: "HIN401",
+      subjectName: "Hindi",
+      startTime: "12:45 PM",
+      endTime: "01:30 PM",
+      roomNo: "04",
+      topic: "<p>Vyakaran: Sangya and Sarvanaam</p>",
+      isBreak: false,
+    },
+    {
+      id: "8",
+      subjectId: "DRAW601",
+      subjectName: "Drawing",
+      startTime: "01:40 PM",
+      endTime: "02:25 PM",
+      roomNo: "Art Room",
+      topic: "<p>Sketching fruits using pencil shading</p>",
+      isBreak: false,
+    },
+  ];
 
   useEffect(() => {
     startFieldRef?.current?.setValue(moment(startTime).format("hh:mm A"));
@@ -133,43 +225,43 @@ export function TimeTableView(props) {
     }
   }, [SelectedWeek, subject, topic, startTime, endTime]);
 
-  useEffect(() => {
-    GetSubjectList();
-  }, []);
+  // useEffect(() => {
+  //   GetSubjectList();
+  // }, []);
 
-  async function GetSubjectList() {
-    let loginFormData = new FormData();
-    loginFormData.append("classId", props.sectionId);
+  // async function GetSubjectList() {
+  //   let loginFormData = new FormData();
+  //   loginFormData.append("classId", props.sectionId);
 
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
-    axiosCallAPI(
-      "post",
-      Utills.SUBJECT_LIST,
-      loginFormData,
-      requestOptions,
-      true,
-      props.navigation
-    ).then((response) => {
-      console.log("_______________");
-      console.log(response);
-      console.log("_______________");
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "multipart/form-data",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+  //   axiosCallAPI(
+  //     "post",
+  //     Utills.SUBJECT_LIST,
+  //     loginFormData,
+  //     requestOptions,
+  //     true,
+  //     props.navigation
+  //   ).then((response) => {
+  //     console.log("_______________");
+  //     console.log(response);
+  //     console.log("_______________");
 
-      // var subjectarray = [];
-      // response.map((item) =>{
-      //       subjectarray.push(item.subjectName);
-      // });
-      setSubjectList(response);
-      // if (JSON.stringify(noteType) !== JSON.stringify(response.result))
+  //     // var subjectarray = [];
+  //     // response.map((item) =>{
+  //     //       subjectarray.push(item.subjectName);
+  //     // });
+  //     setSubjectList(response);
+  //     // if (JSON.stringify(noteType) !== JSON.stringify(response.result))
 
-      //     setNoteType(response.result)
-    });
-  }
+  //     //     setNoteType(response.result)
+  //   });
+  // }
   async function fetchData() {
     await flatListRef?.current?.scrollToIndex({
       animated: false,
@@ -207,12 +299,26 @@ export function TimeTableView(props) {
     );
 
     if (item.subject !== "0") {
-      subjectList.map((subjectItem) => {
-        console.log("Subject>>" + JSON.stringify(subjectItem));
-        if (item.subject === subjectItem.subjectId)
-          setSubjectSelected(subjectItem.subjectName);
-        setSubjectSelectedName(subjectItem.subjectId);
-      });
+      // if (subjectList && subjectList.length > 0) {
+      //   subjectList.map((subjectItem) => {
+      //     console.log("Subject>>" + JSON.stringify(subjectItem));
+      //     if (item.subject === subjectItem.subjectId)
+      //       setSubjectSelected(subjectItem.subjectName);
+      //     setSubjectSelectedName(subjectItem.subjectId);
+      //   });
+
+      // }
+
+      if (dummySubjectList && dummySubjectList.length > 0) {
+        dummySubjectList.map((subjectItem) => {
+          console.log("Subject>>" + JSON.stringify(subjectItem), item.subject);
+          if (item.subjectId === subjectItem.subjectId)
+            setSubjectSelected(subjectItem.subjectName);
+          setSubjectSelectedName(subjectItem.subjectId);
+        });
+      } else {
+        console.log("subjectList is not available");
+      }
     } else {
       setSubjectSelected("");
       setSubjectSelectedName("");
@@ -247,6 +353,7 @@ export function TimeTableView(props) {
 
     axiosCallAPI("get", tableURL, "", requestOptions, true, props.navigation)
       .then((response) => {
+        console.log("TT data", props.sectionId, SelectedWeek, response);
         setLoaderView(false);
         if (response !== undefined) {
           if (JSON.stringify(dateList) != JSON.stringify(response.result)) {
@@ -332,46 +439,26 @@ export function TimeTableView(props) {
   }
   const InputView = (label, isEnable, image, multiline) => {
     return (
-      <View style={stylesCommon.inputMainView}>
-        {/* {
-                    (label == AppText.SUBJECT) &&
-                    <View style={stylesCommon.inputMainView}>
-                        <OutlinedTextField
-                            ref={subjectRef}
-                            style={stylesCommon.textFieldView}
-                            tintColor={color.APP_PRIMARY}
-                            selectionColor={color.APP_PRIMARY}
-                            label={label}
-                            height={80}
-                            multiline={multiline}
-                            editable={isEnable}
-                            returnKeyType='done'
-                            error={(!isSaveData && isSaveData != undefined) && subject.length === 0 && AppText.ENTER_SUBJECT}
-                            autoFocus={false}
-                            onChangeText={(text) => setSubject(text)}
-                        />
-                        {
-                            (image != '') ?
-                                <View style={stylesCommon.dropdownView}>
-                                    <Image style={stylesCommon.dropImage}
-                                        source={image}>
-                                    </Image>
-                                </View> : null
-                        }
-
-                    </View>
-                } */}
+      <View
+        style={[stylesCommon.inputMainView, { marginTop: 0, marginBottom: 0 }]}
+      >
         {label == AppText.SUBJECT && (
-          <View style={stylesCommon.inputMainView}>
+          <View
+            style={[
+              stylesCommon.inputMainView,
+              { marginTop: 0, marginBottom: 10 },
+            ]}
+          >
             <SelectDropdown
-              data={subjectList}
+              // data={subjectList}
+              data={dummySubjectList}
               onSelect={(selectedItem, index) => {
                 // setNoteTypeID(selectedItem.id)
                 setISSubject(-1);
-                setSubjectSelectedName(selectedItem.subjectId);
+                setSubjectSelectedName(selectedItem);
               }}
               defaultButtonText={
-                subjectSelected === "" ? "Select Subject" : subjectSelected
+                subjectSelected === "" ? "Subject" : subjectSelected
               }
               //    defaultButtonText={'Select note type'}
               // defaultValueByIndex={0}
@@ -417,7 +504,12 @@ export function TimeTableView(props) {
           </View>
         )}
         {label == AppText.TOPIC && (
-          <View style={stylesCommon.inputMainView}>
+          <View
+            style={[
+              stylesCommon.inputMainView,
+              { marginTop: 0, marginBottom: 0 },
+            ]}
+          >
             <OutlinedTextField
               ref={topicRef}
               style={stylesCommon.textFieldView}
@@ -447,12 +539,13 @@ export function TimeTableView(props) {
         {label == AppText.DAY && (
           <View style={stylesCommon.inputMainView}>
             <SelectDropdown
-              // data={AppText.WEEKDAYS}
+              //  data={AppText.WEEKDAYS}
               data={AppText.WEEKDAYS}
               onSelect={(selectedItem, index) => {
+                console.log("Sel", selectedItem);
                 setValue(selectedItem);
               }}
-              defaultButtonText={value}
+              //defaultButtonText={value}
               buttonTextAfterSelection={(selectedItem, index) => {
                 return selectedItem;
               }}
@@ -490,7 +583,7 @@ export function TimeTableView(props) {
       >
         {label == AppText.START_TIME && (
           <TouchableOpacity
-            style={[stylesCommon.inputMainView]}
+            style={[stylesCommon.inputMainView, { marginBottom: 15 }]}
             onPress={() => setStartTimeOpen(true)}
           >
             <OutlinedTextField
@@ -500,7 +593,7 @@ export function TimeTableView(props) {
                 { fontSize: normalize(20), marginEnd: 0 },
               ]}
               tintColor={color.APP_PRIMARY}
-              baseColor={color.APP_PRIMARY}
+              //baseColor={color.APP_PRIMARY}
               selectionColor={color.APP_PRIMARY}
               label={startTimeTEXT}
               height={80}
@@ -533,7 +626,7 @@ export function TimeTableView(props) {
         )}
         {label == AppText.END_TIME && (
           <TouchableOpacity
-            style={[stylesCommon.inputMainView]}
+            style={[stylesCommon.inputMainView, { marginBottom: 15 }]}
             onPress={() => setEndTimeOpen(true)}
           >
             <OutlinedTextField
@@ -542,7 +635,7 @@ export function TimeTableView(props) {
                 stylesCommon.textFieldView,
                 { fontSize: normalize(20), marginEnd: 0 },
               ]}
-              baseColor={color.APP_PRIMARY}
+              // baseColor={color.APP_PRIMARY}
               tintColor={color.APP_PRIMARY}
               selectionColor={color.APP_PRIMARY}
               label={endTimeTEXT}
@@ -625,6 +718,16 @@ export function TimeTableView(props) {
   //         str = str.toString();
   //     return str.replace(/(<([^>]+)>)/ig, '');
   // }
+
+  const resetModalData = () => {
+    setSubjectSelected(""); // Reset the subject dropdown
+    setISSubject(0); // Reset the subject error state
+    setTopic(""); // Reset the topic field
+    setTopicHTML(""); // Reset the HTML content in the rich text editor
+    setValue(""); // Reset the day value
+    setStartTime(""); // Reset the start time
+    setEndTime(""); // Reset the end time
+  };
   const TeacherAddPeriodModel = () => {
     return (
       <Modal
@@ -633,6 +736,7 @@ export function TimeTableView(props) {
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
+          resetModalData();
         }}
       >
         <View style={styles.centeredView}>
@@ -644,7 +748,7 @@ export function TimeTableView(props) {
             <View style={styles.modalView}>
               <ModelTitleView
                 // tiitle={isEdit ? AppText.EDIT_PERIOD : AppText.ADD_PERIOD}
-                tiitle={isEdit ? "Timetable" : "Edit Timetable"}
+                tiitle={"Timetable"}
                 onPressClose={() => renderCloseClick()}
               />
 
@@ -669,80 +773,10 @@ export function TimeTableView(props) {
                   )}
                   {InputViewRow(AppText.END_TIME, false, icon.IC_CLOCK, false)}
                 </View>
+
                 {InputView(AppText.SUBJECT, false, icon.IC_DOWN_ARROW, false)}
-                {/* {InputView(AppText.TOPIC, true, '', true)} */}
-              </View>
 
-              <Text
-                style={{
-                  color:
-                    isEditTopicEmpty && topic.length === 0
-                      ? color.RED
-                      : isEditTopic
-                      ? color.COLOR_PRIMARY
-                      : color.GREY,
-                  paddingBottom: vh(2),
-                  marginStart: vw(2),
-                  fontSize: normalize(14),
-                  alignSelf: "flex-start",
-                }}
-              >
-                {AppText.TOPIC}
-              </Text>
-
-              <View
-                style={{
-                  width: "100%",
-                  marginBottom: vh(30),
-                  borderWidth: vh(1),
-                  borderRadius: vw(5),
-                  paddingTop: vh(5),
-                  borderColor:
-                    isEditTopicEmpty && topic.length === 0
-                      ? color.RED
-                      : isEditTopic
-                      ? color.COLOR_PRIMARY
-                      : color.GREY,
-                }}
-              >
-                <RichEditor
-                  ref={richText}
-                  containerStyle={{
-                    flex: 0,
-                    fontSize: normalize(20),
-                    minHeight: vh(120),
-                    color: color.DARK_TEXT,
-                    fontFamily: fonts.LATO_BOLD,
-                  }}
-                  initialContentHTML={topicHTML}
-                  setContentFocusHandler={(focus) => console.log(focus)}
-                  useContainer={false}
-                  onSelectedTagChanged={true}
-                  onChange={(text) => {
-                    if (text != "") {
-                      setTopicHTML(text);
-                    }
-                    if (removeHTML(text)) {
-                      setEditTopic(true);
-                      setTopic(removeHTML(text));
-                    } else setEditTopic(false);
-                  }}
-                />
-
-                <RichToolbar
-                  style={{
-                    paddingVertical: vh(5),
-                    backgroundColor: color.WHITE,
-                    borderBottomStartRadius: vw(5),
-                    borderBottomEndRadius: vw(5),
-                  }}
-                  selectedButtonStyle={{
-                    backgroundColor: color.LIGHT_GREY,
-                    borderRadius: vw(5),
-                    margin: vh(2),
-                  }}
-                  editor={richText}
-                />
+                {InputView(AppText.TOPIC, true, "", true)}
               </View>
 
               {loaderView === true ? (
@@ -770,7 +804,7 @@ export function TimeTableView(props) {
   const renderItem = ({ item, index }) => (
     <View
       style={{
-        backgroundColor: "#EAECF0",
+        backgroundColor: index === clickIndex ? "#FEEEEE" : "#EAECF0",
         borderRadius: 10,
         marginTop: 10,
         flexDirection: "column",
@@ -778,22 +812,36 @@ export function TimeTableView(props) {
     >
       <TouchableOpacity
         style={{
-          backgroundColor: "#EAECF0",
+          backgroundColor:
+            item.roomNo === ""
+              ? "#FCE4C8"
+              : index === clickIndex
+              ? "#FEEEEE"
+              : "#EAECF0",
           borderRadius: 10,
           alignContent: "center",
           flexDirection: "row",
         }}
         onPress={() => {
-          index === clickIndex ? clickUp() : clickDown(index);
+          if (item.roomNo !== "") {
+            index === clickIndex ? clickUp() : clickDown(index);
+          }
         }}
+        activeOpacity={item.roomNo === "" ? 1 : 0.2}
       >
         <View style={{ flexDirection: "column" }}>
-          <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+          <View
+            style={{
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+            }}
+          >
             <Text
               style={{
                 fontFamily: fonts.INTER,
                 fontSize: 16,
-                color: "#1D2939",
+
+                color: item.roomNo === "" ? "#93642E" : "#1D2939",
               }}
             >
               {item.subjectName}
@@ -802,25 +850,46 @@ export function TimeTableView(props) {
               style={{
                 fontFamily: fonts.INTER,
                 fontSize: 12,
-                color: "#667085",
+                color: item.roomNo === "" ? "#93642E" : "#667085",
+                marginTop: 6,
               }}
             >
-              {item.startTime + " - " + item.endTime}
+              {item.endTime
+                ? `${item.startTime} - ${item.endTime}`
+                : item.startTime}
             </Text>
           </View>
         </View>
-        <Text
-          style={{
-            position: "absolute",
-            right: screenWidth / 5,
-            bottom: 10,
-            color: "#667085",
-            fontFamily: fonts.INTER,
-            fontSize: 12,
-          }}
-        >
-          Room No.: 04
-        </Text>
+        {item.roomNo != "" && (
+          <Text
+            style={{
+              position: "absolute",
+              right: screenWidth / 5,
+              bottom: 10,
+              color: "#667085",
+              fontFamily: fonts.INTER,
+              fontSize: 12,
+            }}
+          >
+            Room No.: 04
+          </Text>
+        )}
+
+        {item.duration != "" && (
+          <Text
+            style={{
+              position: "absolute",
+              right: 15,
+              bottom: 10,
+              color: "#93642E",
+              fontFamily: fonts.INTER,
+              fontSize: 12,
+            }}
+          >
+            {item.duration != "" ? item.duration : "10 Mins"}
+          </Text>
+        )}
+
         {/* <View
           style={{
             marginHorizontal: 15,
@@ -858,53 +927,55 @@ export function TimeTableView(props) {
           </Text>
         </View> */}
 
-        {index === clickIndex ? (
-          <View
-            style={{
-              marginHorizontal: 15,
-              position: "absolute",
-              end: 0,
-              alignSelf: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image
+        {item.topic ? (
+          index === clickIndex ? (
+            <View
               style={{
-                height: 24,
-                width: 24,
-                marginEnd: 5,
-                resizeMode: "contain",
+                marginHorizontal: 15,
+                position: "absolute",
+                end: 0,
+                alignSelf: "center",
+                justifyContent: "center",
               }}
-              source={icon.IC_BLACK_UP_ARROW}
-            ></Image>
-          </View>
-        ) : (
-          <View
-            style={{
-              marginHorizontal: 15,
-              position: "absolute",
-              end: 0,
-              alignSelf: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image
+            >
+              <Image
+                style={{
+                  height: 24,
+                  width: 24,
+                  marginEnd: 5,
+                  resizeMode: "contain",
+                }}
+                source={icon.IC_BLACK_UP_ARROW}
+              />
+            </View>
+          ) : (
+            <View
               style={{
-                height: 24,
-                width: 24,
-                marginEnd: 5,
-                resizeMode: "contain",
+                marginHorizontal: 15,
+                position: "absolute",
+                end: 0,
+                alignSelf: "center",
+                justifyContent: "center",
               }}
-              source={icon.IC_BLACK_DOWN_ARROW}
-            ></Image>
-          </View>
-        )}
+            >
+              <Image
+                style={{
+                  height: 24,
+                  width: 24,
+                  marginEnd: 5,
+                  resizeMode: "contain",
+                }}
+                source={icon.IC_BLACK_DOWN_ARROW}
+              />
+            </View>
+          )
+        ) : null}
       </TouchableOpacity>
       {index === clickIndex ? (
         <View>
           <View
             style={{
-              backgroundColor: color.WHITE,
+              backgroundColor: index === clickIndex ? "#FFD2C8" : color.WHITE,
               height: 0.5,
               marginHorizontal: vh(15),
             }}
@@ -928,17 +999,18 @@ export function TimeTableView(props) {
             >
               {"Topic".toUpperCase()}
             </Text>
-            <Text
-              style={{
-                color: "#667085",
-                //fontWeight: "700",
-                fontSize: 12,
-                marginTop: 5,
-                fontFamily: fonts.INTER,
-              }}
-            >
-              {removeHTML(item.topic)}
-            </Text>
+            {item.topic && (
+              <Text
+                style={{
+                  color: "#667085",
+                  fontSize: 12,
+                  marginTop: 5,
+                  fontFamily: fonts.INTER,
+                }}
+              >
+                {removeHTML(item.topic)}
+              </Text>
+            )}
           </View>
           {props.dairyType === "teacher" && (
             <View
@@ -1015,6 +1087,14 @@ export function TimeTableView(props) {
     </View>
   );
 
+  function NavigateToSupportTeacher() {
+    Preference.SetData(PreferenceKeys.TEACHER_SCHOOL_DETAIL);
+    props.navigation.navigate("TeacherSupport");
+  }
+  function NavigateToSupportParent() {
+    props.navigation.navigate("ParentSupport");
+  }
+
   return props.dairyType == "parent" ? (
     <SafeAreaView style={stylesCommon.safeAreaStyle}>
       <StatusBar backgroundColor={color.APP_PRIMARY} />
@@ -1024,12 +1104,15 @@ export function TimeTableView(props) {
         titile={AppText.DASHBOARD}
         type={props.dairyType}
         navigation={props.navigation}
-        screen={"DairyView"}
+        screen={"TimeTableView"}
+        showAddress={true}
+        onSupportClick={() => NavigateToSupportParent()}
       />
       <View
         style={{
           flexDirection: "column",
           marginTop: Platform.OS === "ios" ? -50 : 0,
+          flex: 1,
         }}
       >
         <TitileBackgroundView
@@ -1084,6 +1167,7 @@ export function TimeTableView(props) {
                         color: color.BLACK,
                         fontFamily: fonts.INTER_MEDIUM,
                         fontSize: 12,
+                        opacity: isSelected ? 1 : 0.4,
                       }}
                     >
                       {day.slice(0, 3)}
@@ -1097,17 +1181,21 @@ export function TimeTableView(props) {
 
         <View
           style={{
-            height: "100%",
+            flex: 1,
           }}
         >
           <FlatList
-            data={dateList}
+            //  data={dateList}
+            data={dummyData}
             renderItem={renderItem}
-            contentContainerStyle={{ minHeight: "100%" }}
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: 30, // 👈 gives space for last item
+            }}
             style={{
               marginHorizontal: 15,
               marginVertical: 15,
+              // marginBottom: 80,
             }}
             keyExtractor={(item, index) => index}
             ListEmptyComponent={renderEmptyContainer("No data found", true)}
@@ -1151,23 +1239,27 @@ export function TimeTableView(props) {
         type={props.dairyType}
         navigation={props.navigation}
         screen={"DairyView"}
+        onSupportClick={() => NavigateToSupportTeacher()}
       />
       <View
         style={{
           flexDirection: "column",
           marginTop: Platform.OS === "ios" ? -50 : 0,
+          flex: 1,
         }}
       >
-        <TitileBackgroundView
-          titile={"Timetable"}
-          navigation={props.navigation}
-          isSecondviewRequired={true}
-          secondViewImage={props.image}
-          tagAddSecond={props.tagAdd}
-          class={props.class}
-          onSecondViewClick={() => handleClick()}
-          isShowClass={props.isShowClass}
-        />
+        <View style={{ marginTop: 6 }}>
+          <TitileBackgroundView
+            titile={"Timetable"}
+            navigation={props.navigation}
+            isSecondviewRequired={true}
+            secondViewImage={props.image}
+            tagAddSecond={"Add Timetable"}
+            class={props.class}
+            onSecondViewClick={() => handleClick()}
+            isShowClass={props.isShowClass}
+          />
+        </View>
         {/* yaha se bhai hai dekh len  */}
         <View
           style={{
@@ -1177,7 +1269,7 @@ export function TimeTableView(props) {
 
             paddingHorizontal: 10,
             paddingTop: 25,
-            marginTop: 30,
+            marginTop: 80,
             // height: SCREEN_HEIGHT / 10,
           }}
         >
@@ -1220,6 +1312,7 @@ export function TimeTableView(props) {
                         color: color.BLACK,
                         fontFamily: fonts.INTER_MEDIUM,
                         fontSize: 12,
+                        opacity: isSelected ? 1 : 0.3,
                       }}
                     >
                       {day.slice(0, 3)}
@@ -1233,17 +1326,18 @@ export function TimeTableView(props) {
 
         <View
           style={{
-            height: "100%",
+            flex: 1,
           }}
         >
           <FlatList
-            data={dateList}
+            //data={dateList}
+            data={dummyData}
             renderItem={renderItem}
-            contentContainerStyle={{ minHeight: "100%" }}
+            contentContainerStyle={{ marginBottom: 40 }}
             showsVerticalScrollIndicator={false}
             style={{
               marginHorizontal: 15,
-              marginVertical: 15,
+              marginVertical: 5,
             }}
             keyExtractor={(item, index) => index}
             ListEmptyComponent={renderEmptyContainer("No data found", true)}

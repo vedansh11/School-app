@@ -22,6 +22,7 @@ import {
   Alert,
   Modal,
   ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { AppText, color, fonts, icon, PreferenceKeys } from "../../constant";
 import stylesCommon, { SCREEN_WIDTH } from "../../commonTheme/stylesCommon";
@@ -347,7 +348,7 @@ const ParentAttendance = ({ route, navigation }) => {
   const InputView = (label, isEnable, image, multiline) => {
     return (
       <View>
-        {label == AppText.FROM && (
+        {label == AppText.START_DATE && (
           <TouchableOpacity
             style={stylesCommon.inputMainView}
             onPress={() => setFromDateOpen(true)}
@@ -389,7 +390,7 @@ const ParentAttendance = ({ route, navigation }) => {
             />
           </TouchableOpacity>
         )}
-        {label == AppText.TO && (
+        {label == AppText.END_DATE && (
           <TouchableOpacity
             style={stylesCommon.inputMainView}
             onPress={() => setToDateOpen(true)}
@@ -514,42 +515,44 @@ const ParentAttendance = ({ route, navigation }) => {
                   marginBottom: 15,
                 }}
               />
-              {/* <ScrollView
-                style={{
-                  width: "100%",
-                }}
-                keyboardShouldPersistTaps={"always"}
-                keyboardDismissMode={"on-drag"}
-              > */}
-              <View
-                style={{
-                  marginBottom: 20,
-                  width: "100%",
-                }}
+
+              <ScrollView
+                style={{ width: "100%" }}
+                showsVerticalScrollIndicator={false}
               >
                 <View
                   style={{
-                    height: 1,
-                    width: "100%",
-                    backgroundColor: "#D0D5DD",
                     marginBottom: 20,
+                    width: "100%",
                   }}
-                />
-                {InputView(AppText.FROM, false, icon.IC_CALENDAR, false)}
-                {InputView(AppText.TO, false, icon.IC_CALENDAR, false)}
-                {InputView(AppText.DESCRIPTION, true, "", true)}
-              </View>
+                >
+                  <View
+                    style={{
+                      height: 1,
+                      width: "100%",
+                      backgroundColor: "#D0D5DD",
+                      marginBottom: 20,
+                    }}
+                  />
+                  {InputView(
+                    AppText.START_DATE,
+                    false,
+                    icon.IC_CALENDAR,
+                    false
+                  )}
+                  {InputView(AppText.END_DATE, false, icon.IC_CALENDAR, false)}
+                  {InputView(AppText.DESCRIPTION, true, "", true)}
+                </View>
 
-              {loaderView === true ? (
-                <LoaderButtonView />
-              ) : (
-                <ButtonView
-                  tiitle={AppText.SUBMIT}
-                  onClick={() => saveBtnClick()}
-                />
-              )}
-              <View style={{ padding: screenWidth / 4 }} />
-              {/* </ScrollView> */}
+                {loaderView === true ? (
+                  <LoaderButtonView />
+                ) : (
+                  <ButtonView
+                    tiitle={"Apply Leave"}
+                    onClick={() => saveBtnClick()}
+                  />
+                )}
+              </ScrollView>
             </View>
           </View>
         </Modal>
@@ -560,14 +563,14 @@ const ParentAttendance = ({ route, navigation }) => {
     <SafeAreaView style={stylesCommon.safeAreaStyle}>
       <StatusBar backgroundColor={color.APP_PRIMARY} />
 
-      {/* Dashboard Header view UI */}
       <SchoolDetailHeaderView
         titile={AppText.DASHBOARD}
         type={"parent"}
         navigation={navigation}
         screen={"ParentAttendance"}
+        showAddress={true}
       />
-      {modalVisible && AddLeaveModel()}
+
       <Text
         style={{
           position: "absolute",
@@ -582,33 +585,35 @@ const ParentAttendance = ({ route, navigation }) => {
         Attendance
       </Text>
       {MyTabs()}
-      <TouchableOpacity onPress={handleClick}>
-        <View
-          style={{
-            marginStart: 10,
-            borderWidth: 1,
-            width: "95%",
-            height: 50,
-            borderRadius: 50,
-            borderColor: "#564CB8",
-            justifyContent: "center",
-            //backgroundColor: color.RED,
-            // marginBottom: 33,
-            marginVertical: 10,
-          }}
-        >
-          <Text
+      {!modalVisible && (
+        <TouchableOpacity onPress={handleClick}>
+          <View
             style={{
-              textAlign: "center",
-              fontFamily: fonts.INTER,
-              fontSize: 18,
-              color: "#564CB8",
+              marginStart: 10,
+              borderWidth: 1,
+              width: "95%",
+              height: 50,
+              borderRadius: 50,
+              borderColor: "#564CB8",
+              justifyContent: "center",
+              marginVertical: 10,
             }}
           >
-            Apply Leave
-          </Text>
-        </View>
-      </TouchableOpacity>
+            <Text
+              style={{
+                textAlign: "center",
+                fontFamily: fonts.INTER,
+                fontSize: 18,
+                color: "#564CB8",
+              }}
+            >
+              Apply Leave
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
+
+      {modalVisible && AddLeaveModel()}
     </SafeAreaView>
   );
 };

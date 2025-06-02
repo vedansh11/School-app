@@ -43,7 +43,56 @@ const Notification = ({ navigation }) => {
   };
   const PER_PAGE = 10;
   var PAGE = 1;
-  const [listData, setListData] = useState([]);
+  const [listData, setListData] = useState([
+    {
+      type: "Due date for the term fee.",
+      notificationText:
+        "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ",
+      isRead: "0",
+    },
+    {
+      type: "Due date for the term fee.",
+      notificationText:
+        "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ",
+      isRead: "0",
+    },
+    {
+      type: "Due date for the term fee.",
+      notificationText:
+        "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ",
+      isRead: "1",
+    },
+    {
+      type: "Due date for the term fee.",
+      notificationText:
+        "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ",
+      isRead: "1",
+    },
+    {
+      type: "Due date for the term fee.",
+      notificationText:
+        "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ",
+      isRead: "1",
+    },
+    {
+      type: "Due date for the term fee.",
+      notificationText:
+        "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ",
+      isRead: "1",
+    },
+    {
+      type: "Due date for the term fee.",
+      notificationText:
+        "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ",
+      isRead: "1",
+    },
+    {
+      type: "Due date for the term fee.",
+      notificationText:
+        "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ",
+      isRead: "1",
+    },
+  ]);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoadMore, setLoadMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,7 +140,7 @@ const Notification = ({ navigation }) => {
       setLoadMore(false);
       var currentdata = [...listData];
       var finalarray = currentdata.concat(response.result);
-      setListData(finalarray);
+      // setListData(finalarray);
     });
   }
   const DATA = [
@@ -175,24 +224,32 @@ const Notification = ({ navigation }) => {
       <View style={stylesCommon.rawMainView}>
         <View
           style={{
-            backgroundColor: item.isRead == "0" ? "#EEEDF8" : color.WHITE,
-            flex: 0.75,
-            borderRadius: 7,
+            backgroundColor: item.isRead === "0" ? "#EEEDF8" : color.WHITE,
+            flex: 1,
+            borderRadius: 15,
             padding: 15,
             minHeight: 60,
+            borderWidth: 0.7,
+            borderColor: item.isRead === "0" ? "#B2BBC633" : "#D0D5DD",
             flexDirection: "row",
           }}
         >
           {item.isRead == "0" ? (
             <View
               style={{
-                alignSelf: "center",
+                backgroundColor: "#fff",
+                width: 40,
+                height: 40,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 100,
+                marginEnd: 15,
               }}
             >
               <Image
                 style={{
-                  height: 42,
-                  width: 42,
+                  height: 20,
+                  width: 20,
                   resizeMode: "contain",
                   alignSelf: "center",
                 }}
@@ -211,26 +268,43 @@ const Notification = ({ navigation }) => {
               ></Image>
             </View>
           ) : (
-            <Image
+            <View
               style={{
-                height: 42,
-                width: 42,
-                resizeMode: "contain",
-                alignSelf: "center",
+                backgroundColor: "#B2BBC633",
+                width: 40,
+                height: 40,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 100,
+                marginEnd: 15,
               }}
-              source={icon.IC_NOTIFICATION_ROUND}
-            ></Image>
+            >
+              <Image
+                style={{
+                  height: 20,
+                  width: 20,
+                  resizeMode: "contain",
+                  tintColor: "#667085",
+                }}
+                source={icon.IC_NOTIFICATION_ROUND}
+              />
+            </View>
           )}
 
           <View style={stylesCommon.margin10View}>
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                gap: 15,
+              }}
             >
               <Text
                 style={{
                   fontSize: 12,
                   fontFamily: fonts.INTER_MEDIUM,
-                  color: "#564CB8",
+                  color: item.isRead == "1" ? "#101828" : "#564CB8",
+                  flex: 0.6,
                 }}
               >
                 {item.type}
@@ -238,8 +312,9 @@ const Notification = ({ navigation }) => {
               <Text
                 style={{
                   fontFamily: fonts.INTER,
-                  fontSize: 10,
+                  fontSize: 9,
                   color: "#98A2B3",
+                  flex: 0.3,
                 }}
               >
                 June 26, 2023 | 04:41 PM
@@ -251,6 +326,7 @@ const Notification = ({ navigation }) => {
                 fontFamily: fonts.INTER,
                 fontSize: 12,
                 color: "#667085",
+                flex: 1,
               }}
             >
               {item.notificationText}
@@ -279,6 +355,7 @@ const Notification = ({ navigation }) => {
         type={"parent"}
         navigation={navigation}
         screen={"Notification"}
+        showAddress={true}
       />
       <View
         style={{

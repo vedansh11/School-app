@@ -94,6 +94,91 @@ const ParentSupportDetails = ({ route, navigation }) => {
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     },
   ];
+  const dummyApiData = [
+    {
+      id: "1",
+      senderId: "1",
+      receiverId: "38",
+      message: "Hi, how are you?",
+      createdAt: "2024-05-08 10:30:00",
+      updatedAt: "2024-05-08 10:30:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "46",
+      sectionId: "8",
+      firstname: "John",
+      lastName: "Doe",
+      fullname: "John Doe",
+      status: "1",
+    },
+    {
+      id: "2",
+      senderId: "38",
+      receiverId: "1",
+      message: "I'm good, thanks!",
+      createdAt: "2024-05-08 10:31:00",
+      updatedAt: "2024-05-08 10:31:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "46",
+      sectionId: "8",
+      firstname: "Teacher",
+      lastName: "One",
+      fullname: "Teacher One",
+      status: "1",
+    },
+    {
+      id: "3",
+      senderId: "1",
+      receiverId: "38",
+      message: "Just testing the app UI",
+      createdAt: "2024-05-08 10:32:00",
+      updatedAt: "2024-05-08 10:32:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "46",
+      sectionId: "8",
+      firstname: "John",
+      lastName: "Doe",
+      fullname: "John Doe",
+      status: "1",
+    },
+    // Injected from your `data` array
+    {
+      id: "4",
+      senderId: "1",
+      receiverId: "38",
+      message:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
+      createdAt: "2022-04-02 16:41:00",
+      updatedAt: "2022-04-02 16:41:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "46",
+      sectionId: "8",
+      firstname: "John",
+      lastName: "",
+      fullname: "John Doe",
+      status: "1",
+    },
+    {
+      id: "5",
+      senderId: "38",
+      receiverId: "1",
+      message:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
+      createdAt: "2022-04-02 16:42:00",
+      updatedAt: "2022-04-02 16:42:00",
+      deletedAt: "0000-00-00 00:00:00",
+      studentId: "1",
+      parentId: "46",
+      sectionId: "8",
+      firstname: "Teacher",
+      lastName: "",
+      fullname: "Teacher One",
+      status: "1",
+    },
+  ];
 
   const [listdata, setListData] = useState([]);
   const [ref, setRef] = useState(null);
@@ -315,6 +400,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
           if (loadtype == "first_time") {
             var currentdata = [...listdata];
             var finalarray = currentdata.concat(response.chat.result);
+            console.log("Here is the chat", finalarray);
             setListData(finalarray);
             ref.scrollToIndex({
               animated: true,
@@ -524,6 +610,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
           type={type}
           navigation={navigation}
           screen={type === "teacher" ? "TeacherSupport" : "ParentSupport"}
+          showAddress={true}
         />
 
         <View
@@ -586,7 +673,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
                   {"Request #" + requestID}
                 </Text>
                 <View style={{ backgroundColor: "#EAECF0", height: 1 }}></View>
-                {isDetailsVisible && (
+                {true && (
                   <View
                     style={{
                       flexDirection: "row",
@@ -602,7 +689,8 @@ const ParentSupportDetails = ({ route, navigation }) => {
                         stylesCommon.studentProfile,
                         { height: 80, width: 80, marginEnd: 10 },
                       ]}
-                      source={{ uri: profilePic }}
+                      //source={{ uri: profilePic }}
+                      source={icon.BOY}
                       loadingStyle={{ size: "large", color: "blue" }}
                       borderRadius={50}
                       backgroundColor={color.YELLOW}
@@ -616,14 +704,14 @@ const ParentSupportDetails = ({ route, navigation }) => {
                 )} */}
 
                     <View style={[{ flex: 1, marginStart: 10 }]}>
-                      <Text style={stylesCommon.nameText}>{studentName}</Text>
+                      <Text style={stylesCommon.nameText}>{"Ravi Parmar"}</Text>
                       <Text
                         style={[
                           stylesCommon.deptmentText,
                           { color: "#667085", marginTop: 5 },
                         ]}
                       >
-                        {section}
+                        {"VI-B"}
                       </Text>
                       <View
                         style={{
@@ -637,7 +725,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
                             onPress={() => Linking.openURL(`tel:${phone}`)}
                           >
                             <Text style={stylesCommon.supportValueText}>
-                              {phone}
+                              {"9106787337"}
                             </Text>
                           </TouchableOpacity>
                         </View>
@@ -649,7 +737,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
                               onPress={() => Linking.openURL(`mailto:${email}`)}
                             >
                               <Text style={stylesCommon.supportValueText}>
-                                {email}
+                                {"studentName.mail@gmai.com"}
                               </Text>
                             </TouchableOpacity>
                           </View>
@@ -763,8 +851,8 @@ const ParentSupportDetails = ({ route, navigation }) => {
             />
           )} */}
             <FlatList
-              //data={[...listdata].reverse()}
-              data={listdata}
+              //data={listdata}
+              data={dummyApiData}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               style={{ backgroundColor: color.WHITE, flex: 1 }}
@@ -774,6 +862,7 @@ const ParentSupportDetails = ({ route, navigation }) => {
               onEndReached={LoadMoreData}
               onEndReachedThreshold={0.1}
               ListFooterComponent={renderFooter}
+              showsVerticalScrollIndicator={false}
             />
           </View>
           {backgroundLoaderView && (

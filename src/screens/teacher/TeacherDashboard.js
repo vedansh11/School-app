@@ -23,7 +23,10 @@ import {
 import { AppText, color, fonts, icon, PreferenceKeys } from "../../constant";
 import stylesCommon from "../../commonTheme/stylesCommon";
 import * as Preference from "../../storeData/Preference";
-import { DashboardHeaderView } from "../../commonTheme/HeaderView";
+import {
+  DashboardHeaderView,
+  SchoolDetailHeaderView,
+} from "../../commonTheme/HeaderView";
 import { LoaderView } from "../../commonTheme/LoaderView";
 import {
   PresentSquareView,
@@ -246,10 +249,10 @@ const TeacherDashboard = ({ navigation }) => {
         style={{
           flex: 1,
           backgroundColor: color.WHITE,
-          borderRadius: 7,
+          borderRadius: 12,
           width: "100%",
           marginTop: 10,
-          borderColor: "#667085",
+          borderColor: "#CBC8E9",
           borderWidth: 1,
           marginBottom: 10,
           alignSelf: "center",
@@ -257,8 +260,9 @@ const TeacherDashboard = ({ navigation }) => {
           shadowOffset: { width: 2, height: 2 },
           shadowOpacity: 5,
           shadowRadius: 1,
-          elevation: 5,
-          padding: 7,
+          //elevation: 5,
+          padding: 10,
+          paddingVertical: 12,
         }}
       >
         <TouchableOpacity
@@ -276,36 +280,38 @@ const TeacherDashboard = ({ navigation }) => {
           <Image
             style={{
               flex: 0.25,
-              height: 80,
-              width: 80,
+              height: 70,
+              width: 70,
               alignSelf: "center",
+              resizeMode: "contain",
             }}
-            source={icon.IC_SCHOOL_LOGO}
+            source={icon.IC_SCHOOL}
           ></Image>
           <View
             style={{
-              flex: 0.6,
-              alignSelf: "center",
+              flex: 0.63,
+              //alignSelf: "center",
+              justifyContent: "space-evenly",
             }}
           >
             <Text
               style={{
                 fontSize: 18,
                 fontFamily: fonts.LATO_BOLD,
-                color: color.BLACK,
+                color: color.APP_PRIMARY,
               }}
             >
-              {item.schoolName}
+              {"Vivekanad Vidhiyalaya"}
             </Text>
             <Text
               style={{
-                fontSize: 14,
+                fontSize: 12,
                 marginTop: 2,
                 fontFamily: fonts.LATO_BOLD,
-                color: color.TEXT_COLOR,
+                color: "#667085",
               }}
             >
-              {item.address}
+              {"2248, Raipur Chakla, Nr City Garden, Gandhi Road, Rajkot"}
             </Text>
           </View>
           {index === clickIndex ? (
@@ -557,7 +563,7 @@ const TeacherDashboard = ({ navigation }) => {
               </View>
             </View>
           </View>
-          <View style={stylesCommon.lineView}></View>
+          <View style={[stylesCommon.lineView, { marginVertical: 0 }]}></View>
           <DashboardRawDetailMenu
             attendance={true}
             dairy={true}
@@ -565,7 +571,7 @@ const TeacherDashboard = ({ navigation }) => {
             onStudentAttendanceClick={() => onStudentAttendanceClick(item)}
             ontimeTableClick={() => NavigateToTimeTable(item)}
             onDairyClick={() => NavigateToDairy(item)}
-            // isShowHelp={true}
+            // isShowHelp={false}
             // isShowFees={false}
             // isShowTimeTable={true}
             // isShowNote={true}
@@ -590,24 +596,33 @@ const TeacherDashboard = ({ navigation }) => {
         titile={AppText.DASHBOARD}
         type={"teacher"}
         navigation={navigation}
+        screen={"TeacherDashboard"}
+        showLogout
       />
+
+      {/* <SchoolDetailHeaderView
+        titile={AppText.DASHBOARD}
+        type={"teacher"}
+        navigation={navigation}
+        showLogout={true}
+      /> */}
 
       <View>
         <View>
           <Text
             style={{
               marginTop: 35,
-              marginHorizontal: 10,
+              marginHorizontal: 15,
               fontFamily: fonts.INTER_MEDIUM,
               fontSize: 24,
               color: "#101828",
             }}
           >
-            Hi,Mr.Sample Text
+            Hi, Mr.Anand Patel
           </Text>
           <Text
             style={{
-              marginHorizontal: 10,
+              marginHorizontal: 15,
               fontSize: 30,
               fontFamily: fonts.INTER_SEMIBOLD,
               color: "#101828",
@@ -622,8 +637,7 @@ const TeacherDashboard = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           style={{
             marginTop: Platform.OS === "ios" ? -40 : 10,
-            marginStart: 10,
-            marginEnd: 10,
+            marginHorizontal: 15,
           }}
           keyExtractor={(item, index) => index}
           ListEmptyComponent={<LoaderView color={color.PROGRESS_GREY} />}

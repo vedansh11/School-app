@@ -134,6 +134,7 @@ export default function TeacherDashboard2({ navigation, route }) {
       navigation
     )
       .then((response) => {
+        console.log("TecherApi", response, Id);
         setLoaderView(false);
         if (JSON.stringify(classListData) !== JSON.stringify(response.result)) {
           setClassList(removeDuplicates(response.result, "id"));
@@ -197,14 +198,14 @@ export default function TeacherDashboard2({ navigation, route }) {
             marginTop: 5,
             marginBottom: 5,
             alignSelf: "center",
-
+            borderColor: "#CBC8E9",
+            borderWidth: 1,
             elevation: 2,
           }}
         >
           <View
             style={{
               backgroundColor: "#EEEDF8",
-
               borderTopStartRadius: 15,
               borderTopEndRadius: 15,
               paddingHorizontal: screenWidth > 360 ? 15 : 10,
@@ -222,7 +223,7 @@ export default function TeacherDashboard2({ navigation, route }) {
             >
               <View
                 style={{
-                  backgroundColor: color.INFO_BLUE,
+                  backgroundColor: color.APP_PRIMARY,
                   height: 75,
                   width: 75,
                   borderRadius: 50,
@@ -322,7 +323,7 @@ export default function TeacherDashboard2({ navigation, route }) {
               </View>
             </View>
           </View>
-          <View style={stylesCommon.lineView}></View>
+          <View style={[stylesCommon.lineView, { marginVertical: 0 }]}></View>
           <DashboardRawDetailMenu
             attendance={true}
             dairy={true}
@@ -330,7 +331,7 @@ export default function TeacherDashboard2({ navigation, route }) {
             onStudentAttendanceClick={() => onStudentAttendanceClick(item)}
             ontimeTableClick={() => NavigateToTimeTable(item)}
             onDairyClick={() => NavigateToDairy(item)}
-            isShowHelp={true}
+            isShowHelp={false}
             // isShowFees={false}
             // isShowTimeTable={true}
             // isShowNote={true}
@@ -350,13 +351,12 @@ export default function TeacherDashboard2({ navigation, route }) {
     <SafeAreaView style={stylesCommon.safeAreaStyle}>
       <StatusBar backgroundColor={"#564CB8"} />
 
-      {/* Dashboard Header view UI */}
-      <SchoolDetailHeaderView
+      <DashboardHeaderView
         titile={AppText.DASHBOARD}
         type={"teacher"}
         navigation={navigation}
-        //navigation={props.navigation}
       />
+
       {/* <SchoolDetailHeaderView
         titile={AppText.DASHBOARD}
         type={"teacher"}
@@ -374,7 +374,10 @@ export default function TeacherDashboard2({ navigation, route }) {
             position: "absolute",
             top: -25,
             elevation: 3,
-            marginBottom: 10,
+            marginBottom: 15,
+            paddingHorizontal: 12,
+            paddingVertical: 12,
+            alignItems: "center",
           }}
         >
           <TouchableOpacity
@@ -387,11 +390,12 @@ export default function TeacherDashboard2({ navigation, route }) {
             <Image
               style={{
                 flex: 0.25,
-                height: 80,
-                width: 80,
+                height: 70,
+                width: 70,
                 alignSelf: "center",
+                resizeMode: "contain",
               }}
-              source={icon.IC_SCHOOL_LOGO}
+              source={icon.IC_SCHOOL}
             ></Image>
             <View
               style={{
@@ -426,7 +430,7 @@ export default function TeacherDashboard2({ navigation, route }) {
           <FlatList
             data={classListData}
             style={{
-              marginTop: 7,
+              marginTop: 18,
               marginBottom: 80,
             }}
             ListEmptyComponent={renderEmptyContainer("No data found", true)}

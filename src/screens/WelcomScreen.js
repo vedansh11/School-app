@@ -65,7 +65,7 @@ const WelcomScreen = ({ navigation }) => {
         <Image
           style={[
             stylesCommon.welcomebackgroundLogo,
-            { width: 198, height: 182, top: 50 },
+            { width: 198, height: 129, top: 120, resizeMode: "contain" },
           ]}
           source={icon.LOGO}
         />

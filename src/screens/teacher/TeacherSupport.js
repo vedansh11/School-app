@@ -30,7 +30,8 @@ import SelectDropdown from "react-native-select-dropdown";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
 
 const TeacherSupport = (navigation) => {
-  const sectionID = navigation.route.params.supportData.id;
+  //const sectionID = navigation.route.params.supportData.id;
+  const sectionID = 1; //for dummy
   const Tab = createMaterialTopTabNavigator();
 
   const [ModalVisible, setModalVisible] = useState(false);
@@ -294,12 +295,37 @@ const TeacherSupport = (navigation) => {
                     }}
                   >
                     <TouchableOpacity
-                      style={stylesCommon.supportPrimaryButtonBackground}
+                      style={{
+                        backgroundColor: "#FF6D4C",
+                        borderRadius: 50,
+                        paddingVertical: 15,
+                        paddingHorizontal: 20,
+                        alignSelf: "center",
+                        backgroundColor: "#CBC8E9",
+                      }}
                     >
-                      <Text style={stylesCommon.primaryButtonText}>Cancel</Text>
+                      <Text
+                        style={
+                          ([stylesCommon.primaryButtonText],
+                          {
+                            color: "#272253",
+                            textAlign: "center",
+                            fontFamily: fonts.INTER_SEMIBOLD,
+                            fontSize: 16,
+                          })
+                        }
+                      >
+                        Cancel
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={stylesCommon.supportPrimaryButtonBackground}
+                      style={{
+                        backgroundColor: "#FF6D4C",
+                        borderRadius: 50,
+                        paddingVertical: 15,
+                        paddingHorizontal: 55,
+                        alignSelf: "center",
+                      }}
                     >
                       <Text style={stylesCommon.primaryButtonText}>Submit</Text>
                     </TouchableOpacity>

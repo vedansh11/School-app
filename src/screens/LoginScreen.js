@@ -109,9 +109,17 @@ const LoginScreen = ({ navigation }) => {
     setBackgroundLoaderView(true);
 
     let loginFormData = new FormData();
-    loginFormData.append("mobile_no", "9033903436");
+    loginFormData.append("mobile_no", mobileNumber);
     loginFormData.append("from", "mobile");
-
+    console.log(
+      "Her is ",
+      mobileNumber,
+      Utills.VERIFY_MOBILE_NUMBER,
+      loginFormData,
+      requestOptions,
+      true,
+      navigation
+    );
     let requestOptions = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -126,6 +134,7 @@ const LoginScreen = ({ navigation }) => {
       navigation
     )
       .then((response) => {
+        console.log("Here is the re", response);
         if (response.is_success === true) {
           setBackgroundLoaderView(false);
           setShowButton(true);
@@ -145,7 +154,7 @@ const LoginScreen = ({ navigation }) => {
   function verifyOTP_API() {
     setLoaderView(true);
     var loginFormData = new FormData();
-    loginFormData.append("mobile_no", 9033903436);
+    loginFormData.append("mobile_no", mobileNumber);
     loginFormData.append("otp", 1111);
 
     let requestOptions = {

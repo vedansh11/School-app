@@ -28,7 +28,13 @@ export const DashboardHeaderView = (props) => {
 
   const HomeNavigation = async () => {
     if ((await Preference.GetData(PreferenceKeys.IS_MULTIPLE_USER)) == "true")
-      props.navigation.navigate("WelcomScreen");
+      if (props.screen === "TeacherDashboard") {
+        //  props.navigation.navigate("WelcomScreen");
+
+        props.navigation.navigate("WelcomScreen");
+      } else {
+        props.navigation.goBack();
+      }
   };
   const NotificationClick = () => {
     props.navigation.navigate("Notification");
@@ -44,7 +50,7 @@ export const DashboardHeaderView = (props) => {
     //  props.navigation.navigate('LoginScreen');
   };
 
-  const TeacherSupportClick = () => {
+  const SupportClick = () => {
     props.navigation.navigate("TeacherSupport");
   };
 
@@ -52,7 +58,12 @@ export const DashboardHeaderView = (props) => {
     <View style={stylesCommon.mainBackground}>
       <View style={stylesCommon.scoopCorner} />
       <View style={stylesCommon.circle} />
-      <View style={stylesCommon.buttonContainer}>
+      <View
+        style={[
+          stylesCommon.buttonContainer,
+          { alignItems: "center", marginTop: -45 },
+        ]}
+      >
         <TouchableOpacity
           style={stylesCommon.homeView}
           onPress={() => HomeNavigation()}
@@ -81,7 +92,10 @@ export const DashboardHeaderView = (props) => {
 
           <View>
             <TouchableOpacity
-              style={[stylesCommon.notificationIcon, { marginEnd: 15 }]}
+              style={[
+                stylesCommon.notificationIcon,
+                { marginEnd: props.showLogout === true ? 5 : 15 },
+              ]}
               onPress={() => NotificationClick()}
             >
               <Image
@@ -94,20 +108,22 @@ export const DashboardHeaderView = (props) => {
               ></Image>
             </TouchableOpacity>
           </View>
-          <View>
-            <TouchableOpacity
-              style={stylesCommon.notificationIcon}
-              onPress={() => Logout()}
-            >
-              <Image
-                source={icon.IC_LOGOUT}
-                style={[
-                  stylesCommon.notificationIcon,
-                  { tintColor: "#ffffff" },
-                ]}
-              ></Image>
-            </TouchableOpacity>
-          </View>
+          {props.showLogout === true && (
+            <View>
+              <TouchableOpacity
+                style={[stylesCommon.notificationIcon, { marginEnd: 5 }]}
+                onPress={() => Logout()}
+              >
+                <Image
+                  source={icon.IC_LOGOUT}
+                  style={[
+                    stylesCommon.notificationIcon,
+                    { tintColor: "#ffffff" },
+                  ]}
+                ></Image>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
         {/* <Image source={icon.IC_CURVE} style={stylesCommon.curve} /> */}
       </View>
@@ -117,6 +133,7 @@ export const DashboardHeaderView = (props) => {
 export const SchoolDetailHeaderView = (props) => {
   const [schoolInfo, setSchoolInfo] = useState("");
   const [studentInfo, setStudentInfo] = useState("");
+
   // console.log("getting this type of props", props);
   const HomeNavigation = () => {
     props.navigation.goBack();
@@ -141,21 +158,33 @@ export const SchoolDetailHeaderView = (props) => {
     }
   }, []);
 
+  const Logout = () => {
+    Preference.ClearData();
+    //  props.navigation.dispatch(StackActions.replace('LoginScreen'));
+    props.navigation.reset({
+      index: 0,
+      routes: [{ name: "LoginScreen" }],
+    });
+    //  props.navigation.navigate('LoginScreen');
+  };
+
   return (
     <View
       style={
-        //props.screen != "TeacherSupport" &&
-        // props.screen != "ParentSupport" &&
-        // props.screen != "Payment" ?
-        // && props.screen != 'DairyView'
-        stylesCommon.mainBackground
-        //: stylesCommon.mainBackground_custome
+        props.screen === "TeacherStudentProfile"
+          ? stylesCommon.otherBackground
+          : stylesCommon.mainBackground
       }
     >
-      <View style={stylesCommon.scoopCorner} />
+      {props.screen === "TeacherStudentProfile" ? null : (
+        <View style={stylesCommon.scoopCorner} />
+      )}
       <View style={stylesCommon.circle} />
       <TouchableOpacity
-        style={stylesCommon.homeView}
+        style={[
+          stylesCommon.homeView,
+          { marginTop: props.showAddress === true ? 0 : 0 },
+        ]}
         onPress={() => HomeNavigation()}
       >
         <Image
@@ -163,98 +192,167 @@ export const SchoolDetailHeaderView = (props) => {
           style={stylesCommon.homeicon}
         ></Image>
       </TouchableOpacity>
-      {props.screen != "Notification" ? (
-        props.type === "teacher" ? (
-          <View
-            style={{
-              flexDirection: "column",
-            }}
-          >
-            {schoolInfo ? (
-              <>
-                <Text
-                  style={{
-                    alignContent: "center",
-                    fontSize: 16,
-                    color: color.WHITE,
-                    fontFamily: fonts.LATO_BOLD,
-                  }}
-                >
-                  {schoolInfo.schoolName}
-                </Text>
-                <Text
-                  style={{
-                    alignContent: "center",
-                    fontSize: 12,
-                    marginTop: 2,
-                    color: color.WHITE,
-                    fontFamily: fonts.LATO_BOLD,
-                  }}
-                >
-                  {schoolInfo.address}
-                </Text>
-              </>
-            ) : null}
-          </View>
-        ) : (
+      {props.type === "teacher" ? (
+        <View
+          style={{
+            flexDirection: "column",
+            flex: 0.6,
+          }}
+        >
           <Text
             style={{
-              // alignContent: "center",
-              fontSize: 18,
-              paddingBottom: 14,
+              alignContent: "center",
+              fontSize: 16,
+              color: color.WHITE,
+              fontFamily: fonts.LATO_BOLD,
+            }}
+          >
+            {"Navrachana Primary School"}
+            {/* {schoolInfo.schoolName} */}
+          </Text>
+          <Text
+            style={{
+              alignContent: "center",
+              fontSize: 12,
+              marginTop: 2,
+              color: color.WHITE,
+              fontFamily: fonts.LATO_BOLD,
+            }}
+          >
+            {"2248, Raipur Chakla, Nr City Garden, Gandhi Road, Rajkot"}
+            {/* {schoolInfo.address} */}
+          </Text>
+        </View>
+      ) : props.showAddress ? (
+        <View
+          style={{
+            flexDirection: "column",
+            flex: 0.6,
+          }}
+        >
+          <Text
+            style={{
+              alignContent: "center",
+              fontSize: 14,
+              color: color.WHITE,
+              fontFamily: fonts.INTER_MEDIUM,
+            }}
+          >
+            {"Navrachana Primary School "}
+            {/* {schoolInfo.schoolName} */}
+          </Text>
+          <Text
+            style={{
+              alignContent: "center",
+              fontSize: 10,
+
               color: color.WHITE,
               fontFamily: fonts.INTER,
             }}
           >
-            {studentInfo.student_name}
+            {"2248, Raipur Chakla, Nr City Garden, Gandhi Road, Rajkot"}
+            {/* {schoolInfo.address} */}
           </Text>
-        )
+        </View>
       ) : (
-        <Text style={stylesCommon.titleHeader}>{props.titile}</Text>
+        <View style={{ top: -2 }}>
+          <Text
+            style={{
+              // alignContent: "center",
+              fontSize: 18,
+
+              color: color.WHITE,
+              fontFamily: fonts.INTER_MEDIUM,
+            }}
+          >
+            {studentInfo && studentInfo.student_name
+              ? studentInfo.student_name
+              : "Mr Narayan Parmar"}
+          </Text>
+          <Text
+            style={{
+              paddingTop: 0,
+              marginTop: 0,
+              fontSize: 12,
+
+              color: color.WHITE,
+              fontFamily: fonts.INTER,
+            }}
+          >
+            Parent
+          </Text>
+        </View>
       )}
 
       {props.screen != "Notification" ? (
         <View
-          style={
+          style={[
             // props.screen != "TeacherSupport" &&
             //props.screen != "ParentSupport" &&
             // props.screen != "Payment" ?
-            stylesCommon.notificationView
+            stylesCommon.notificationView,
+
             //  : stylesCommon.notificationView_new
-          }
+          ]}
         >
           {props.type === "teacher" && props.screen != "TeacherSupport" ? (
-            <View
+            <TouchableOpacity
               style={{
-                marginTop: 22,
-                marginEnd: 15,
+                marginTop: 4,
               }}
+              onPress={props.onSupportClick}
             >
               <Image
                 source={icon.IC_TEACHER_SUPPORT}
-                style={stylesCommon.supportIcon}
+                style={[stylesCommon.supportIcon, { marginStart: 5 }]}
               ></Image>
               <Image
                 source={icon.IC_NOTIFICATION_POINT}
-                style={stylesCommon.notificationPoint}
+                style={[stylesCommon.notificationPoint, { end: -2 }]}
               ></Image>
-            </View>
+            </TouchableOpacity>
           ) : null}
 
-          <View style={{ marginTop: 22 }}>
+          <View
+            style={{
+              marginTop: 5,
+              flexDirection: "row",
+              marginEnd: 5,
+            }}
+          >
             <TouchableOpacity
-              style={stylesCommon.notificationIcon}
+              style={[
+                stylesCommon.notificationIcon,
+                {
+                  //  marginTop: props.showAddress === true ? -5 : 0,
+                  // marginEnd: 10,
+                },
+              ]}
               onPress={() => NotificationClick()}
             >
               <Image
                 source={icon.IC_NOTIFICATION}
-                style={stylesCommon.notificationIcon}
+                style={[stylesCommon.notificationIcon, { marginStart: 5 }]}
               ></Image>
               <Image
                 source={icon.IC_NOTIFICATION_POINT}
-                style={stylesCommon.notificationPoint}
+                style={[stylesCommon.notificationPoint, { end: -2 }]}
               ></Image>
             </TouchableOpacity>
+            {props.showLogout && (
+              <TouchableOpacity
+                style={[stylesCommon.notificationIcon, { marginStart: 5 }]}
+                onPress={() => Logout()}
+              >
+                <Image
+                  source={icon.IC_LOGOUT}
+                  style={[
+                    stylesCommon.notificationIcon,
+                    { tintColor: "#ffffff" },
+                  ]}
+                ></Image>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       ) : null}

@@ -66,9 +66,104 @@ const Attendance = ({ route, navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [listDataSource, setListDataSource] = useState([]);
   const [isfilterBySearch, setFilterBySearch] = useState(false);
-  const [dataList, setDataList] = useState([]);
+  // const [dataList, setDataList] = useState([]);
   const [absentData, setAbsendData] = useState([]);
   const [isDataAvailable, setIsDataAvailable] = useState("Loading...");
+
+  const dataList = [
+    {
+      title: "Untracked",
+      data: [
+        {
+          attendance: "2",
+          createdAt: "2025-05-13 14:13:02",
+          date: "2025-05-13",
+          deletedAt: "0000-00-00 00:00:00",
+          enrollmentNo: "ENR010",
+          fullName: "Reyansh Panchal",
+          id: "978",
+          // profilePic_path:
+          //   "https://api.greatminds.live/uploads/student_profile/1679047613.jpg",
+          remarks: "",
+          sectionId: "3",
+          studentId: "7",
+          updatedAt: "2025-05-13 14:13:02",
+        },
+        {
+          attendance: "2",
+          createdAt: "2025-05-13 14:13:02",
+          date: "2025-05-13",
+          deletedAt: "0000-00-00 00:00:00",
+          enrollmentNo: "ENR0020",
+          fullName: "Mahendra Ram1",
+          id: "979",
+          // profilePic_path:
+          //   "https://api.greatminds.live/uploads/student_profile/",
+          remarks: "",
+          sectionId: "3",
+          studentId: "9",
+          updatedAt: "2025-05-13 14:13:02",
+        },
+      ],
+    },
+    {
+      title: "Absentees",
+      data: [
+        {
+          attendance: "0",
+
+          enrollmentNo: "ENR0011",
+          fullName: "Aarav Shah",
+          id: "981",
+          // profilePic_path:
+          //   "https://api.greatminds.live/uploads/student_profile/aarav.jpg",
+          remarks: "Sick leave",
+          sectionId: "3",
+          studentId: "11",
+        },
+      ],
+    },
+    {
+      title: "On-Leave",
+      data: [
+        {
+          attendance: "3",
+          createdAt: "2025-05-13 09:15:00",
+          date: "2025-05-13",
+          deletedAt: "0000-00-00 00:00:00",
+          enrollmentNo: "ENR0033",
+          fullName: "Saanvi Patel",
+          id: "983",
+          // profilePic_path:
+          //   "https://api.greatminds.live/uploads/student_profile/saanvi.jpg",
+          remarks: "Family function",
+          sectionId: "3",
+          studentId: "13",
+          updatedAt: "2025-05-13 09:15:00",
+        },
+      ],
+    },
+    {
+      title: "Present",
+      data: [
+        {
+          attendance: "1",
+          createdAt: "2025-05-13 08:45:00",
+          date: "2025-05-13",
+          deletedAt: "0000-00-00 00:00:00",
+          enrollmentNo: "ENR0012",
+          fullName: "Diya Mehta",
+          id: "982",
+          // profilePic_path:
+          //   "https://api.greatminds.live/uploads/student_profile/1679047613.jpg",
+          remarks: "",
+          sectionId: "3",
+          studentId: "12",
+          updatedAt: "2025-05-13 08:45:00",
+        },
+      ],
+    },
+  ];
 
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -203,13 +298,13 @@ const Attendance = ({ route, navigation }) => {
               isDataAvailable_ = true;
             }
           });
-          console.log(isDataAvailable_);
+
           if (isDataAvailable_) {
-            setDataList(response);
+            console.log("Attendance Data", response);
+            // setDataList(response);
           } else {
-            // renderEmptyContainer("No Data found", true);
             setIsDataAvailable("No Data found.");
-            setDataList([]);
+            // setDataList([]);
           }
           //   setIsDataAvailable(isDataAvailable_);
         }
@@ -251,6 +346,7 @@ const Attendance = ({ route, navigation }) => {
       });
   }
   const renderItem = ({ item, index }) => {
+    console.log("renderitem", item);
     var mainIndex = index;
 
     if (item.data.length != 0) {
@@ -265,7 +361,7 @@ const Attendance = ({ route, navigation }) => {
             <View
               style={{
                 alignSelf: "center",
-                marginTop: 10,
+                marginTop: 5,
                 backgroundColor: "#EAECF0",
                 borderRadius: 50,
                 paddingHorizontal: 15,
@@ -279,13 +375,15 @@ const Attendance = ({ route, navigation }) => {
                   color: "#667085",
                 }}
               >
-                {item.title}
+                {item.title +
+                  " " +
+                  `(${String(item.data.length).padStart(2, "0")})`}
               </Text>
             </View>
             <FlatList
               data={item.data}
               style={{
-                marginTop: 7,
+                marginTop: 5,
               }}
               renderItem={({ item, index }) =>
                 renderItemChild(item, index, mainIndex)
@@ -356,13 +454,13 @@ const Attendance = ({ route, navigation }) => {
                 </Image> */}
           <ImageLoad
             style={{ height: 60, width: 60, marginStart: 15 }}
-            source={{
-              uri:
-                item.profilePic_path.includes(".png") ||
-                item.profilePic_path.includes(".jpg")
-                  ? item.profilePic_path
-                  : "https://4.bp.blogspot.com/-lYq2CzKT12k/VVR_atacIWI/AAAAAAABiwk/ZDXJa9dhUh8/s0/Convict_Lake_Autumn_View_uhd.jpg",
-            }}
+            source={
+              item.profilePic_path &&
+              (item.profilePic_path.includes(".png") ||
+                item.profilePic_path.includes(".jpg"))
+                ? { uri: item.profilePic_path }
+                : icon.IC_DUMMY_GIRL
+            }
             loadingStyle={{ size: "large", color: "blue" }}
             borderRadius={50}
             placeholderStyle={stylesCommon.studentProfile_atten}
@@ -396,47 +494,61 @@ const Attendance = ({ route, navigation }) => {
               <View
                 style={{ flexDirection: "row", justifyContent: "flex-start" }}
               >
-                <Image
-                  style={{
-                    height: 13,
-                    width: 13,
-                    resizeMode: "contain",
-                    marginTop: 2,
-                    marginRight: 4,
-                  }}
-                  source={icon.IC_ATTENDANCE_CLOCK}
-                ></Image>
-                <Text
-                  style={{
-                    fontFamily: fonts.INTER_SEMIBOLD,
-                    fontSize: 12,
-                    color: "#101828",
-                  }}
-                >
-                  09: 45 AM
-                </Text>
+                {(dataList[mainIndex]?.title === "Untracked" ||
+                  dataList[mainIndex]?.title === "Present") && (
+                  <Image
+                    style={{
+                      height: 13,
+                      width: 13,
+                      resizeMode: "contain",
+                      marginTop: 2,
+                      marginRight: 4,
+                    }}
+                    source={icon.IC_ATTENDANCE_CLOCK}
+                  ></Image>
+                )}
+
+                {(dataList[mainIndex]?.title === "Untracked" ||
+                  dataList[mainIndex]?.title === "Present") && (
+                  <Text
+                    style={{
+                      fontFamily: fonts.INTER_SEMIBOLD,
+                      fontSize: 12,
+                      color: "#101828",
+                    }}
+                  >
+                    09: 45 AM
+                  </Text>
+                )}
               </View>
 
               <View style={{ flexDirection: "row" }}>
-                <Image
-                  style={{
-                    height: 13,
-                    width: 13,
-                    marginLeft: 40,
-                    marginTop: 2,
-                    marginRight: 4,
-                  }}
-                  source={icon.IC_ATTENDANCE_LOCATION}
-                ></Image>
-                <Text
-                  style={{
-                    fontFamily: fonts.INTER_SEMIBOLD,
-                    fontSize: 12,
-                    color: "#101828",
-                  }}
-                >
-                  School Gate 1
-                </Text>
+                {(dataList[mainIndex]?.title === "Untracked" ||
+                  dataList[mainIndex]?.title === "Present") && (
+                  <Image
+                    style={{
+                      height: 13,
+                      width: 13,
+                      marginLeft: 40,
+                      marginTop: 2,
+                      marginRight: 4,
+                    }}
+                    source={icon.IC_ATTENDANCE_LOCATION}
+                  ></Image>
+                )}
+
+                {(dataList[mainIndex]?.title === "Untracked" ||
+                  dataList[mainIndex]?.title === "Present") && (
+                  <Text
+                    style={{
+                      fontFamily: fonts.INTER_SEMIBOLD,
+                      fontSize: 12,
+                      color: "#101828",
+                    }}
+                  >
+                    School Gate 1
+                  </Text>
+                )}
               </View>
             </View>
           </View>
@@ -463,7 +575,7 @@ const Attendance = ({ route, navigation }) => {
           <Menu>
             <MenuTrigger
               onPress={() => OpenDropDown()}
-              style={{ position: "absolute", right: -50 }}
+              style={{ position: "absolute", right: -65 }}
             >
               <Image
                 style={{
@@ -482,7 +594,7 @@ const Attendance = ({ route, navigation }) => {
                   position: "absolute",
                   borderRadius: 8,
                   marginTop: 30,
-                  marginLeft: 60,
+                  marginLeft: 70,
                   height: 120,
                   width: 130,
                   backgroundColor: "#fff",
@@ -576,7 +688,9 @@ const Attendance = ({ route, navigation }) => {
 
   const InputView = (label, isEnable, image, multiline) => {
     return (
-      <View style={[stylesCommon.inputMainView, { marginTop: 10 }]}>
+      <View
+        style={[stylesCommon.inputMainView, { marginTop: 10, marginBottom: 0 }]}
+      >
         <OutlinedTextField
           style={stylesCommon.searchTextFeild}
           tintColor={color.APP_PRIMARY}
@@ -587,11 +701,13 @@ const Attendance = ({ route, navigation }) => {
           returnKeyType="done"
           autoFocus={false}
           inputContainerStyle={{
-            height: vh(45),
+            height: 50,
           }}
-          labelTextStyle={{
-            bottom: vh(5),
-          }}
+          labelTextStyle={
+            {
+              // bottom: vh(5),
+            }
+          }
           onChangeText={(text) => {
             setSearchText(text);
             setFilterBySearch(true);
@@ -605,6 +721,10 @@ const Attendance = ({ route, navigation }) => {
       </View>
     );
   };
+  function NavigateToSupport() {
+    Preference.SetData(PreferenceKeys.TEACHER_SCHOOL_DETAIL);
+    navigation.navigate("TeacherSupport");
+  }
 
   return (
     <SafeAreaView style={stylesCommon.safeAreaStyle}>
@@ -615,11 +735,12 @@ const Attendance = ({ route, navigation }) => {
         type={"teacher"}
         navigation={navigation}
         screen={"Attendance"}
+        onSupportClick={() => NavigateToSupport()}
       />
       <View
         style={{
           flexDirection: "column",
-          marginTop: Platform.OS === "ios" ? -50 : 0,
+          marginTop: Platform.OS === "ios" ? -40 : 0,
         }}
       >
         <TitileBackgroundView
@@ -628,9 +749,7 @@ const Attendance = ({ route, navigation }) => {
           isSecondviewRequired={false}
         />
       </View>
-      <View
-        style={[stylesCommon.padding15View, { flex: 1, paddingBottom: 15 }]}
-      >
+      <View style={[stylesCommon.padding15View, { flex: 1, paddingBottom: 5 }]}>
         {InputView(
           AppText.SEARCH,
           loaderView ? false : true,
@@ -642,11 +761,14 @@ const Attendance = ({ route, navigation }) => {
         ) : (
           <FlatList
             data={dataList}
+            // data={dummyData}
             renderItem={(item, index) => renderItem(item, index)}
             showsVerticalScrollIndicator={false}
-            style={{
-              marginTop: 10,
-            }}
+            style={
+              {
+                // marginTop: 10,
+              }
+            }
             keyExtractor={(item, index) => index}
             ListEmptyComponent={renderEmptyContainer(isDataAvailable, true)}
           />
