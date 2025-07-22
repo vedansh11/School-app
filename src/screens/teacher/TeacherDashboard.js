@@ -39,6 +39,8 @@ import * as Utills from "../../API/Utills";
 import { axiosCallAPI } from "../../API/axiosCommonService";
 import TeacherDashboard2 from "./TeacherDashboard2";
 import { screenWidth } from "../../Utills/dimesnion";
+import { apiSimple } from "../../API/api";
+
 
 const TeacherDashboard = ({ navigation }) => {
   const [listDataSource, setListDataSource] = useState([]);
@@ -66,6 +68,7 @@ const TeacherDashboard = ({ navigation }) => {
     };
   }, []);
   useEffect(() => {
+    console.log("Kid",clickIndex)
     Preference.SetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX, "" + clickIndex);
   }, [clickIndex]);
   //  }, [listDataSource, classListData]);
@@ -115,73 +118,116 @@ const TeacherDashboard = ({ navigation }) => {
     ]);
   }
 
-  async function schoolListAPI() {
-    setLoaderView(true);
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
+  // async function schoolListAPI() {
+  //   setLoaderView(true);
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
 
-    axiosCallAPI(
-      "get",
-      Utills.SCHOOL_LIST,
-      "",
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response) => {
-        setLoaderView(false);
-        console.log("Response>> " + JSON.stringify(response));
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.SCHOOL_LIST,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   )
+  //     .then((response) => {
+  //       setLoaderView(false);
+  //       console.log("Response>> " + JSON.stringify(response));
 
-        if (JSON.stringify(listDataSource) !== JSON.stringify(response))
-          console.log(response);
-        setListDataSource(response);
-        Preference.GetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX).then(
-          (index) => {
-            if (index) {
-              console.log("The teacherDashboard1 here index is", index);
-              setIndex(parseInt(index));
-              teacherClassListAPI(listDataSource[parseInt(index)].id);
-            }
-          }
-        );
-      })
-      .catch((error) => {
-        setLoaderView(false);
-      });
+  //       if (JSON.stringify(listDataSource) !== JSON.stringify(response))
+  //         console.log(response);
+  //       setListDataSource(response);
+  //       Preference.GetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX).then(
+  //         (index) => {
+  //           if (index) {
+  //             console.log("The teacherDashboard1 here index is", index);
+  //             setIndex(parseInt(index));
+  //             teacherClassListAPI(listDataSource[parseInt(index)].id);
+  //           }
+  //         }
+  //       );
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //     });
+  // }
+
+async function schoolListAPI() {
+  setLoaderView(true);
+
+  try {
+    const res = await apiSimple.get(Utills.SCHOOL_LIST);
+    const response = res?.data;
+
+
+
+    setListDataSource(response);
+
+      teacherClassListAPI(2);
+    
+  } catch (error) {
+    // Error already handled globally in interceptors
+    console.error("Error in schoolListAPI", error);
+  } finally {
+    setLoaderView(false);
   }
+}
+
+  // async function teacherClassListAPI(Id) {
+  //   console.log("Id we are getting in classList", Id);
+  //   setLoaderView(true);
+
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.TEACHER_CLASS_LIST + "?schoolId=" + Id,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   )
+  //     .then((response) => {
+  //       setLoaderView(false);
+  //       if (JSON.stringify(classListData) !== JSON.stringify(response.result))
+  //         setClassList(removeDuplicates(response.result, "id"));
+  //       console.log("Response getting Dashboard 1 is..", response);
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //     });
+  // }
+
   async function teacherClassListAPI(Id) {
-    console.log("Id we are getting in classList", Id);
-    setLoaderView(true);
+  console.log("Id we are getting in classList", Id);
+  setLoaderView(true);
 
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
+  try {
+    const res = await apiSimple.get(`${Utills.TEACHER_CLASS_LIST}?schoolId=${Id}`);
+    const response = res?.result;
 
-    axiosCallAPI(
-      "get",
-      Utills.TEACHER_CLASS_LIST + "?schoolId=" + Id,
-      "",
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response) => {
-        setLoaderView(false);
-        if (JSON.stringify(classListData) !== JSON.stringify(response.result))
-          setClassList(removeDuplicates(response.result, "id"));
-        console.log("Response getting Dashboard 1 is..", response);
-      })
-      .catch((error) => {
-        setLoaderView(false);
-      });
+    if (JSON.stringify(classListData) !== JSON.stringify(response.result)) {
+      setClassList(removeDuplicates(response.result, "id"));
+    }
+
+    console.log("Response getting Dashboard 1 is..",response);
+  } catch (error) {
+    // Error already handled in global interceptor
+  } finally {
+    setLoaderView(false);
   }
+}
+
 
   function handleBackButtonClick() {
     BackHandler.exitApp();
@@ -596,6 +642,7 @@ const TeacherDashboard = ({ navigation }) => {
         titile={AppText.DASHBOARD}
         type={"teacher"}
         navigation={navigation}
+        goBackWelcomeScreen={true}
         screen={"TeacherDashboard"}
         showLogout
       />

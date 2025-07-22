@@ -75,6 +75,7 @@ import {
   ButtonView,
 } from "../../commonTheme/CommonView";
 import SelectDropdown from "react-native-select-dropdown";
+import { apiFull, apiSimple } from "../../API/api";
 const PaymentOrderScreen = ({ navigation }) => {
   const fromFieldRef = useRef();
   const toFieldRef = useRef();
@@ -243,7 +244,7 @@ const PaymentOrderScreen = ({ navigation }) => {
     //CreateOrder();
 
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-    // GetPaymentDetails();
+   //  GetPaymentDetails();
     GetClassList();
     CreateYearList();
     CFPaymentGatewayService.setEventSubscriber({
@@ -339,159 +340,181 @@ const PaymentOrderScreen = ({ navigation }) => {
         setBackgroundLoaderView(false);
       });
   };
+  // const GetClassList = async () => {
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+  //   const schoolId = JSON.parse(
+  //     await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
+  //   ).schoolId;
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.GET_CLASS_LIST + schoolId,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   )
+  //     .then((response) => {
+  //       response.result.reverse();
+  //       response.result.map((item) => {
+  //         item.className = "Class - " + item.className;
+  //       });
+  //       setClassList(response.result);
+  //     })
+  //     .catch((error) => {});
+  // };
+
+
   const GetClassList = async () => {
-    let requestOptions = {
+  try {
+    const token = await Preference.GetData(PreferenceKeys.TOKEN);
+    const studentDetail = JSON.parse(
+      await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
+    );
+    const schoolId = studentDetail.schoolId;
+
+    const res = await apiSimple.get(`${Utills.GET_CLASS_LIST}${schoolId}`, {
       headers: {
         Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+        Authorization: token,
       },
-    };
-    const schoolId = JSON.parse(
-      await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
-    ).schoolId;
-    axiosCallAPI(
-      "get",
-      Utills.GET_CLASS_LIST + schoolId,
-      "",
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response) => {
-        response.result.reverse();
-        response.result.map((item) => {
-          item.className = "Class - " + item.className;
-        });
-        setClassList(response.result);
-      })
-      .catch((error) => {});
-  };
-  const GetPaymentDetails = async () => {
-    setBackgroundLoaderView(true);
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
-    console.log(await Preference.GetData(PreferenceKeys.STUDENT_DETAIL));
-    let ClassId_local;
-    let Year_local;
-    if (classId === "") {
-      ClassId_local = JSON.parse(
-        await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
-      ).classId;
-    } else {
-      ClassId_local = classId;
-    }
+    });
 
-    if (selectedYear === "") {
-      Year_local = await Preference.GetData(PreferenceKeys.SAVE_YEAR);
-    } else {
-      Year_local = selectedYear;
-    }
+    const response = res?.data;
+    console.log("Pyment---",response.result)
+    response.result.reverse();
+    response.result.map((item) => {
+      item.className = "Class - " + item.className;
+    });
+    setClassList(response.result);
+  } catch (error) {
+    // Already handled globally if needed
+    console.error("Error in GetClassList", error);
+  }
+};
 
-    const studentId = JSON.parse(
-      await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
-    ).id;
-    const schoolId = JSON.parse(
-      await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
-    ).schoolId;
 
-    axiosCallAPI(
-      "get",
-      Utills.GET_PAYMENT_LIST +
-        ClassId_local +
-        "&studentId=" +
-        studentId +
-        "&year=" +
-        Year_local +
-        "&schoolId=" +
-        schoolId,
-      "",
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response1) => {
-        setBackgroundLoaderView(false);
-        var response = response1.data;
-        if (response1.status) {
-          console.log("Here is the res", response.result);
-          setImagePath(icon.IC_FEES);
-          setPaidAmount(response.result.paid_amount);
-          setRemainingAmount(response.result.remain_amount);
-          // let sortedCars1 = response.result.sort((a, b) =>
-          //   a.due_date.split('-').reverse().join().localeCompare(b.due_date.split('-').reverse().join()));
-          // setListData(response.result.data_list);
-          var filterArray = [];
-          var ListArray = [];
-          response.result.data_list.map((item) => {
-            if (item.structure_name == "Full") {
-              setFees(item.fees);
-              setFinalAmount(item.final_amount);
 
-              if (item.discount_value > 0) {
-                setIsFullPaymentShow(true);
-                if (item.discount_type == 0) {
-                  setDiscount(item.discount_value + "%");
-                } else {
-                  setDiscount("₹" + item.discount_value);
-                }
-              } else {
-                setIsFullPaymentShow(false);
-              }
-            }
-            if (item.order_status == "paid") {
-              setIsFullPaymentShow(false);
-            }
 
-            if (
-              item.structure_name != "Full Payment" ||
-              item.order_status == "paid"
-            ) {
-              ListArray.push(item);
-            }
+// const GetPaymentDetails = async () => {
+//   setBackgroundLoaderView(true);
 
-            if (
-              item.order_status != "paid" &&
-              item.structure_name != "Full Payment"
-            ) {
-              filterArray.push(item);
-            }
-          });
-          if (filterArray.length > 0) {
-            setImagePath(icon.IC_FEES);
-          } else {
-            setImagePath("");
-          }
-          Mybooleanvalue = [];
-          ListArray.map((item) => {
-            Mybooleanvalue.push(false);
-          });
-          setTableState(Mybooleanvalue);
-          setListData(ListArray);
-          setDropDownlist(filterArray);
+//   try {
+//     const token = await Preference.GetData(PreferenceKeys.TOKEN);
+//     const studentDetail = JSON.parse(
+//       await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
+//     );
+//     console.log(studentDetail);
 
-          if (response.result.data_list.length > 0) {
-            setNoData(false);
-          } else {
-            setNoData(true);
-          }
-        } else {
-          setNoData(true);
-          setListData([]);
-          setDropDownlist([]);
-          setPaidAmount("0");
-          setRemainingAmount("0");
-          setImagePath("");
-          setIsFullPaymentShow(false);
-        }
-      })
-      .catch((error) => {
-        setBackgroundLoaderView(false);
-      });
-  };
+//     const ClassId_local = classId === "" ? studentDetail.classId : classId;
+//     const Year_local =
+//       selectedYear === ""
+//         ? await Preference.GetData(PreferenceKeys.SAVE_YEAR)
+//         : selectedYear;
+
+//     const studentId = studentDetail.id;
+//     const schoolId = studentDetail.schoolId;
+
+//     const URL =
+//       Utills.GET_PAYMENT_LIST +
+//       ClassId_local +
+//       "&studentId=" +
+//       studentId +
+//       "&year=" +
+//       Year_local +
+//       "&schoolId=" +
+//       schoolId;
+
+//       console.log("Here is the url we",URL,selectedYear)
+//     const res = await apiSimple.get(URL, {
+//       headers: {
+//         Accept: "application/json",
+//         Authorization: token,
+//       },
+//     });
+
+//     setBackgroundLoaderView(false);
+
+//     const response = res?.data;
+
+//     if (res.status) {
+//       console.log("Here is the res", response.result);
+//       setImagePath(icon.IC_FEES);
+//       setPaidAmount(response.result.paid_amount);
+//       setRemainingAmount(response.result.remain_amount);
+
+//       let filterArray = [];
+//       let ListArray = [];
+
+//       response.result.data_list.map((item) => {
+//         if (item.structure_name == "Full") {
+//           setFees(item.fees);
+//           setFinalAmount(item.final_amount);
+
+//           if (item.discount_value > 0) {
+//             setIsFullPaymentShow(true);
+//             if (item.discount_type == 0) {
+//               setDiscount(item.discount_value + "%");
+//             } else {
+//               setDiscount("₹" + item.discount_value);
+//             }
+//           } else {
+//             setIsFullPaymentShow(false);
+//           }
+//         }
+
+//         if (item.order_status == "paid") {
+//           setIsFullPaymentShow(false);
+//         }
+
+//         if (
+//           item.structure_name != "Full Payment" ||
+//           item.order_status == "paid"
+//         ) {
+//           ListArray.push(item);
+//         }
+
+//         if (
+//           item.order_status != "paid" &&
+//           item.structure_name != "Full Payment"
+//         ) {
+//           filterArray.push(item);
+//         }
+//       });
+
+//       setImagePath(filterArray.length > 0 ? icon.IC_FEES : "");
+
+//       Mybooleanvalue = [];
+//       ListArray.map(() => {
+//         Mybooleanvalue.push(false);
+//       });
+
+//       setTableState(Mybooleanvalue);
+//       setListData(ListArray);
+//       setDropDownlist(filterArray);
+
+//       setNoData(response.result.data_list.length === 0);
+//     } else {
+//       setNoData(true);
+//       setListData([]);
+//       setDropDownlist([]);
+//       setPaidAmount("0");
+//       setRemainingAmount("0");
+//       setImagePath("");
+//       setIsFullPaymentShow(false);
+//     }
+//   } catch (error) {
+//     setBackgroundLoaderView(false);
+//     console.error("GetPaymentDetails error", error);
+//   }
+// };
+
+
+
   const CreateYearList = async () => {
     let CurrentYear = moment().year();
     let yearArray = [];
@@ -509,54 +532,109 @@ const PaymentOrderScreen = ({ navigation }) => {
     );
   };
 
-  const CreateOrder = async () => {
-    var customer_details = {};
-    customer_details.customer_id = await Preference.GetData(
-      PreferenceKeys.CURRENT_USERID
-    );
-    customer_details.customer_email = JSON.parse(
-      await Preference.GetData(PreferenceKeys.LOGIN_USER_DETAIL)
-    ).email;
-    customer_details.customer_phone = JSON.parse(
-      await Preference.GetData(PreferenceKeys.LOGIN_USER_DETAIL)
-    ).mobileNo;
+  // const CreateOrder = async () => {
+  //   var customer_details = {};
+  //   customer_details.customer_id = await Preference.GetData(
+  //     PreferenceKeys.CURRENT_USERID
+  //   );
+  //   customer_details.customer_email = JSON.parse(
+  //     await Preference.GetData(PreferenceKeys.LOGIN_USER_DETAIL)
+  //   ).email;
+  //   customer_details.customer_phone = JSON.parse(
+  //     await Preference.GetData(PreferenceKeys.LOGIN_USER_DETAIL)
+  //   ).mobileNo;
 
-    setBackgroundLoaderView(true);
-    var data = new FormData();
-    data.append("order_amount", modalAmount);
-    data.append("order_currency", "INR");
-    data.append("order_note", modalRemark);
-    data.append("customer_details", JSON.stringify(customer_details));
+  //   setBackgroundLoaderView(true);
+  //   var data = new FormData();
+  //   data.append("order_amount", modalAmount);
+  //   data.append("order_currency", "INR");
+  //   data.append("order_note", modalRemark);
+  //   data.append("customer_details", JSON.stringify(customer_details));
 
-    var config = {
-      // method: 'post',
-      // url: Utills.CREATE_ORDER,
+  //   console.log("Saving....",data)
+  //   var config = {
+  //     // method: 'post',
+  //     // url: Utills.CREATE_ORDER,
+  //     headers: {
+  //       accept: "application/json",
+  //       "Content-Type": "multipart/form-data",
+  //       "x-api-version": "2022-09-01",
+  //       "x-client-Id": "2661289e6fe0f1f4a9fe50a71d821662",
+  //       "x-client-Secret": "8971531fe3d2b59b06e97c573b170d3af09acd92",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //     //data: data
+  //   };
+  //   axiosCallAPI("post", Utills.CREATE_ORDER, data, config, true, navigation)
+  //     .then((response) => {
+  //       setBackgroundLoaderView(false);
+
+  //       Preference.SetData(PreferenceKeys.TERM_ID, noteTypeID);
+  //       Preference.SetData(PreferenceKeys.AMOUNT, modalAmount);
+  //       Preference.SetData(PreferenceKeys.REMARK, modalRemark);
+  //       Preference.SetData(PreferenceKeys.STRUCTURE_ID, structureId);
+  //       Preference.SetData(PreferenceKeys.SAVE_YEAR, selectedYear);
+  //       Preference.SetData(PreferenceKeys.CLASS_ID, classId);
+  //       StartPayment(response.payment_session_id, response.order_id);
+  //     })
+  //     .catch((error) => {
+  //       setBackgroundLoaderView(false);
+  //     });
+  // };
+
+const CreateOrder = async () => {
+  const customerId = await Preference.GetData(PreferenceKeys.CURRENT_USERID);
+  const loginDetails = JSON.parse(
+    await Preference.GetData(PreferenceKeys.LOGIN_USER_DETAIL)
+  );
+
+  const customer_details = {
+    customer_id: customerId,
+    customer_email: loginDetails.email,
+    customer_phone: loginDetails.mobileNo,
+  };
+
+  setBackgroundLoaderView(true);
+
+  const data = new FormData();
+  data.append("order_amount", String(modalAmount));
+data.append("order_currency", "INR");
+data.append("order_note", String(modalRemark));
+data.append("customer_details", JSON.stringify(customer_details));
+
+
+  console.log("Saving....", data);
+
+  try {
+    const res = await apiFull.post(Utills.CREATE_ORDER, data, {
       headers: {
-        accept: "application/json",
+        Accept: "application/json",
         "Content-Type": "multipart/form-data",
         "x-api-version": "2022-09-01",
         "x-client-Id": "2661289e6fe0f1f4a9fe50a71d821662",
-        "x-client-Secret": "8971531fe3d2b59b06e97c573b170d3af09acd92",
+        "x-client-Secret":
+          "8971531fe3d2b59b06e97c573b170d3af09acd92",
         Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
       },
-      //data: data
-    };
-    axiosCallAPI("post", Utills.CREATE_ORDER, data, config, true, navigation)
-      .then((response) => {
-        setBackgroundLoaderView(false);
+    });
 
-        Preference.SetData(PreferenceKeys.TERM_ID, noteTypeID);
-        Preference.SetData(PreferenceKeys.AMOUNT, modalAmount);
-        Preference.SetData(PreferenceKeys.REMARK, modalRemark);
-        Preference.SetData(PreferenceKeys.STRUCTURE_ID, structureId);
-        Preference.SetData(PreferenceKeys.SAVE_YEAR, selectedYear);
-        Preference.SetData(PreferenceKeys.CLASS_ID, classId);
-        StartPayment(response.payment_session_id, response.order_id);
-      })
-      .catch((error) => {
-        setBackgroundLoaderView(false);
-      });
-  };
+    setBackgroundLoaderView(false);
+
+    Preference.SetData(PreferenceKeys.TERM_ID, noteTypeID);
+    Preference.SetData(PreferenceKeys.AMOUNT, modalAmount);
+    Preference.SetData(PreferenceKeys.REMARK, modalRemark);
+    Preference.SetData(PreferenceKeys.STRUCTURE_ID, structureId);
+    Preference.SetData(PreferenceKeys.SAVE_YEAR, selectedYear);
+    Preference.SetData(PreferenceKeys.CLASS_ID, classId);
+
+    StartPayment(res.payment_session_id, res.order_id);
+  } catch (error) {
+    console.error("CreateOrder error", error);
+    setBackgroundLoaderView(false);
+  }
+};
+
+
   function renderCloseClick() {
     clearData();
     setModalVisible(false);
@@ -839,14 +917,7 @@ const PaymentOrderScreen = ({ navigation }) => {
                 }}
                 onPressClose={() => renderCloseClick()}
               />
-              <View
-                style={{
-                  width: "100%",
-                  height: 1,
-                  backgroundColor: "#D0D5DD",
-                  marginBottom: 10,
-                }}
-              />
+            
               <ScrollView
                 style={{
                   width: "100%",

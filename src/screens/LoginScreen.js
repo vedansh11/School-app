@@ -45,6 +45,7 @@ import CountDown from "react-native-countdown-component";
 import axios from "axios";
 import { screenHeight, screenWidth } from "../Utills/dimesnion";
 import OtpAutoFillViewManager from "react-native-otp-auto-fill";
+import { apiSimple } from "../API/api";
 
 const LoginScreen = ({ navigation }) => {
   const OTPViewRef = useRef();
@@ -105,208 +106,358 @@ const LoginScreen = ({ navigation }) => {
     }
   }
 
-  function VerifyMobilNumberAPI(clickType) {
-    setBackgroundLoaderView(true);
+  // function VerifyMobilNumberAPI(clickType) {
+  //   setBackgroundLoaderView(true);
 
-    let loginFormData = new FormData();
-    loginFormData.append("mobile_no", mobileNumber);
-    loginFormData.append("from", "mobile");
-    console.log(
-      "Her is ",
-      mobileNumber,
-      Utills.VERIFY_MOBILE_NUMBER,
-      loginFormData,
-      requestOptions,
-      true,
-      navigation
-    );
-    let requestOptions = {
+  //   let loginFormData = new FormData();
+  //   loginFormData.append("mobile_no", mobileNumber);
+  //   loginFormData.append("from", "mobile");
+  //   console.log(
+  //     "Her is ",
+  //     mobileNumber,
+  //     Utills.VERIFY_MOBILE_NUMBER,
+  //     loginFormData,
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   );
+  //   let requestOptions = {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //   };
+  //   axiosCallAPI(
+  //     "post",
+  //     Utills.VERIFY_MOBILE_NUMBER,
+  //     loginFormData,
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   )
+  //     .then((response) => {
+  //       console.log("Here is the re", response);
+  //       if (response.is_success === true) {
+  //         setBackgroundLoaderView(false);
+  //         setShowButton(true);
+  //         clickType === "OTP" ? setTimmer(true) : null;
+  //         setShowResend(true);
+  //       } else {
+  //         setLoaderView(false);
+  //         setBackgroundLoaderView(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //       setBackgroundLoaderView(false);
+  //     });
+  // }
+
+
+async function VerifyMobilNumberAPI(clickType) {
+  setBackgroundLoaderView(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("mobile_no", mobileNumber);
+    formData.append("from", "mobile");
+
+    const res = await apiSimple.post(Utills.VERIFY_MOBILE_NUMBER, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    };
-    axiosCallAPI(
-      "post",
-      Utills.VERIFY_MOBILE_NUMBER,
-      loginFormData,
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response) => {
-        console.log("Here is the re", response);
-        if (response.is_success === true) {
-          setBackgroundLoaderView(false);
-          setShowButton(true);
-          clickType === "OTP" ? setTimmer(true) : null;
-          setShowResend(true);
-        } else {
-          setLoaderView(false);
-          setBackgroundLoaderView(false);
-        }
-      })
-      .catch((error) => {
-        setLoaderView(false);
-        setBackgroundLoaderView(false);
-      });
+    });
+const response = res.data
+    console.log("Here is the response:", response);
+
+    if (response.is_success === true) {
+      setShowButton(true);
+      if (clickType === "OTP") setTimmer(true);
+      setShowResend(true);
+    }
+
+  } catch (error) {
+    console.log("Error in VerifyMobileNumberAPI", error);
+    // Error already handled by global interceptor
+  } finally {
+    setLoaderView(false);
+    setBackgroundLoaderView(false);
   }
+}
 
-  function verifyOTP_API() {
-    setLoaderView(true);
-    var loginFormData = new FormData();
-    loginFormData.append("mobile_no", mobileNumber);
-    loginFormData.append("otp", 1111);
 
-    let requestOptions = {
+  // function verifyOTP_API() {
+  //   setLoaderView(true);
+  //   var loginFormData = new FormData();
+  //   loginFormData.append("mobile_no", mobileNumber);
+  //   loginFormData.append("otp", 1111);
+
+  //   let requestOptions = {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //   };
+
+  //   axiosCallAPI(
+  //     "post",
+  //     Utills.VERIFY_OTP,
+  //     loginFormData,
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   )
+  //     .then((response) => {
+  //       if (response !== undefined) {
+  //         console.log(response);
+  //         setLoaderView(false);
+  //         if (response.status) {
+  //           Preference.SetData(PreferenceKeys.IS_LOGIN, "true");
+  //           Preference.SetData(
+  //             PreferenceKeys.TOKEN,
+  //             "Bearer " + response.data.access_token
+  //           );
+  //           verifyUserProfile();
+  //         } else {
+  //           if (OTPViewRef.current != null) {
+  //             OTPViewRef.current.clear();
+  //           }
+  //         }
+  //       } else {
+  //         setLoaderView(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //     });
+  // }
+
+async function verifyOTP_API() {
+  setLoaderView(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("mobile_no", mobileNumber);
+    formData.append("otp", 1111);
+
+    const response = await apiSimple.post(Utills.VERIFY_OTP, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    };
+    });
 
-    axiosCallAPI(
-      "post",
-      Utills.VERIFY_OTP,
-      loginFormData,
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response) => {
-        if (response !== undefined) {
-          console.log(response);
-          setLoaderView(false);
-          if (response.status) {
-            Preference.SetData(PreferenceKeys.IS_LOGIN, "true");
-            Preference.SetData(
-              PreferenceKeys.TOKEN,
-              "Bearer " + response.data.access_token
-            );
-            verifyUserProfile();
-          } else {
-            if (OTPViewRef.current != null) {
-              OTPViewRef.current.clear();
-            }
-          }
-        } else {
-          setLoaderView(false);
+    if (response) {
+      console.log("OTP Response:", response);
+
+      if (response.status) {
+        await Preference.SetData(PreferenceKeys.IS_LOGIN, "true");
+        await Preference.SetData(
+          PreferenceKeys.TOKEN,
+          "Bearer " + response.data.access_token
+        );
+        verifyUserProfile(); // ⬅️ continue flow
+      } else {
+        if (OTPViewRef.current != null) {
+          OTPViewRef.current.clear();
         }
-      })
-      .catch((error) => {
-        setLoaderView(false);
-      });
+      }
+    }
+  } catch (error) {
+    console.log("Error in verifyOTP_API", error);
+    // already handled in interceptor
+  } finally {
+    setLoaderView(false);
   }
+}
+
+  // async function verifyUserProfile() {
+  //   setLoaderView(true);
+
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.VERIFY_PROFILE,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   )
+  //     .then((response) => {
+  //       setLoaderView(false);
+  //       console.log("_________________________________");
+  //       console.log(response);
+  //       Preference.SetData(PreferenceKeys.CURRENT_USERID, response.id);
+  //       Preference.SetData(
+  //         PreferenceKeys.LOGIN_USER_DETAIL,
+  //         JSON.stringify(response)
+  //       );
+  //       const Roles = Object.values(response.roles).map((value) => value.slug);
+
+  //       console.log("**  Roles ** " + Roles);
+  //       if (
+  //         Roles.includes("parents") &&
+  //         Roles.includes("guardian") &&
+  //         Roles.includes("teacher")
+  //       ) {
+  //         console.log("Both");
+  //         Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
+  //         Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+  //         Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+  //         Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
+  //         // navigation.navigate('WelcomScreen')
+  //         navigation.dispatch(StackActions.replace("WelcomScreen"));
+  //       } else if (Roles.includes("teacher") && Roles.includes("parents")) {
+  //         console.log("Both");
+  //         Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
+  //         Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+  //         Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+  //         Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
+
+  //         // navigation.navigate('WelcomScreen')
+  //         navigation.dispatch(StackActions.replace("WelcomScreen"));
+  //       } else if (Roles.includes("parents") && Roles.includes("guardian")) {
+  //         console.log("Both");
+  //         Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
+  //         Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+  //         Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+  //         Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
+  //         // navigation.navigate('WelcomScreen')
+  //         navigation.dispatch(StackActions.replace("WelcomScreen"));
+  //       } else if (Roles.includes("teacher") && Roles.includes("guardian")) {
+  //         console.log("Both");
+  //         Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
+  //         Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+  //         Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+  //         Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
+  //         // navigation.navigate('WelcomScreen')
+  //         navigation.dispatch(StackActions.replace("WelcomScreen"));
+  //       } else if (Roles.includes("guardian")) {
+  //         console.log("Both");
+  //         Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "false");
+  //         Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+  //         Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+  //         Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "true");
+  //         //navigation.navigate('ParentDashboard')
+  //         navigation.dispatch(StackActions.replace("ParentDashboard"));
+  //       } else if (Roles.includes("parents")) {
+  //         console.log("parents");
+  //         Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "false");
+  //         Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "true");
+  //         Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+  //         //navigation.navigate('ParentDashboard')
+  //         navigation.dispatch(StackActions.replace("ParentDashboard"));
+  //       } else if (Roles.includes("teacher")) {
+  //         console.log("teacher");
+  //         Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "false");
+  //         Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "true");
+  //         Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+  //         //navigation.navigate('TeacherDashboard')
+  //         navigation.dispatch(StackActions.replace("TeacherDashboard"));
+  //       }
+  //       // // Set dynamic my array and compare pending
+  //       // const customRoles = ['teacher', 'parents', 'school_admin']
+  //       // const containsAll = customRoles.every(element => {
+  //       //     return Roles.includes(element);
+  //       // });
+
+  //       // if (containsAll) {
+  //       //     console.log('Both');
+  //       //     navigation.navigate('WelcomScreen')
+  //       // } else {
+  //       //     customRoles.map(element => {
+  //       //         if (Roles.includes(element)) {
+  //       //             console.log(element);
+
+  //       //         }
+  //       //     });
+  //       // }
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //     });
+  // }
+
   async function verifyUserProfile() {
-    setLoaderView(true);
+  setLoaderView(true);
 
-    let requestOptions = {
+  try {
+    const res = await apiSimple.get(Utills.VERIFY_PROFILE, {
       headers: {
         Accept: "application/json",
         Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
       },
-    };
+    });
 
-    axiosCallAPI(
-      "get",
-      Utills.VERIFY_PROFILE,
-      "",
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response) => {
-        setLoaderView(false);
-        console.log("_________________________________");
-        console.log(response);
-        Preference.SetData(PreferenceKeys.CURRENT_USERID, response.id);
-        Preference.SetData(
-          PreferenceKeys.LOGIN_USER_DETAIL,
-          JSON.stringify(response)
-        );
-        const Roles = Object.values(response.roles).map((value) => value.slug);
+    const response = res?.data;
 
-        console.log("**  Roles ** " + Roles);
-        if (
-          Roles.includes("parents") &&
-          Roles.includes("guardian") &&
-          Roles.includes("teacher")
-        ) {
-          console.log("Both");
-          Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
-          Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
-          Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
-          Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
-          // navigation.navigate('WelcomScreen')
-          navigation.dispatch(StackActions.replace("WelcomScreen"));
-        } else if (Roles.includes("teacher") && Roles.includes("parents")) {
-          console.log("Both");
-          Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
-          Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
-          Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
-          Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
+    setLoaderView(false);
+    console.log("_________________________________");
+    console.log(response);
 
-          // navigation.navigate('WelcomScreen')
-          navigation.dispatch(StackActions.replace("WelcomScreen"));
-        } else if (Roles.includes("parents") && Roles.includes("guardian")) {
-          console.log("Both");
-          Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
-          Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
-          Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
-          Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
-          // navigation.navigate('WelcomScreen')
-          navigation.dispatch(StackActions.replace("WelcomScreen"));
-        } else if (Roles.includes("teacher") && Roles.includes("guardian")) {
-          console.log("Both");
-          Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
-          Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
-          Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
-          Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
-          // navigation.navigate('WelcomScreen')
-          navigation.dispatch(StackActions.replace("WelcomScreen"));
-        } else if (Roles.includes("guardian")) {
-          console.log("Both");
-          Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "false");
-          Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
-          Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
-          Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "true");
-          //navigation.navigate('ParentDashboard')
-          navigation.dispatch(StackActions.replace("ParentDashboard"));
-        } else if (Roles.includes("parents")) {
-          console.log("parents");
-          Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "false");
-          Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "true");
-          Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
-          //navigation.navigate('ParentDashboard')
-          navigation.dispatch(StackActions.replace("ParentDashboard"));
-        } else if (Roles.includes("teacher")) {
-          console.log("teacher");
-          Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "false");
-          Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "true");
-          Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
-          //navigation.navigate('TeacherDashboard')
-          navigation.dispatch(StackActions.replace("TeacherDashboard"));
-        }
-        // // Set dynamic my array and compare pending
-        // const customRoles = ['teacher', 'parents', 'school_admin']
-        // const containsAll = customRoles.every(element => {
-        //     return Roles.includes(element);
-        // });
+    Preference.SetData(PreferenceKeys.CURRENT_USERID, response.id);
+    Preference.SetData(
+      PreferenceKeys.LOGIN_USER_DETAIL,
+      JSON.stringify(response)
+    );
 
-        // if (containsAll) {
-        //     console.log('Both');
-        //     navigation.navigate('WelcomScreen')
-        // } else {
-        //     customRoles.map(element => {
-        //         if (Roles.includes(element)) {
-        //             console.log(element);
+    const Roles = Object.values(response.roles).map((value) => value.slug);
 
-        //         }
-        //     });
-        // }
-      })
-      .catch((error) => {
-        setLoaderView(false);
-      });
+    console.log("**  Roles ** " + Roles);
+
+    if (
+      Roles.includes("parents") &&
+      Roles.includes("guardian") &&
+      Roles.includes("teacher")
+    ) {
+      Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
+      Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+      Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+      Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
+      navigation.dispatch(StackActions.replace("WelcomScreen"));
+    } else if (Roles.includes("teacher") && Roles.includes("parents")) {
+      Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
+      Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+      Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+      Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
+      navigation.dispatch(StackActions.replace("WelcomScreen"));
+    } else if (Roles.includes("parents") && Roles.includes("guardian")) {
+      Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
+      Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+      Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+      Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
+      navigation.dispatch(StackActions.replace("WelcomScreen"));
+    } else if (Roles.includes("teacher") && Roles.includes("guardian")) {
+      Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "true");
+      Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+      Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+      Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "false");
+      navigation.dispatch(StackActions.replace("WelcomScreen"));
+    } else if (Roles.includes("guardian")) {
+      Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "false");
+      Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+      Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+      Preference.SetData(PreferenceKeys.IS_GARDIAN_LOGIN, "true");
+      navigation.dispatch(StackActions.replace("ParentDashboard"));
+    } else if (Roles.includes("parents")) {
+      Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "false");
+      Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "true");
+      Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+      navigation.dispatch(StackActions.replace("ParentDashboard"));
+    } else if (Roles.includes("teacher")) {
+      Preference.SetData(PreferenceKeys.IS_MULTIPLE_USER, "false");
+      Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "true");
+      Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+      navigation.dispatch(StackActions.replace("TeacherDashboard"));
+    }
+  } catch (error) {
+    setLoaderView(false);
   }
+}
+
 
   function ValidationMobileNumber() {
     if (mobileNumber.length === 0) {

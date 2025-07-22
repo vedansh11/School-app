@@ -22,6 +22,7 @@ import { axiosCallAPI } from "../../API/axiosCommonService";
 import moment from "moment";
 import stylesCommon from "../../commonTheme/stylesCommon";
 import { screenWidth } from "../../Utills/dimesnion";
+import { apiSimple,apiFull } from "../../API/api";
 
 const TeacherSupportTabCommon = (props) => {
   const [listData, setListData] = useState([]);
@@ -171,119 +172,204 @@ const TeacherSupportTabCommon = (props) => {
     return unsubscribe;
   }, [props.navigation]);
 
+  // async function GetReplyData(ID, sectionID) {
+  //   setBackgroundLoaderView(true);
+  //   const roleId = Role == "parent" ? ROLEID.PARENT : ROLEID.TEACHER;
+  //   const studentId = ID;
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.GET_REPLIED_DATA +
+  //       "?roleId=" +
+  //       roleId +
+  //       "&studentId=" +
+  //       studentId +
+  //       "&sectionId=" +
+  //       sectionID,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     props.navigation
+  //   )
+  //     // axiosCallAPI('get', Utills.GET_SUPPORT_DATA, p.toString(), requestOptions, true, props.navigation)
+  //     .then((response) => {
+  //       console.log(response);
+  //       setBackgroundLoaderView(false);
+  //       if (response !== undefined) {
+  //         if (response.result.length > 0) {
+  //           setNoData(false);
+  //           console.log("Here is the response list", response.result);
+  //           setListData(response.result);
+  //         } else {
+  //           setNoData(true);
+  //           setListData(response.result);
+  //         }
+  //         //setLoaderView(false)
+  //         // if (JSON.stringify(dataList) != JSON.stringify(response.result))
+  //         //     setDataList(response.result)
+  //       } else {
+  //         //setLoaderView(false)
+  //         setNoData(true);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       setBackgroundLoaderView(false);
+  //       // setLoaderView(false)
+  //     });
+  // }
+
   async function GetReplyData(ID, sectionID) {
+  try {
     setBackgroundLoaderView(true);
-    const roleId = Role == "parent" ? ROLEID.PARENT : ROLEID.TEACHER;
+
+    const roleId = Role === "parent" ? ROLEID.PARENT : ROLEID.TEACHER;
     const studentId = ID;
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
-    axiosCallAPI(
-      "get",
+
+    const url =
       Utills.GET_REPLIED_DATA +
-        "?roleId=" +
-        roleId +
-        "&studentId=" +
-        studentId +
-        "&sectionId=" +
-        sectionID,
-      "",
-      requestOptions,
-      true,
-      props.navigation
-    )
-      // axiosCallAPI('get', Utills.GET_SUPPORT_DATA, p.toString(), requestOptions, true, props.navigation)
-      .then((response) => {
-        console.log(response);
-        setBackgroundLoaderView(false);
-        if (response !== undefined) {
-          if (response.result.length > 0) {
-            setNoData(false);
-            console.log("Here is the response list", response.result);
-            setListData(response.result);
-          } else {
-            setNoData(true);
-            setListData(response.result);
-          }
-          //setLoaderView(false)
-          // if (JSON.stringify(dataList) != JSON.stringify(response.result))
-          //     setDataList(response.result)
-        } else {
-          //setLoaderView(false)
-          setNoData(true);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setBackgroundLoaderView(false);
-        // setLoaderView(false)
-      });
+      `?roleId=${roleId}&studentId=${studentId}&sectionId=${sectionID}`;
+
+    const res = await apiFull.get(url);
+    const response = res?.data;
+
+    setBackgroundLoaderView(false);
+
+    if (response !== undefined) {
+      if (response.result.length > 0) {
+        setNoData(false);
+        console.log("Here is the response list", response.result);
+        setListData(response.result);
+      } else {
+        setNoData(true);
+        setListData(response.result);
+      }
+    } else {
+      setNoData(true);
+    }
+  } catch (error) {
+    console.log("Error in GetReplyData:", error);
+    setBackgroundLoaderView(false);
+    setNoData(true);
   }
+}
 
-  async function GetSupportData(ID, sectionID) {
-    setBackgroundLoaderView(true);
 
-    const roleId = Role == "parent" ? ROLEID.PARENT : ROLEID.TEACHER;
-    const studentId = ID;
-    const type =
-      Type === "New"
-        ? SUPPORT_TYPE.NEW
-        : Type === "Closed"
-        ? SUPPORT_TYPE.CLOSE
-        : 1;
+  // async function GetSupportData(ID, sectionID) {
+  //   setBackgroundLoaderView(true);
 
-    let requestOptions = {
+  //   const roleId = Role == "parent" ? ROLEID.PARENT : ROLEID.TEACHER;
+  //   const studentId = ID;
+  //   const type =
+  //     Type === "New"
+  //       ? SUPPORT_TYPE.NEW
+  //       : Type === "Closed"
+  //       ? SUPPORT_TYPE.CLOSE
+  //       : 1;
+
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.GET_SUPPORT_DATA +
+  //       "?roleId=" +
+  //       roleId +
+  //       "&studentId=" +
+  //       studentId +
+  //       "&type=" +
+  //       type +
+  //       "&sectionId=" +
+  //       sectionID,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     props.navigation
+  //   )
+  //     // axiosCallAPI('get', Utills.GET_SUPPORT_DATA, p.toString(), requestOptions, true, props.navigation)
+  //     .then((response) => {
+  //       setBackgroundLoaderView(false);
+  //       console.log(response.result);
+  //       if (response !== undefined) {
+  //         if (response.result.length > 0) {
+  //           setNoData(false);
+  //           setListData(response.result);
+  //         } else {
+  //           setNoData(true);
+  //           setListData(response.result);
+  //         }
+
+  //         //setLoaderView(false)
+  //         // if (JSON.stringify(dataList) != JSON.stringify(response.result))
+  //         //     setDataList(response.result)
+  //       } else {
+  //         setNoData(true);
+  //         //setLoaderView(false)
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setBackgroundLoaderView(false);
+  //       setLoaderView(false);
+  //     });
+  // }
+
+  
+
+async function GetSupportData(ID, sectionID) {
+  setBackgroundLoaderView(true);
+
+  const roleId = Role == "parent" ? ROLEID.PARENT : ROLEID.TEACHER;
+  const studentId = ID;
+  const type =
+    Type === "New"
+      ? SUPPORT_TYPE.NEW
+      : Type === "Closed"
+      ? SUPPORT_TYPE.CLOSE
+      : 1;
+
+  const token = await Preference.GetData(PreferenceKeys.TOKEN);
+
+  const params = {
+    roleId: roleId,
+    studentId: studentId,
+    type: type,
+    sectionId: sectionID,
+  };
+
+  try {
+    const response = await apiFull.get(Utills.GET_SUPPORT_DATA, {
       headers: {
         Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+        Authorization: token,
       },
-    };
+      params,
+      navigation: props.navigation, // passed to interceptor
+    });
 
-    axiosCallAPI(
-      "get",
-      Utills.GET_SUPPORT_DATA +
-        "?roleId=" +
-        roleId +
-        "&studentId=" +
-        studentId +
-        "&type=" +
-        type +
-        "&sectionId=" +
-        sectionID,
-      "",
-      requestOptions,
-      true,
-      props.navigation
-    )
-      // axiosCallAPI('get', Utills.GET_SUPPORT_DATA, p.toString(), requestOptions, true, props.navigation)
-      .then((response) => {
-        setBackgroundLoaderView(false);
-        console.log(response.result);
-        if (response !== undefined) {
-          if (response.result.length > 0) {
-            setNoData(false);
-            setListData(response.result);
-          } else {
-            setNoData(true);
-            setListData(response.result);
-          }
+    setBackgroundLoaderView(false);
 
-          //setLoaderView(false)
-          // if (JSON.stringify(dataList) != JSON.stringify(response.result))
-          //     setDataList(response.result)
-        } else {
-          setNoData(true);
-          //setLoaderView(false)
-        }
-      })
-      .catch((error) => {
-        setBackgroundLoaderView(false);
-        setLoaderView(false);
-      });
+    if (response?.result?.length > 0) {
+      setNoData(false);
+      setListData(response.result);
+    } else {
+      setNoData(true);
+      setListData(response.result || []);
+    }
+  } catch (error) {
+    setBackgroundLoaderView(false);
+    setLoaderView(false);
   }
+}
+
 
   function onSupportClick(requestID) {
     props.navigation.navigate("ParentSupportDetails", {

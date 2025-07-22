@@ -28,7 +28,7 @@ export const DashboardHeaderView = (props) => {
 
   const HomeNavigation = async () => {
     if ((await Preference.GetData(PreferenceKeys.IS_MULTIPLE_USER)) == "true")
-      if (props.screen === "TeacherDashboard") {
+      if (props.goBackWelcomeScreen === true) {
         //  props.navigation.navigate("WelcomScreen");
 
         props.navigation.navigate("WelcomScreen");
@@ -136,7 +136,12 @@ export const SchoolDetailHeaderView = (props) => {
 
   // console.log("getting this type of props", props);
   const HomeNavigation = () => {
-    props.navigation.goBack();
+    if(props.goBackWelcomeScreen===true){
+      props.navigation.navigate("WelcomScreen")
+    }else{
+   props.navigation.goBack();
+    }
+ 
   };
   const NotificationClick = () => {
     props.navigation.navigate("Notification");

@@ -37,6 +37,8 @@ import TeacherStudentProfile from "../src/screens/teacher/TeacherStudentProfile"
 import Products from "../src/screens/ecommerce/Products";
 import ProductDetails from "../src/screens/ecommerce/ProductDetails";
 import Cart from "../src/screens/ecommerce/Cart";
+import Checkout from "../src/screens/ecommerce/Checkout";
+import PaymentSuccess from "../src/screens/ecommerce/PaymentSuccess";
 
 const Stack = createNativeStackNavigator();
 
@@ -45,7 +47,7 @@ export default function navigation() {
     <MenuProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          {/* <Stack.Screen
+          <Stack.Screen
             name="Products"
             options={{
               headerShown: false,
@@ -60,12 +62,29 @@ export default function navigation() {
             component={Cart}
           />
           <Stack.Screen
+            name="Checkout"
+            options={{
+              headerShown: false,
+            }}
+            component={Checkout}
+          />
+
+          <Stack.Screen
+            name="PaymentSuccess"
+            component={PaymentSuccess}
+            options={{
+              presentation: "transparentModal",
+              headerShown: false,
+              animation: "fade",
+            }}
+          />
+          <Stack.Screen
             name="ProductDetails"
             options={{
               headerShown: false,
             }}
             component={ProductDetails}
-          /> */}
+          />
           <Stack.Screen
             name="LandingScreen"
             options={{
@@ -73,7 +92,6 @@ export default function navigation() {
             }}
             component={LandingScreen}
           />
-
           <Stack.Screen
             name="LoginScreen"
             options={{
@@ -186,7 +204,6 @@ export default function navigation() {
             }}
             component={TeacherSupport}
           />
-
           <Stack.Screen
             name="TeacherStudentProfile"
             options={{

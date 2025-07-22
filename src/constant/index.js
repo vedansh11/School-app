@@ -95,6 +95,9 @@ export const icon = {
   PRODUCT_2: require("../assets/images/girls.png"),
   IC_CART: require("../assets/images/shopping-cart.png"),
   IC_CART_EDIT: require("../assets/images/edit_cart.png"),
+  IC_CART_DEL: require("../assets/images/delete.png"),
+  IC_PAYMENT_SUCC: require("../assets/images/paymentSuccess.png"),
+  IC_CROSS: require("../assets/images/cross.png"),
 };
 
 export const fonts = {
@@ -155,6 +158,7 @@ export const color = {
   COLOR_PRIMARY: "#0BB5BF",
   COLOR_SECONDARY: "#ECFEFF",
   BLACK: "#000000",
+  CART_TITLE_BlACK: "#0D083F",
   WHITE: "#FFFFFF",
   ORANGE: "#FF715B",
   COLOR_LIGHT: "#FFDEDE",
@@ -180,6 +184,8 @@ export const color = {
   DAIRY_NOTI_BG: "#EEEDF8",
   DAIRY_ACTIVITY_BG: "#EBFBFF",
   Header_Back_BG: "#41398A",
+  CART_GREY: "#D3D2E2",
+  SHIPPING_INFO_TXT_CLR: "#66628E",
   // Attendace colors
   U_BG: "#FEEEEE",
   U_BR: "#DF4848",

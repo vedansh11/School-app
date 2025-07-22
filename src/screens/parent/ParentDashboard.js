@@ -36,6 +36,7 @@ import * as Utills from "../../API/Utills";
 import { axiosCallAPI } from "../../API/axiosCommonService";
 import { vw } from "../../Utills/dimesnion";
 import ImageLoad from "react-native-image-placeholder";
+import { apiSimple } from "../../API/api";
 
 const ParentDashboard = ({ navigation }) => {
   const [dataList, setDataList] = useState([]);
@@ -78,37 +79,59 @@ const ParentDashboard = ({ navigation }) => {
     navigation.navigate("Payment");
   }
 
-  async function studentListAPI() {
-    setLoaderView(true);
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
+  // async function studentListAPI() {
+  //   setLoaderView(true);
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
 
-    axiosCallAPI(
-      "get",
-      Utills.STUDENT_LIST,
-      "",
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response) => {
-        console.log(response);
-        if (response !== undefined) {
-          setLoaderView(false);
-          if (JSON.stringify(dataList) != JSON.stringify(response.result))
-            setDataList(response.result);
-        } else {
-          setLoaderView(false);
-        }
-      })
-      .catch((error) => {
-        setLoaderView(false);
-      });
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.STUDENT_LIST,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   )
+  //     .then((response) => {
+  //       console.log("med",response);
+  //       if (response !== undefined) {
+  //         setLoaderView(false);
+  //         if (JSON.stringify(dataList) != JSON.stringify(response.result))
+  //           setDataList(response.result);
+  //       } else {
+  //         setLoaderView(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //     });
+  // }
+
+  async function studentListAPI() {
+  setLoaderView(true);
+  try {
+    const res = await apiSimple.get(Utills.STUDENT_LIST);
+    const response = res?.data;
+
+
+
+    if (response !== undefined) {
+      if (JSON.stringify(dataList) !== JSON.stringify(response.result)) {
+        setDataList(response.result);
+      }
+    }
+  } catch (error) {
+    // Error already handled in interceptors (toasts, log etc.)
+    console.error("studentListAPI error", error);
+  } finally {
+    setLoaderView(false);
   }
+}
+
 
   const DATA = [
     {
@@ -126,7 +149,6 @@ const ParentDashboard = ({ navigation }) => {
   ];
 
   const renderItem = ({ item }) => {
-    console.log("Here is your item", item);
     return (
       <View style={stylesCommon.mainMenu}>
         <View
@@ -219,6 +241,7 @@ const ParentDashboard = ({ navigation }) => {
 
       <SchoolDetailHeaderView
         titile={AppText.DASHBOARD}
+        goBackWelcomeScreen={true}
         type={"parent"}
         navigation={navigation}
         showLogout={true}

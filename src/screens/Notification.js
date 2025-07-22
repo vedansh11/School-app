@@ -34,6 +34,7 @@ import * as Preference from "../storeData/Preference";
 import * as Utills from "../API/Utills";
 import { axiosCallAPI } from "../API/axiosCommonService";
 import HTMLView from "react-native-htmlview";
+import { apiSimple } from "../API/api";
 
 const Notification = ({ navigation }) => {
   const VIEWABILITY_CONFIG = {
@@ -117,32 +118,60 @@ const Notification = ({ navigation }) => {
   //     navigation.goBack()
   // }
 
-  async function GetNotificationData(isLoaderShow) {
-    //  console.log(Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + PAGE+", total "+totalPages);
+  // async function GetNotificationData(isLoaderShow) {
+  //   //  console.log(Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + PAGE+", total "+totalPages);
 
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
-    //   Alert.alert("API",Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + PAGE+", total "+totalPages+", "+isLoaderShow);
-    axiosCallAPI(
-      "get",
-      Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + currentPage,
-      "",
-      requestOptions,
-      false,
-      navigation
-    ).then((response) => {
-      console.log(response);
-      setTotalPages(response.pages);
-      setLoadMore(false);
-      var currentdata = [...listData];
-      var finalarray = currentdata.concat(response.result);
-      // setListData(finalarray);
-    });
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+  //   //   Alert.alert("API",Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + PAGE+", total "+totalPages+", "+isLoaderShow);
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.NOTIFICATION + "?per_page=" + PER_PAGE + "&page=" + currentPage,
+  //     "",
+  //     requestOptions,
+  //     false,
+  //     navigation
+  //   ).then((response) => {
+  //     console.log(response);
+  //     setTotalPages(response.pages);
+  //     setLoadMore(false);
+  //     var currentdata = [...listData];
+  //     var finalarray = currentdata.concat(response.result);
+  //     // setListData(finalarray);
+  //   });
+  // }
+
+  async function GetNotificationData(isLoaderShow) {
+  const token = await Preference.GetData(PreferenceKeys.TOKEN);
+
+  try {
+    const res = await apiSimple.get(
+      `${Utills.NOTIFICATION}?per_page=${PER_PAGE}&page=${currentPage}`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
+      }
+    );
+
+    const response = res?.data;
+    console.log("Notiiiiii",response);
+    setTotalPages(response.pages);
+    setLoadMore(false);
+    var currentdata = [...listData];
+    var finalarray = currentdata.concat(response.result);
+    // setListData(finalarray);
+  } catch (error) {
+    // error is already globally handled by your interceptor
+    console.error("Error in GetNotificationData", error);
   }
+}
+
   const DATA = [
     {
       id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",

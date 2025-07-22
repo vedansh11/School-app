@@ -21,8 +21,8 @@ import { FlatGrid } from "react-native-super-grid";
 import ProductCard from "../common/ProductCard";
 import { screenHeight, screenWidth } from "../../Utills/dimesnion";
 
-export default function Cart({ navigation }) {
-  const [cartItems, setCartItems] = useState([
+export default function Checkout({ navigation }) {
+  const [chekoutItems, setchekoutItems] = useState([
     {
       id: 1,
       image: icon.PRODUCT_1,
@@ -58,7 +58,7 @@ export default function Cart({ navigation }) {
   ]);
 
   const updateQuantity = (id, type) => {
-    setCartItems((prevItems) =>
+    setchekoutItems((prevItems) =>
       prevItems.map((item) => {
         if (item.id !== id) return item;
 
@@ -133,15 +133,7 @@ export default function Cart({ navigation }) {
               alignItems: "flex-end",
             }}
           >
-            <Image
-              source={icon.IC_CART_DEL}
-              style={{
-                width: ms(15),
-                height: ms(15),
-                marginEnd: ms(4),
-              }}
-            />
-
+            <View />
             <View
               style={{
                 flexDirection: "row",
@@ -193,11 +185,7 @@ export default function Cart({ navigation }) {
   };
 
   const getTotalItemCount = () => {
-    return cartItems.reduce((total, item) => total + item.qty, 0);
-  };
-
-  const handleCheckout = () => {
-    navigation.navigate("Checkout");
+    return chekoutItems.reduce((total, item) => total + item.qty, 0);
   };
 
   return (
@@ -259,7 +247,7 @@ export default function Cart({ navigation }) {
                 }}
               >
                 <Image
-                  source={icon.IC_CART_EDIT}
+                  source={icon.IC_chekout_EDIT}
                   style={{
                     width: ms(13.5),
                     height: ms(13.5),
@@ -282,7 +270,7 @@ export default function Cart({ navigation }) {
             Items ({getTotalItemCount()})
           </Text>
           <FlatList
-            data={cartItems}
+            data={chekoutItems}
             // data={dummyData}
             renderItem={(item, index) => renderItem(item, index)}
             showsVerticalScrollIndicator={false}
@@ -295,35 +283,162 @@ export default function Cart({ navigation }) {
             ItemSeparatorComponent={() => <View style={{ width: 17 }} />}
             showsHorizontalScrollIndicator={false}
           />
+
+          <View>
+            <Text
+              style={{
+                fontFamily: fonts.INTER_SEMIBOLD,
+                color: color.CART_TITLE_BlACK,
+                fontSize: ms(16),
+                marginTop: ms(8),
+                marginBottom: ms(15),
+              }}
+            >
+              Shipping Information
+            </Text>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: ms(15),
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: fonts.INTER_SEMIBOLD,
+                  color: color.SHIPPING_INFO_TXT_CLR,
+                  fontSize: ms(12),
+                }}
+              >
+                Total ({getTotalItemCount() + " items"})
+              </Text>
+
+              <Text
+                style={{
+                  fontFamily: fonts.INTER_SEMIBOLD,
+                  color: color.CART_TITLE_BlACK,
+                  fontSize: ms(12),
+                }}
+              >
+                ₹2100.00
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: ms(15),
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: fonts.INTER_SEMIBOLD,
+                  color: color.SHIPPING_INFO_TXT_CLR,
+                  fontSize: ms(12),
+                }}
+              >
+                Shipping Fee
+              </Text>
+
+              <Text
+                style={{
+                  fontFamily: fonts.INTER_SEMIBOLD,
+                  color: color.CART_TITLE_BlACK,
+                  fontSize: ms(12),
+                }}
+              >
+                ₹0.0
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: ms(35),
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: fonts.INTER_SEMIBOLD,
+                  color: color.SHIPPING_INFO_TXT_CLR,
+                  fontSize: ms(12),
+                }}
+              >
+                Discount
+              </Text>
+
+              <Text
+                style={{
+                  fontFamily: fonts.INTER_SEMIBOLD,
+                  color: color.CART_TITLE_BlACK,
+                  fontSize: ms(12),
+                }}
+              >
+                ₹75.00
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: ms(15),
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: fonts.INTER_SEMIBOLD,
+                  color: color.SHIPPING_INFO_TXT_CLR,
+                  fontSize: ms(12),
+                }}
+              >
+                Sub Total
+              </Text>
+
+              <Text
+                style={{
+                  fontFamily: fonts.INTER_SEMIBOLD,
+                  color: color.CART_TITLE_BlACK,
+                  fontSize: ms(12),
+                }}
+              >
+                ₹2025.00
+              </Text>
+            </View>
+          </View>
         </View>
+
+        <TouchableOpacity
+          style={{
+            marginTop: ms(20),
+            marginBottom: ms(40),
+            marginHorizontal: ms(16),
+            backgroundColor: "#FF6B4A",
+            borderRadius: ms(100),
+            paddingVertical: ms(14),
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            gap: ms(10),
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: fonts.INTER_SEMIBOLD,
+              fontSize: ms(16),
+              color: "white",
+            }}
+            onPress={() => navigation.navigate("PaymentSuccess")}
+          >
+            Purchase Now
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
 
       {/* Add to Cart Button */}
-      <TouchableOpacity
-        style={{
-          marginTop: ms(30),
-          marginBottom: ms(40),
-          marginHorizontal: ms(16),
-          backgroundColor: "#FF6B4A",
-          borderRadius: ms(100),
-          paddingVertical: ms(14),
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-          gap: ms(10),
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: fonts.INTER_SEMIBOLD,
-            fontSize: ms(16),
-            color: "white",
-          }}
-          onPress={handleCheckout}
-        >
-          Checkout
-        </Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 }

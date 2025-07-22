@@ -24,6 +24,7 @@ import * as Utills from "../../API/Utills";
 import * as Preference from "../../storeData/Preference";
 import { useEffect } from "react";
 import { BackHandler } from "react-native";
+import { apiSimple } from "../../API/api";
 
 const AttendanceTrends = ({ route, navigation }) => {
   const { studentData } = route.params;
@@ -46,30 +47,52 @@ const AttendanceTrends = ({ route, navigation }) => {
     }, [progressRefMonth.current, progressRefYear.current])
   );
 
+  // async function PresentCountAPI() {
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.ATTENDANCE_PRESENT_COUNT +
+  //       "?studentId=" +
+  //       studentData.id +
+  //       "&sectionId=" +
+  //       studentData.sectionId,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   ).then((response) => {
+  //     setPrevMonth(response.previou_month);
+  //     setPrevYear(response.year_to_date);
+  //   });
+  // }
+
   async function PresentCountAPI() {
-    let requestOptions = {
+  try {
+    const token = await Preference.GetData(PreferenceKeys.TOKEN);
+    const url = `${Utills.ATTENDANCE_PRESENT_COUNT}?studentId=${studentData.id}&sectionId=${studentData.sectionId}`;
+
+    const res = await apiSimple.get(url, {
       headers: {
         Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+        Authorization: token,
       },
-    };
-
-    axiosCallAPI(
-      "get",
-      Utills.ATTENDANCE_PRESENT_COUNT +
-        "?studentId=" +
-        studentData.id +
-        "&sectionId=" +
-        studentData.sectionId,
-      "",
-      requestOptions,
-      true,
-      navigation
-    ).then((response) => {
-      setPrevMonth(response.previou_month);
-      setPrevYear(response.year_to_date);
     });
+
+    const response = res?.data;
+    setPrevMonth(response.previou_month);
+    setPrevYear(response.year_to_date);
+
+  } catch (error) {
+    console.error("Error in PresentCountAPI:", error);
+    // Error already handled globally (optional fallback UI update here if needed)
   }
+}
 
   const AttendanceProgress = (
     text,

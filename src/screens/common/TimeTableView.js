@@ -63,6 +63,7 @@ import {
 } from "react-native-pell-rich-editor";
 import moment from "moment";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
+import { apiSimple } from "../../API/api";
 
 const { width, height } = Dimensions.get("window");
 
@@ -334,109 +335,209 @@ export function TimeTableView(props) {
       () => DeleteTimetableAPI(id)
     );
   };
-  async function TeacherTimeTableAPI() {
-    setLoaderView(true);
+  // async function TeacherTimeTableAPI() {
+  //   setLoaderView(true);
 
-    let requestOptions = {
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   var tableURL =
+  //     Utills.TEACHER_TIMETABLE_LIST +
+  //     "?sectionId=" +
+  //     props.sectionId +
+  //     "&daySearch=" +
+  //     SelectedWeek;
+
+  //   axiosCallAPI("get", tableURL, "", requestOptions, true, props.navigation)
+  //     .then((response) => {
+  //       console.log("TT data", props.sectionId, SelectedWeek, response);
+  //       setLoaderView(false);
+  //       if (response !== undefined) {
+  //         if (JSON.stringify(dateList) != JSON.stringify(response.result)) {
+  //           setDateList(response.result);
+  //         }
+  //       } else {
+  //         setDateList([]);
+  //         renderEmptyContainer("No data found", true);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       // setLoaderView(false);
+
+  //       renderEmptyContainer("No data found", true);
+  //     });
+  // }
+
+async function TeacherTimeTableAPI() {
+  console.log("Teacherr-------time table api called")
+  setLoaderView(true);
+
+  const token = await Preference.GetData(PreferenceKeys.TOKEN);
+  const tableURL = `${Utills.TEACHER_TIMETABLE_LIST}?sectionId=${props.sectionId}&daySearch=${SelectedWeek}`;
+   console.log("TT data", tableURL);
+  try {
+    const res = await apiSimple.get(tableURL, {
       headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+        Authorization: token,
       },
-    };
+    });
 
-    var tableURL =
-      Utills.TEACHER_TIMETABLE_LIST +
-      "?sectionId=" +
-      props.sectionId +
-      "&daySearch=" +
-      SelectedWeek;
+    const response = res?.data;
+    console.log("TT data",response.result);
 
-    axiosCallAPI("get", tableURL, "", requestOptions, true, props.navigation)
-      .then((response) => {
-        console.log("TT data", props.sectionId, SelectedWeek, response);
-        setLoaderView(false);
-        if (response !== undefined) {
-          if (JSON.stringify(dateList) != JSON.stringify(response.result)) {
-            setDateList(response.result);
-          }
-        } else {
-          setDateList([]);
-          renderEmptyContainer("No data found", true);
-        }
-      })
-      .catch((error) => {
-        // setLoaderView(false);
-
-        renderEmptyContainer("No data found", true);
-      });
+    if (response !== undefined) {
+      if (JSON.stringify(dateList) !== JSON.stringify(response.result)) {
+        setDateList(response.result);
+      }
+    } else {
+      setDateList([]);
+      renderEmptyContainer("No data found", true);
+    }
+  } catch (error) {
+    renderEmptyContainer("No data found", true);
+  } finally {
+    setLoaderView(false);
   }
-  async function AddTimeTableAPI() {
-    setLoaderView(true);
-    let loginFormData = new FormData();
-    loginFormData.append("id", timetableID);
-    loginFormData.append("sectionId", props.sectionId);
-    loginFormData.append("day", value);
-    loginFormData.append("startTime", moment(startTime).format("hh:mm A"));
-    loginFormData.append("endTime", moment(endTime).format("hh:mm A"));
-    //  loginFormData.append("subject", subject)
-    loginFormData.append("subject", subjectSelectedName);
-    loginFormData.append("topic", topicHTML);
+}
 
-    let requestOptions = {
+
+  // async function AddTimeTableAPI() {
+  //   setLoaderView(true);
+  //   let loginFormData = new FormData();
+  //   loginFormData.append("id", timetableID);
+  //   loginFormData.append("sectionId", props.sectionId);
+  //   loginFormData.append("day", value);
+  //   loginFormData.append("startTime", moment(startTime).format("hh:mm A"));
+  //   loginFormData.append("endTime", moment(endTime).format("hh:mm A"));
+  //   //  loginFormData.append("subject", subject)
+  //   loginFormData.append("subject", subjectSelectedName);
+  //   loginFormData.append("topic", topicHTML);
+
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "multipart/form-data",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+  //   axiosCallAPI(
+  //     "post",
+  //     Utills.TEACHER_TIMETABLE_SAVE,
+  //     loginFormData,
+  //     requestOptions,
+  //     true,
+  //     props.navigation
+  //   )
+  //     .then((response) => {
+  //       if (response !== undefined) {
+  //         setModalVisible(!modalVisible);
+  //         clearData();
+  //         setLoaderView(false);
+  //       } else {
+  //         setLoaderView(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //     });
+  // }
+
+async function AddTimeTableAPI() {
+  setLoaderView(true);
+
+  const token = await Preference.GetData(PreferenceKeys.TOKEN);
+  let loginFormData = new FormData();
+
+  loginFormData.append("id", timetableID);
+  loginFormData.append("sectionId", props.sectionId);
+  loginFormData.append("day", value);
+  loginFormData.append("startTime", moment(startTime).format("hh:mm A"));
+  loginFormData.append("endTime", moment(endTime).format("hh:mm A"));
+  loginFormData.append("subject", subjectSelectedName);
+  loginFormData.append("topic", topicHTML);
+
+  try {
+    const res = await apiSimple.post(Utills.TEACHER_TIMETABLE_SAVE, loginFormData, {
       headers: {
-        Accept: "application/json",
         "Content-Type": "multipart/form-data",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+        Authorization: token,
       },
-    };
-    axiosCallAPI(
-      "post",
-      Utills.TEACHER_TIMETABLE_SAVE,
-      loginFormData,
-      requestOptions,
-      true,
-      props.navigation
-    )
-      .then((response) => {
-        if (response !== undefined) {
-          setModalVisible(!modalVisible);
-          clearData();
-          setLoaderView(false);
-        } else {
-          setLoaderView(false);
-        }
-      })
-      .catch((error) => {
-        setLoaderView(false);
-      });
-  }
-  async function DeleteTimetableAPI(deleteRecordID) {
-    setDeleteLoaderView(true);
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
+    });
 
-    axiosCallAPI(
-      "get",
-      Utills.TEACHER_TIMETABLE_DELETE + "?id=" + deleteRecordID,
-      "",
-      requestOptions,
-      true,
-      props.navigation
-    )
-      .then((response) => {
-        setDeleteLoaderView(false);
-        if (response !== undefined) {
-          TeacherTimeTableAPI();
-        }
-      })
-      .catch((error) => {
-        setDeleteLoaderView(false);
-      });
+    const response = res?.data;
+
+    if (response !== undefined) {
+      setModalVisible(!modalVisible);
+      clearData();
+    }
+  } catch (error) {
+    // error will be handled by global interceptors
+  } finally {
+    setLoaderView(false);
   }
+}
+
+
+  // async function DeleteTimetableAPI(deleteRecordID) {
+  //   setDeleteLoaderView(true);
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.TEACHER_TIMETABLE_DELETE + "?id=" + deleteRecordID,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     props.navigation
+  //   )
+  //     .then((response) => {
+  //       setDeleteLoaderView(false);
+  //       if (response !== undefined) {
+  //         TeacherTimeTableAPI();
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setDeleteLoaderView(false);
+  //     });
+  // }
+
+  async function DeleteTimetableAPI(deleteRecordID) {
+  setDeleteLoaderView(true);
+
+  const token = await Preference.GetData(PreferenceKeys.TOKEN);
+
+  try {
+    const res = await apiSimple.get(
+      `${Utills.TEACHER_TIMETABLE_DELETE}?id=${deleteRecordID}`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
+      }
+    );
+
+    const response = res?.data;
+    if (response !== undefined) {
+      TeacherTimeTableAPI();
+    }
+  } catch (error) {
+    // error handled by global interceptor
+  } finally {
+    setDeleteLoaderView(false);
+  }
+}
+
+
   const InputView = (label, isEnable, image, multiline) => {
     return (
       <View

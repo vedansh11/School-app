@@ -52,6 +52,7 @@ import AttendanceDetailStatus from "./AttendanceDetailStatus";
 import AttendanceTrends from "./AttendanceTrends";
 import DatePicker from "react-native-date-picker";
 import moment from "moment";
+import { apiSimple } from "../../API/api";
 
 const ParentAttendance = ({ route, navigation }) => {
   const { attendanceData } = route.params;
@@ -87,47 +88,80 @@ const ParentAttendance = ({ route, navigation }) => {
     return true;
   }
 
-  async function AddLeaveAPI() {
-    setLoaderView(true);
-    let loginFormData = new FormData();
+  // async function AddLeaveAPI() {
+  //   setLoaderView(true);
+  //   let loginFormData = new FormData();
+  //   loginFormData.append("id", attendanceData.section);
+  //   loginFormData.append("studentId", attendanceData.id);
+
+  //   loginFormData.append("fromDate", moment(fromDate).format("DD-MM-YYYY"));
+  //   loginFormData.append("toDate", moment(toDate).format("DD-MM-YYYY"));
+  //   loginFormData.append("description", description);
+  //   loginFormData.append("sectionId", attendanceData.sectionId);
+
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "multipart/form-data",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   axiosCallAPI(
+  //     "post",
+  //     Utills.LEAVE_SAVE,
+  //     loginFormData,
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   )
+  //     .then((response) => {
+  //       if (response !== undefined) {
+  //         setModalVisible(!modalVisible);
+  //         clearData();
+  //         setLoaderView(false);
+  //       } else {
+  //         setLoaderView(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //     });
+  // }
+
+async function AddLeaveAPI() {
+  setLoaderView(true);
+
+  try {
+    const loginFormData = new FormData();
     loginFormData.append("id", attendanceData.section);
     loginFormData.append("studentId", attendanceData.id);
-    // loginFormData.append("fromDate",moment(fromDate).format('YYYY-MM-DD'))
-    // loginFormData.append("toDate",moment(toDate).format('YYYY-MM-DD'))
     loginFormData.append("fromDate", moment(fromDate).format("DD-MM-YYYY"));
     loginFormData.append("toDate", moment(toDate).format("DD-MM-YYYY"));
     loginFormData.append("description", description);
     loginFormData.append("sectionId", attendanceData.sectionId);
 
-    let requestOptions = {
+    const res = await apiSimple.post(Utills.LEAVE_SAVE, loginFormData, {
       headers: {
-        Accept: "application/json",
         "Content-Type": "multipart/form-data",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
       },
-    };
+    });
 
-    axiosCallAPI(
-      "post",
-      Utills.LEAVE_SAVE,
-      loginFormData,
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response) => {
-        if (response !== undefined) {
-          setModalVisible(!modalVisible);
-          clearData();
-          setLoaderView(false);
-        } else {
-          setLoaderView(false);
-        }
-      })
-      .catch((error) => {
-        setLoaderView(false);
-      });
+    const response = res?.data;
+
+    if (response !== undefined) {
+      setModalVisible(!modalVisible);
+      clearData();
+    }
+  } catch (error) {
+    console.error("AddLeaveAPI error", error);
+    // Global error already handled by interceptor
+  } finally {
+    setLoaderView(false);
   }
+}
+
+
   const MyTabBar = ({ state, descriptors, navigation, position }) => {
     return (
       <View
@@ -526,14 +560,8 @@ const ParentAttendance = ({ route, navigation }) => {
                     width: "100%",
                   }}
                 >
-                  <View
-                    style={{
-                      height: 1,
-                      width: "100%",
-                      backgroundColor: "#D0D5DD",
-                      marginBottom: 20,
-                    }}
-                  />
+                
+             
                   {InputView(
                     AppText.START_DATE,
                     false,

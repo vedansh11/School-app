@@ -51,6 +51,7 @@ import {
 } from "react-native-calendars";
 import Day from "react-native-calendars/src/calendar/day/basic";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
+import { apiSimple } from "../../API/api";
 
 const AttendanceDetailStatus = ({ route, navigation }) => {
   const { studentData } = route.params;
@@ -118,15 +119,112 @@ const AttendanceDetailStatus = ({ route, navigation }) => {
     return dates;
   };
 
-  async function AttendanceDetailAPI() {
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
+  // async function AttendanceDetailAPI() {
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
 
-    var URL =
+  //   var URL =
+  //     Utills.ATTENDANCE_LIST_MONTH +
+  //     "?studentId=" +
+  //     studentData.id +
+  //     "&sectionId=" +
+  //     studentData.sectionId +
+  //     "&month_year=" +
+  //     moment(monthText).format("MMMM-YYYY");
+
+  //   axiosCallAPI("get", URL, "", requestOptions, true, navigation).then(
+  //     (response) => {
+  //       console.log(response);
+  //       if (leaveData !== response.leave_average) {
+  //         setLeaveData(response.leave_average);
+  //         setLeavePersentage(response.leave_average.present);
+
+  //         if (calendarData != response.attendance_list) {
+  //           setCalenderData(response.attendance_list);
+  //         }
+
+  //         const selectedDates = {};
+
+  //         response.attendance_list.map((item) => {
+  //           if (item.attendance == "P") {
+  //             if (!presentDates.includes(item.date))
+  //               presentDates.push(item.date);
+
+  //             const disabled = {
+  //               disabled: false,
+  //               disableTouchEvent: true,
+  //               selected: true,
+  //               selectedColor: color.P_BR,
+  //             };
+  //             presentDates.forEach((item) => {
+  //               selectedDates[item] = disabled;
+  //             });
+  //           } else if (item.attendance == "H") {
+  //             if (!holidayDates.includes(item.date))
+  //               holidayDates.push(item.date);
+
+  //             const disabled = {
+  //               disabled: false,
+  //               disableTouchEvent: true,
+  //               selected: true,
+  //               selectedColor: color.A_BR,
+  //             };
+  //             holidayDates.forEach((item) => {
+  //               selectedDates[item] = disabled;
+  //             });
+  //           } else if (item.attendance == "U" || item.attendance == "A") {
+  //             if (!untrackedDates.includes(item.date))
+  //               untrackedDates.push(item.date);
+
+  //             const disabled = {
+  //               disabled: false,
+  //               disableTouchEvent: true,
+  //               selected: true,
+  //               selectedColor: color.U_BR,
+  //             };
+  //             untrackedDates.forEach((item) => {
+  //               selectedDates[item] = disabled;
+  //             });
+  //           } else if (item.attendance == "L") {
+  //             if (!leaveDates.includes(item.date)) leaveDates.push(item.date);
+
+  //             const disabled = {
+  //               disabled: false,
+  //               disableTouchEvent: true,
+  //               selected: true,
+  //               selectedColor: color.O_BR,
+  //             };
+  //             leaveDates.forEach((item) => {
+  //               selectedDates[item] = disabled;
+  //             });
+  //           } else if (item.attendance == "") {
+  //             if (!notSelectedDates.includes(item.date))
+  //               notSelectedDates.push(item.date);
+
+  //             const disabled = {
+  //               disabled: true,
+  //               disableTouchEvent: true,
+  //               selected: false,
+  //               selectedColor: color.WHITE,
+  //             };
+  //             notSelectedDates.forEach((item) => {
+  //               selectedDates[item] = disabled;
+  //             });
+  //           }
+  //         });
+  //         setMarkedDates(selectedDates);
+  //       }
+  //     }
+  //   );
+  // }
+
+  async function AttendanceDetailAPI() {
+  try {
+    const url =
       Utills.ATTENDANCE_LIST_MONTH +
       "?studentId=" +
       studentData.id +
@@ -135,91 +233,99 @@ const AttendanceDetailStatus = ({ route, navigation }) => {
       "&month_year=" +
       moment(monthText).format("MMMM-YYYY");
 
-    axiosCallAPI("get", URL, "", requestOptions, true, navigation).then(
-      (response) => {
-        console.log(response);
-        if (leaveData !== response.leave_average) {
-          setLeaveData(response.leave_average);
-          setLeavePersentage(response.leave_average.present);
+    const res = await apiSimple.get(url);
+  
+    const response = res?.data;
 
-          if (calendarData != response.attendance_list) {
-            setCalenderData(response.attendance_list);
-          }
+    console.log(response);
 
-          const selectedDates = {};
+    if (leaveData !== response.leave_average) {
+      setLeaveData(response.leave_average);
+      setLeavePersentage(response.leave_average.present);
 
-          response.attendance_list.map((item) => {
-            if (item.attendance == "P") {
-              if (!presentDates.includes(item.date))
-                presentDates.push(item.date);
-
-              const disabled = {
-                disabled: false,
-                disableTouchEvent: true,
-                selected: true,
-                selectedColor: color.P_BR,
-              };
-              presentDates.forEach((item) => {
-                selectedDates[item] = disabled;
-              });
-            } else if (item.attendance == "H") {
-              if (!holidayDates.includes(item.date))
-                holidayDates.push(item.date);
-
-              const disabled = {
-                disabled: false,
-                disableTouchEvent: true,
-                selected: true,
-                selectedColor: color.A_BR,
-              };
-              holidayDates.forEach((item) => {
-                selectedDates[item] = disabled;
-              });
-            } else if (item.attendance == "U" || item.attendance == "A") {
-              if (!untrackedDates.includes(item.date))
-                untrackedDates.push(item.date);
-
-              const disabled = {
-                disabled: false,
-                disableTouchEvent: true,
-                selected: true,
-                selectedColor: color.U_BR,
-              };
-              untrackedDates.forEach((item) => {
-                selectedDates[item] = disabled;
-              });
-            } else if (item.attendance == "L") {
-              if (!leaveDates.includes(item.date)) leaveDates.push(item.date);
-
-              const disabled = {
-                disabled: false,
-                disableTouchEvent: true,
-                selected: true,
-                selectedColor: color.O_BR,
-              };
-              leaveDates.forEach((item) => {
-                selectedDates[item] = disabled;
-              });
-            } else if (item.attendance == "") {
-              if (!notSelectedDates.includes(item.date))
-                notSelectedDates.push(item.date);
-
-              const disabled = {
-                disabled: true,
-                disableTouchEvent: true,
-                selected: false,
-                selectedColor: color.WHITE,
-              };
-              notSelectedDates.forEach((item) => {
-                selectedDates[item] = disabled;
-              });
-            }
-          });
-          setMarkedDates(selectedDates);
-        }
+      if (calendarData != response.attendance_list) {
+        setCalenderData(response.attendance_list);
       }
-    );
+
+      const selectedDates = {};
+
+      response.attendance_list.map((item) => {
+        if (item.attendance == "P") {
+          if (!presentDates.includes(item.date)) presentDates.push(item.date);
+
+          const disabled = {
+            disabled: false,
+            disableTouchEvent: true,
+            selected: true,
+            selectedColor: color.P_BR,
+          };
+          presentDates.forEach((item) => {
+            selectedDates[item] = disabled;
+          });
+        } else if (item.attendance == "H") {
+          if (!holidayDates.includes(item.date)) holidayDates.push(item.date);
+
+          const disabled = {
+            disabled: false,
+            disableTouchEvent: true,
+            selected: true,
+            selectedColor: color.A_BR,
+          };
+          holidayDates.forEach((item) => {
+            selectedDates[item] = disabled;
+          });
+        } else if (item.attendance == "U" || item.attendance == "A") {
+          if (!untrackedDates.includes(item.date))
+            untrackedDates.push(item.date);
+
+          const disabled = {
+            disabled: false,
+            disableTouchEvent: true,
+            selected: true,
+            selectedColor: color.U_BR,
+          };
+          untrackedDates.forEach((item) => {
+            selectedDates[item] = disabled;
+          });
+        } else if (item.attendance == "L") {
+          if (!leaveDates.includes(item.date)) leaveDates.push(item.date);
+
+          const disabled = {
+            disabled: false,
+            disableTouchEvent: true,
+            selected: true,
+            selectedColor: color.O_BR,
+          };
+          leaveDates.forEach((item) => {
+            selectedDates[item] = disabled;
+          });
+        } else if (item.attendance == "") {
+          if (!notSelectedDates.includes(item.date))
+            notSelectedDates.push(item.date);
+
+          const disabled = {
+            disabled: true,
+            disableTouchEvent: true,
+            selected: false,
+            selectedColor: color.WHITE,
+          };
+          notSelectedDates.forEach((item) => {
+            selectedDates[item] = disabled;
+          });
+        }
+      });
+
+      setMarkedDates(selectedDates);
+    }
+  } catch (error) {
+    console.error("AttendanceDetailAPI Error", error);
+    // global interceptor handles UI errors
   }
+}
+
+
+
+
   const showPicker = useCallback((value) => setCalOpen(value), []);
 
   const onValueChange = useCallback(

@@ -48,6 +48,7 @@ import { axiosCallAPI } from "../../API/axiosCommonService";
 import * as Utills from "../../API/Utills";
 import moment from "moment";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
+import { apiSimple } from "../../API/api";
 
 export const DairyView = (props) => {
   const fieldRef = useRef();
@@ -177,7 +178,7 @@ export const DairyView = (props) => {
 
   useEffect(() => {
     TeacherDiaryAPI("");
-
+console.log("Usreeeee")
     if (props.dairyType === "teacher") {
       NoteTypeListAPI();
       // GetSubjectList();
@@ -202,25 +203,52 @@ export const DairyView = (props) => {
     props.navigation.goBack();
     return true;
   }
-  async function NoteTypeListAPI() {
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
+  // async function NoteTypeListAPI() {
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
 
-    axiosCallAPI(
-      "get",
-      Utills.NOTE_TYPE_LIST,
-      "",
-      requestOptions,
-      true,
-      props.navigation
-    ).then((response) => {
-      if (JSON.stringify(noteType) !== JSON.stringify(response.result))
-        setNoteType(response.result);
-    });
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.NOTE_TYPE_LIST,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     props.navigation
+  //   ).then((response) => {
+  //     if (JSON.stringify(noteType) !== JSON.stringify(response.result))
+  //       setNoteType(response.result);
+  //   });
+  // }
+
+
+  async function NoteTypeListAPI(){
+    try {
+      const token = await Preference.GetData(PreferenceKeys.TOKEN)
+
+      const res  = await apiSimple.get(Utills.NOTE_TYPE_LIST,{
+        headers:{
+          Accept:"application/json",
+          Authorization:token,
+        }
+      })
+
+
+const response = res?.data;
+console.log("tenple",response)
+if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
+  setNoteType(response.result)
+}
+
+
+    } catch (error) {
+      console.log(
+        "Error in NoteTypeListApi:",error
+      )
+    }
   }
 
   async function GetSubjectList() {
@@ -253,68 +281,139 @@ export const DairyView = (props) => {
     });
   }
 
+  // async function DeleteDairyAPI(dairyDeleteID) {
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.TEACHER_DELETE_DIARY + "?id=" + dairyDeleteID,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     props.navigation
+  //   ).then((response) => {
+  //     if (response !== undefined) {
+  //     }
+  //   });
+  // }
+
   async function DeleteDairyAPI(dairyDeleteID) {
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
+  try {
+    const token = await Preference.GetData(PreferenceKeys.TOKEN);
 
-    axiosCallAPI(
-      "get",
+    const res = await apiSimple.get(
       Utills.TEACHER_DELETE_DIARY + "?id=" + dairyDeleteID,
-      "",
-      requestOptions,
-      true,
-      props.navigation
-    ).then((response) => {
-      if (response !== undefined) {
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
       }
-    });
+    );
+
+    const response = res?.data;
+    if (response !== undefined) {
+      // If you had logic to handle response, it would go here
+    }
+
+  } catch (error) {
+    // Error is already handled globally in interceptor or logged here if needed
+    console.error("DeleteDairyAPI error", error);
   }
+}
+
+
+
+  // async function TeacherDiaryAPI(selectedDate) {
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   if (selectedDate != "")
+  //     var dairyListURL =
+  //       Utills.TEACHER_DIARY_LIST +
+  //       "?sectionId=" +
+  //       props.sectionId +
+  //       "&search=" +
+  //       moment(selectedDate).format("YYYY-MM-DD");
+  //   else
+  //     var dairyListURL =
+  //       Utills.TEACHER_DIARY_LIST + "?sectionId=" + props.sectionId;
+
+  //   console.log("dairyListURL >>" + dairyListURL);
+  //   axiosCallAPI(
+  //     "get",
+  //     dairyListURL,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     props.navigation
+  //   )
+  //     .then((response) => {
+  //            console.log("Here is the date", response);
+  //       if (response !== undefined) {
+  //         setScreenLoaderView(false);
+  //         if (JSON.stringify(dateList) != JSON.stringify(response.result))
+       
+  //         setDateList(response.result);
+  //       } else {
+  //         setScreenLoaderView(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log("It is error")
+  //       setScreenLoaderView(false);
+  //     });
+  // }
+
   async function TeacherDiaryAPI(selectedDate) {
-    let requestOptions = {
+  setScreenLoaderView(true);
+
+  try {
+    const token = await Preference.GetData(PreferenceKeys.TOKEN);
+
+    let dairyListURL = Utills.TEACHER_DIARY_LIST + "?sectionId=" + props.sectionId;
+
+    if (selectedDate !== "") {
+      dairyListURL += "&search=" + moment(selectedDate).format("YYYY-MM-DD");
+    }
+
+    console.log("seL >>" + dairyListURL);
+
+    const res = await apiSimple.get(dairyListURL, {
       headers: {
         Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+        Authorization: token,
       },
-    };
+    });
 
-    if (selectedDate != "")
-      var dairyListURL =
-        Utills.TEACHER_DIARY_LIST +
-        "?sectionId=" +
-        props.sectionId +
-        "&search=" +
-        moment(selectedDate).format("YYYY-MM-DD");
-    else
-      var dairyListURL =
-        Utills.TEACHER_DIARY_LIST + "?sectionId=" + props.sectionId;
+    const response = res?.data;
+    console.log("kip", response);
 
-    console.log("dairyListURL >>" + dairyListURL);
-    axiosCallAPI(
-      "get",
-      dairyListURL,
-      "",
-      requestOptions,
-      true,
-      props.navigation
-    )
-      .then((response) => {
-        if (response !== undefined) {
-          setScreenLoaderView(false);
-          if (JSON.stringify(dateList) != JSON.stringify(response.result))
-            console.log("Here is the date", response.result);
-          setDateList(response.result);
-        } else {
-          setScreenLoaderView(false);
-        }
-      })
-      .catch((error) => {
-        setScreenLoaderView(false);
-      });
+    if (response !== undefined) {
+      setScreenLoaderView(false);
+
+      if (JSON.stringify(dateList) !== JSON.stringify(response.result)) {
+        setDateList(response.result);
+      }
+    } else {
+      setScreenLoaderView(false);
+    }
+
+  } catch (error) {
+    console.log("It is error");
+    setScreenLoaderView(false);
   }
+}
+
   const handleClick = (index, mainIndex) => {
     setIndex(index);
     setTopIndex(mainIndex);
@@ -470,50 +569,85 @@ export const DairyView = (props) => {
     setTooltip(false);
     DeleteDairyAPI(Id);
   };
-  async function AddDiaryAPI() {
-    setLoaderView(true);
-    let loginFormData = new FormData();
-    loginFormData.append("id", dairyID);
-    loginFormData.append("sectionId", props.sectionId);
-    loginFormData.append("noteType", noteTypeID);
-    loginFormData.append(
-      "effectiveDate",
-      moment(effectiveDate).format("YYYY-MM-DD")
-    );
-    //loginFormData.append("subject", subjectSelected)
-    loginFormData.append("subject", subjectSelectedName);
-    loginFormData.append("description", description);
-    loginFormData.append("dueDate", moment(dueDate).format("YYYY-MM-DD"));
+  // async function AddDiaryAPI() {
+  //   setLoaderView(true);
+  //   let loginFormData = new FormData();
+  //   loginFormData.append("id", dairyID);
+  //   loginFormData.append("sectionId", props.sectionId);
+  //   loginFormData.append("noteType", noteTypeID);
+  //   loginFormData.append(
+  //     "effectiveDate",
+  //     moment(effectiveDate).format("YYYY-MM-DD")
+  //   );
+  //   //loginFormData.append("subject", subjectSelected)
+  //   loginFormData.append("subject", subjectSelectedName);
+  //   loginFormData.append("description", description);
+  //   loginFormData.append("dueDate", moment(dueDate).format("YYYY-MM-DD"));
 
-    let requestOptions = {
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "multipart/form-data",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+  //   console.log(loginFormData);
+  //   axiosCallAPI(
+  //     "post",
+  //     Utills.TEACHER_SAVE_DIARY,
+  //     loginFormData,
+  //     requestOptions,
+  //     true,
+  //     props.navigation
+  //   )
+  //     .then((response) => {
+  //       if (response !== undefined) {
+  //         setModalVisible(!modalVisible);
+  //         clearData();
+  //         setLoaderView(false);
+  //       } else {
+  //         setLoaderView(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //     });
+  // }
+
+  async function AddDiaryAPI() {
+  try {
+    setLoaderView(true);
+
+    const token = await Preference.GetData(PreferenceKeys.TOKEN);
+
+    const formData = new FormData();
+    formData.append("id", dairyID);
+    formData.append("sectionId", props.sectionId);
+    formData.append("noteType", noteTypeID);
+    formData.append("effectiveDate", moment(effectiveDate).format("YYYY-MM-DD"));
+    formData.append("subject", subjectSelectedName); // subject name
+    formData.append("description", description);
+    formData.append("dueDate", moment(dueDate).format("YYYY-MM-DD"));
+
+    const response = await apiFull.post(Utills.TEACHER_SAVE_DIARY, formData, {
       headers: {
-        Accept: "application/json",
         "Content-Type": "multipart/form-data",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+        Authorization: token,
       },
-    };
-    console.log(loginFormData);
-    axiosCallAPI(
-      "post",
-      Utills.TEACHER_SAVE_DIARY,
-      loginFormData,
-      requestOptions,
-      true,
-      props.navigation
-    )
-      .then((response) => {
-        if (response !== undefined) {
-          setModalVisible(!modalVisible);
-          clearData();
-          setLoaderView(false);
-        } else {
-          setLoaderView(false);
-        }
-      })
-      .catch((error) => {
-        setLoaderView(false);
-      });
+      navigation: props.navigation, // if your interceptors rely on this
+    });
+
+    if (response) {
+      setModalVisible(!modalVisible);
+      clearData();
+    }
+  } catch (error) {
+    // error will be handled by interceptor
+  } finally {
+    setLoaderView(false);
   }
+}
+
   const InputView = (label, isEnable, image, multiline) => {
     return (
       <View>
@@ -1103,6 +1237,7 @@ export const DairyView = (props) => {
           style={{
             flex: 1,
             marginTop: Platform.OS === "ios" ? -50 : 0,
+
           }}
         >
           <TitileBackgroundView
@@ -1147,6 +1282,7 @@ export const DairyView = (props) => {
               marginTop: props.dairyType == "parent" ? 20 : 100,
               paddingStart: 15,
               paddingEnd: 15,
+              
               //marginTop: (props.dairyType === 'teacher') ? - 25 : 5,
             }}
           >
@@ -1253,7 +1389,7 @@ export const DairyView = (props) => {
 
           <FlatList
             style={{ paddingStart: 15, paddingEnd: 15 }}
-            //data={dateList}
+           // data={dateList}
             data={dummyData}
             scrollEnabled={true}
             //contentContainerStyle={{ minHeight: '100%' }}
