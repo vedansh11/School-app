@@ -327,7 +327,7 @@ export default StyleSheet.create({
   // Dashboard
   dashList: {
     marginTop: Platform.OS === "ios" ? -40 : 10,
-    marginHorizontal: 15,
+
     marginVertical: 10,
     // marginStart: 20,
     // marginEnd: 20,
@@ -340,7 +340,7 @@ export default StyleSheet.create({
     marginTop: 10,
     padding: 15,
     marginBottom: 10,
-    elevation: 2,
+
     borderColor: "#EAECF0",
     //borderColor: "#564CB8",
     borderWidth: 1,
@@ -376,9 +376,10 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
   studentProfile: {
-    height: 80,
-    width: 80,
-    paddingEnd: 20,
+    height: ms(70),
+    width: ms(70),
+    resizeMode: "contain",
+
     //alignSelf: "center",
   },
   studentProfile_atten: {

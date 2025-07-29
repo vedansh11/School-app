@@ -31,6 +31,7 @@ import * as Utills from "../../API/Utills";
 import { axiosCallAPI } from "../../API/axiosCommonService";
 import { screenWidth } from "../../Utills/dimesnion";
 import { apiSimple, apiFull } from "../../API/api";
+import { ms } from "react-native-size-matters";
 
 export default function TeacherDashboard2({ navigation, route }) {
   const { item, index, data } = route.params;
@@ -126,6 +127,12 @@ export default function TeacherDashboard2({ navigation, route }) {
       if (JSON.stringify(listDataSource) !== JSON.stringify(response)) {
         setListDataSource(response?.data);
 
+        if (!Array.isArray(response) || response.length === 0) {
+          console.log("das", response?.data);
+          console.warn("School list response is empty");
+          return;
+        }
+
         Preference.GetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX).then(
           (index) => {
             if (index) {
@@ -199,7 +206,7 @@ export default function TeacherDashboard2({ navigation, route }) {
       setLoaderView(false);
 
       if (JSON.stringify(classListData) !== JSON.stringify(response.result)) {
-        setClassList(removeDuplicates(response.data.result, "id"));
+        setClassList(removeDuplicates(response.data.result, Id));
       }
     } catch (error) {
       setLoaderView(false);
@@ -450,10 +457,11 @@ export default function TeacherDashboard2({ navigation, route }) {
             <Image
               style={{
                 flex: 0.25,
-                height: 70,
-                width: 70,
+                height: ms(70),
+                width: ms(70),
                 alignSelf: "center",
                 resizeMode: "contain",
+                marginEnd: ms(15),
               }}
               source={icon.IC_SCHOOL}
             ></Image>

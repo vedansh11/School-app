@@ -76,6 +76,7 @@ import {
 } from "../../commonTheme/CommonView";
 import SelectDropdown from "react-native-select-dropdown";
 import { apiFull, apiSimple } from "../../API/api";
+import { ms } from "react-native-size-matters";
 const PaymentOrderScreen = ({ navigation }) => {
   const fromFieldRef = useRef();
   const toFieldRef = useRef();
@@ -244,7 +245,7 @@ const PaymentOrderScreen = ({ navigation }) => {
     //CreateOrder();
 
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-   //  GetPaymentDetails();
+    //  GetPaymentDetails();
     GetClassList();
     CreateYearList();
     CFPaymentGatewayService.setEventSubscriber({
@@ -368,152 +369,146 @@ const PaymentOrderScreen = ({ navigation }) => {
   //     .catch((error) => {});
   // };
 
-
   const GetClassList = async () => {
-  try {
-    const token = await Preference.GetData(PreferenceKeys.TOKEN);
-    const studentDetail = JSON.parse(
-      await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
-    );
-    const schoolId = studentDetail.schoolId;
+    try {
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
+      const studentDetail = JSON.parse(
+        await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
+      );
+      const schoolId = studentDetail.schoolId;
 
-    const res = await apiSimple.get(`${Utills.GET_CLASS_LIST}${schoolId}`, {
-      headers: {
-        Accept: "application/json",
-        Authorization: token,
-      },
-    });
+      const res = await apiSimple.get(`${Utills.GET_CLASS_LIST}${schoolId}`, {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
+      });
 
-    const response = res?.data;
-    console.log("Pyment---",response.result)
-    response.result.reverse();
-    response.result.map((item) => {
-      item.className = "Class - " + item.className;
-    });
-    setClassList(response.result);
-  } catch (error) {
-    // Already handled globally if needed
-    console.error("Error in GetClassList", error);
-  }
-};
+      const response = res?.data;
+      console.log("Pyment---", response.result);
+      response.result.reverse();
+      response.result.map((item) => {
+        item.className = "Class - " + item.className;
+      });
+      setClassList(response.result);
+    } catch (error) {
+      // Already handled globally if needed
+      console.error("Error in GetClassList", error);
+    }
+  };
 
+  // const GetPaymentDetails = async () => {
+  //   setBackgroundLoaderView(true);
 
+  //   try {
+  //     const token = await Preference.GetData(PreferenceKeys.TOKEN);
+  //     const studentDetail = JSON.parse(
+  //       await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
+  //     );
+  //     console.log(studentDetail);
 
+  //     const ClassId_local = classId === "" ? studentDetail.classId : classId;
+  //     const Year_local =
+  //       selectedYear === ""
+  //         ? await Preference.GetData(PreferenceKeys.SAVE_YEAR)
+  //         : selectedYear;
 
-// const GetPaymentDetails = async () => {
-//   setBackgroundLoaderView(true);
+  //     const studentId = studentDetail.id;
+  //     const schoolId = studentDetail.schoolId;
 
-//   try {
-//     const token = await Preference.GetData(PreferenceKeys.TOKEN);
-//     const studentDetail = JSON.parse(
-//       await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
-//     );
-//     console.log(studentDetail);
+  //     const URL =
+  //       Utills.GET_PAYMENT_LIST +
+  //       ClassId_local +
+  //       "&studentId=" +
+  //       studentId +
+  //       "&year=" +
+  //       Year_local +
+  //       "&schoolId=" +
+  //       schoolId;
 
-//     const ClassId_local = classId === "" ? studentDetail.classId : classId;
-//     const Year_local =
-//       selectedYear === ""
-//         ? await Preference.GetData(PreferenceKeys.SAVE_YEAR)
-//         : selectedYear;
+  //       console.log("Here is the url we",URL,selectedYear)
+  //     const res = await apiSimple.get(URL, {
+  //       headers: {
+  //         Accept: "application/json",
+  //         Authorization: token,
+  //       },
+  //     });
 
-//     const studentId = studentDetail.id;
-//     const schoolId = studentDetail.schoolId;
+  //     setBackgroundLoaderView(false);
 
-//     const URL =
-//       Utills.GET_PAYMENT_LIST +
-//       ClassId_local +
-//       "&studentId=" +
-//       studentId +
-//       "&year=" +
-//       Year_local +
-//       "&schoolId=" +
-//       schoolId;
+  //     const response = res?.data;
 
-//       console.log("Here is the url we",URL,selectedYear)
-//     const res = await apiSimple.get(URL, {
-//       headers: {
-//         Accept: "application/json",
-//         Authorization: token,
-//       },
-//     });
+  //     if (res.status) {
+  //       console.log("Here is the res", response.result);
+  //       setImagePath(icon.IC_FEES);
+  //       setPaidAmount(response.result.paid_amount);
+  //       setRemainingAmount(response.result.remain_amount);
 
-//     setBackgroundLoaderView(false);
+  //       let filterArray = [];
+  //       let ListArray = [];
 
-//     const response = res?.data;
+  //       response.result.data_list.map((item) => {
+  //         if (item.structure_name == "Full") {
+  //           setFees(item.fees);
+  //           setFinalAmount(item.final_amount);
 
-//     if (res.status) {
-//       console.log("Here is the res", response.result);
-//       setImagePath(icon.IC_FEES);
-//       setPaidAmount(response.result.paid_amount);
-//       setRemainingAmount(response.result.remain_amount);
+  //           if (item.discount_value > 0) {
+  //             setIsFullPaymentShow(true);
+  //             if (item.discount_type == 0) {
+  //               setDiscount(item.discount_value + "%");
+  //             } else {
+  //               setDiscount("₹" + item.discount_value);
+  //             }
+  //           } else {
+  //             setIsFullPaymentShow(false);
+  //           }
+  //         }
 
-//       let filterArray = [];
-//       let ListArray = [];
+  //         if (item.order_status == "paid") {
+  //           setIsFullPaymentShow(false);
+  //         }
 
-//       response.result.data_list.map((item) => {
-//         if (item.structure_name == "Full") {
-//           setFees(item.fees);
-//           setFinalAmount(item.final_amount);
+  //         if (
+  //           item.structure_name != "Full Payment" ||
+  //           item.order_status == "paid"
+  //         ) {
+  //           ListArray.push(item);
+  //         }
 
-//           if (item.discount_value > 0) {
-//             setIsFullPaymentShow(true);
-//             if (item.discount_type == 0) {
-//               setDiscount(item.discount_value + "%");
-//             } else {
-//               setDiscount("₹" + item.discount_value);
-//             }
-//           } else {
-//             setIsFullPaymentShow(false);
-//           }
-//         }
+  //         if (
+  //           item.order_status != "paid" &&
+  //           item.structure_name != "Full Payment"
+  //         ) {
+  //           filterArray.push(item);
+  //         }
+  //       });
 
-//         if (item.order_status == "paid") {
-//           setIsFullPaymentShow(false);
-//         }
+  //       setImagePath(filterArray.length > 0 ? icon.IC_FEES : "");
 
-//         if (
-//           item.structure_name != "Full Payment" ||
-//           item.order_status == "paid"
-//         ) {
-//           ListArray.push(item);
-//         }
+  //       Mybooleanvalue = [];
+  //       ListArray.map(() => {
+  //         Mybooleanvalue.push(false);
+  //       });
 
-//         if (
-//           item.order_status != "paid" &&
-//           item.structure_name != "Full Payment"
-//         ) {
-//           filterArray.push(item);
-//         }
-//       });
+  //       setTableState(Mybooleanvalue);
+  //       setListData(ListArray);
+  //       setDropDownlist(filterArray);
 
-//       setImagePath(filterArray.length > 0 ? icon.IC_FEES : "");
-
-//       Mybooleanvalue = [];
-//       ListArray.map(() => {
-//         Mybooleanvalue.push(false);
-//       });
-
-//       setTableState(Mybooleanvalue);
-//       setListData(ListArray);
-//       setDropDownlist(filterArray);
-
-//       setNoData(response.result.data_list.length === 0);
-//     } else {
-//       setNoData(true);
-//       setListData([]);
-//       setDropDownlist([]);
-//       setPaidAmount("0");
-//       setRemainingAmount("0");
-//       setImagePath("");
-//       setIsFullPaymentShow(false);
-//     }
-//   } catch (error) {
-//     setBackgroundLoaderView(false);
-//     console.error("GetPaymentDetails error", error);
-//   }
-// };
-
-
+  //       setNoData(response.result.data_list.length === 0);
+  //     } else {
+  //       setNoData(true);
+  //       setListData([]);
+  //       setDropDownlist([]);
+  //       setPaidAmount("0");
+  //       setRemainingAmount("0");
+  //       setImagePath("");
+  //       setIsFullPaymentShow(false);
+  //     }
+  //   } catch (error) {
+  //     setBackgroundLoaderView(false);
+  //     console.error("GetPaymentDetails error", error);
+  //   }
+  // };
 
   const CreateYearList = async () => {
     let CurrentYear = moment().year();
@@ -582,58 +577,55 @@ const PaymentOrderScreen = ({ navigation }) => {
   //     });
   // };
 
-const CreateOrder = async () => {
-  const customerId = await Preference.GetData(PreferenceKeys.CURRENT_USERID);
-  const loginDetails = JSON.parse(
-    await Preference.GetData(PreferenceKeys.LOGIN_USER_DETAIL)
-  );
+  const CreateOrder = async () => {
+    const customerId = await Preference.GetData(PreferenceKeys.CURRENT_USERID);
+    const loginDetails = JSON.parse(
+      await Preference.GetData(PreferenceKeys.LOGIN_USER_DETAIL)
+    );
 
-  const customer_details = {
-    customer_id: customerId,
-    customer_email: loginDetails.email,
-    customer_phone: loginDetails.mobileNo,
+    const customer_details = {
+      customer_id: customerId,
+      customer_email: loginDetails.email,
+      customer_phone: loginDetails.mobileNo,
+    };
+
+    setBackgroundLoaderView(true);
+
+    const data = new FormData();
+    data.append("order_amount", String(modalAmount));
+    data.append("order_currency", "INR");
+    data.append("order_note", String(modalRemark));
+    data.append("customer_details", JSON.stringify(customer_details));
+
+    console.log("Saving....", data);
+
+    try {
+      const res = await apiFull.post(Utills.CREATE_ORDER, data, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          "x-api-version": "2022-09-01",
+          "x-client-Id": "2661289e6fe0f1f4a9fe50a71d821662",
+          "x-client-Secret": "8971531fe3d2b59b06e97c573b170d3af09acd92",
+          Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+        },
+      });
+
+      setBackgroundLoaderView(false);
+
+      Preference.SetData(PreferenceKeys.TERM_ID, noteTypeID);
+      Preference.SetData(PreferenceKeys.AMOUNT, modalAmount);
+      Preference.SetData(PreferenceKeys.REMARK, modalRemark);
+      Preference.SetData(PreferenceKeys.STRUCTURE_ID, structureId);
+      Preference.SetData(PreferenceKeys.SAVE_YEAR, selectedYear);
+      Preference.SetData(PreferenceKeys.CLASS_ID, classId);
+
+      StartPayment(res.payment_session_id, res.order_id);
+    } catch (error) {
+      console.error("CreateOrder error", error);
+      setBackgroundLoaderView(false);
+    }
   };
-
-  setBackgroundLoaderView(true);
-
-  const data = new FormData();
-  data.append("order_amount", String(modalAmount));
-data.append("order_currency", "INR");
-data.append("order_note", String(modalRemark));
-data.append("customer_details", JSON.stringify(customer_details));
-
-
-  console.log("Saving....", data);
-
-  try {
-    const res = await apiFull.post(Utills.CREATE_ORDER, data, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-        "x-api-version": "2022-09-01",
-        "x-client-Id": "2661289e6fe0f1f4a9fe50a71d821662",
-        "x-client-Secret":
-          "8971531fe3d2b59b06e97c573b170d3af09acd92",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    });
-
-    setBackgroundLoaderView(false);
-
-    Preference.SetData(PreferenceKeys.TERM_ID, noteTypeID);
-    Preference.SetData(PreferenceKeys.AMOUNT, modalAmount);
-    Preference.SetData(PreferenceKeys.REMARK, modalRemark);
-    Preference.SetData(PreferenceKeys.STRUCTURE_ID, structureId);
-    Preference.SetData(PreferenceKeys.SAVE_YEAR, selectedYear);
-    Preference.SetData(PreferenceKeys.CLASS_ID, classId);
-
-    StartPayment(res.payment_session_id, res.order_id);
-  } catch (error) {
-    console.error("CreateOrder error", error);
-    setBackgroundLoaderView(false);
-  }
-};
-
 
   function renderCloseClick() {
     clearData();
@@ -905,8 +897,8 @@ data.append("customer_details", JSON.stringify(customer_details));
             setModalVisible(!modalVisible);
           }}
         >
-          <View style={[styles.centeredView, { height: "100%" }]}>
-            <View style={[styles.modalView, { height: "65%" }]}>
+          <View style={[styles.centeredView]}>
+            <View style={[styles.modalView, { maxHeight: "58%" }]}>
               <ModelTitleView
                 tiitle={AppText.PAYMENT}
                 style={{
@@ -917,7 +909,7 @@ data.append("customer_details", JSON.stringify(customer_details));
                 }}
                 onPressClose={() => renderCloseClick()}
               />
-            
+
               <ScrollView
                 style={{
                   width: "100%",
@@ -1004,7 +996,7 @@ data.append("customer_details", JSON.stringify(customer_details));
             >
               <View
                 style={{
-                  flex: 0.65,
+                  flex: 0.64,
                   justifyContent: "center",
                 }}
               >
@@ -1049,7 +1041,7 @@ data.append("customer_details", JSON.stringify(customer_details));
               </View>
               <View
                 style={{
-                  flex: 0.4,
+                  flex: 0.36,
                   alignItems: "flex-end",
                   justifyContent: "center",
                 }}
@@ -1067,17 +1059,14 @@ data.append("customer_details", JSON.stringify(customer_details));
                       style={{
                         flex: 1,
                         alignItems: "flex-start",
-
-                        marginStart: 12,
                       }}
                     >
                       <View
                         style={{
                           backgroundColor: "#C6F2DD",
                           height: 20,
-                          width: 75,
-                          paddingStart: 10,
-                          paddingEnd: 15,
+                          paddingStart: ms(10),
+                          paddingEnd: ms(15),
                           alignItems: "center",
                           justifyContent: "center",
                           flexDirection: "row",
@@ -1086,7 +1075,7 @@ data.append("customer_details", JSON.stringify(customer_details));
                       >
                         <Image
                           source={icon.IC_CHECK}
-                          style={{ width: 16, height: 16, marginEnd: 8 }}
+                          style={{ width: 16, height: 16, marginEnd: ms(8) }}
                         />
 
                         <Text
@@ -1099,6 +1088,28 @@ data.append("customer_details", JSON.stringify(customer_details));
                           Paid
                         </Text>
                       </View>
+
+                      <Text
+                        style={{
+                          fontSize: 24,
+                          color:
+                            item.order_status === "paid"
+                              ? "#3AAB75"
+                              : item.order_status === "unpaid"
+                              ? "#F85050"
+                              : "#564CB8",
+                          fontFamily: fonts.INTER_BOLD,
+                          marginTop: 4,
+                        }}
+                      >
+                        {item.structure_name != "Full"
+                          ? "₹" +
+                            item.amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          : "₹" +
+                            item.final_amount
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      </Text>
                     </View>
                   </View>
                 )}
@@ -1113,17 +1124,15 @@ data.append("customer_details", JSON.stringify(customer_details));
                       style={{
                         flex: 1,
                         alignItems: "flex-start",
-
-                        marginStart: 12,
                       }}
                     >
                       <View
                         style={{
                           backgroundColor: "#FEE5E5",
                           height: 20,
-                          width: 91,
-                          paddingStart: 10,
-                          paddingEnd: 15,
+
+                          paddingStart: ms(10),
+                          paddingEnd: ms(15),
                           alignItems: "center",
                           justifyContent: "center",
                           flexDirection: "row",
@@ -1149,30 +1158,72 @@ data.append("customer_details", JSON.stringify(customer_details));
                           Unpaid
                         </Text>
                       </View>
+
+                      <Text
+                        style={{
+                          fontSize: 24,
+                          color:
+                            item.order_status === "paid"
+                              ? "#3AAB75"
+                              : item.order_status === "unpaid"
+                              ? "#F85050"
+                              : "#564CB8",
+                          fontFamily: fonts.INTER_BOLD,
+                          marginTop: 4,
+                        }}
+                      >
+                        {item.structure_name != "Full"
+                          ? "₹" +
+                            item.amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          : "₹" +
+                            item.final_amount
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      </Text>
                     </View>
                   </View>
                 )}
 
-                <Text
-                  style={{
-                    fontSize: 24,
-                    color:
-                      item.order_status === "paid"
-                        ? "#3AAB75"
-                        : item.order_status === "unpaid"
-                        ? "#F85050"
-                        : "#564CB8",
-                    fontFamily: fonts.INTER_BOLD,
-                    marginTop: 4,
-                  }}
-                >
-                  {item.structure_name != "Full"
-                    ? "₹" + item.amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    : "₹" +
-                      item.final_amount
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                </Text>
+                {item.order_status !== "paid" &&
+                  item.order_status !== "unpaid" && (
+                    <View
+                      style={{
+                        //   position: "absolute",
+                        flexDirection: "row",
+                        //  top: 35,
+                        //   marginEnd: 10,
+                      }}
+                    >
+                      <View
+                        style={{
+                          flex: 1,
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 24,
+                            color:
+                              item.order_status === "paid"
+                                ? "#3AAB75"
+                                : item.order_status === "unpaid"
+                                ? "#F85050"
+                                : "#564CB8",
+                            fontFamily: fonts.INTER_BOLD,
+                            marginTop: 4,
+                          }}
+                        >
+                          {item.structure_name != "Full"
+                            ? "₹" +
+                              item.amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            : "₹" +
+                              item.final_amount
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
               </View>
             </View>
           </TouchableOpacity>

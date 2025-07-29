@@ -53,6 +53,8 @@ import AttendanceTrends from "./AttendanceTrends";
 import DatePicker from "react-native-date-picker";
 import moment from "moment";
 import { apiSimple } from "../../API/api";
+import { moderateVerticalScale, ms, vs } from "react-native-size-matters";
+import { multiply } from "react-native-reanimated";
 
 const ParentAttendance = ({ route, navigation }) => {
   const { attendanceData } = route.params;
@@ -169,11 +171,13 @@ const ParentAttendance = ({ route, navigation }) => {
         style={{
           flexDirection: "row",
           borderRadius: 50,
-          width: screenWidth - 150,
-          flex: 0.075,
+          width: ms(20),
+          flex: 0.07,
+          width: screenWidth / 1.72,
           backgroundColor: "#EEEDF8",
           marginTop: 25,
-          marginEnd: 20,
+          marginEnd: ms(20),
+
           marginStart: screenWidth / 2.6,
           //  justifyContent: "space-around",
         }}
@@ -216,13 +220,13 @@ const ParentAttendance = ({ route, navigation }) => {
               onPress={onPress}
               style={{
                 backgroundColor: isFocused ? color.WHITE : null,
-                width: SCREEN_WIDTH / 3.7,
-                height: 30,
+                width: screenWidth / 3.8,
+                height: vs(25),
                 // paddingTop: 12,
                 // paddingVertical: 5,
-                marginStart: 5,
-                // marginEnd: 5,
-                marginVertical: 5,
+                marginStart: ms(5),
+                marginEnd: vs(5),
+                marginVertical: ms(5),
                 //paddingHorizontal: 10,
                 justifyContent: "center",
                 alignContent: "center",
@@ -243,7 +247,7 @@ const ParentAttendance = ({ route, navigation }) => {
               >
                 <Animated.Text
                   style={{
-                    fontSize: 10,
+                    fontSize: 11,
                     textAlign: "center",
                     fontFamily: fonts.INTER_MEDIUM,
                     color: isFocused ? "#101828" : "#98A2B3",
@@ -539,7 +543,12 @@ const ParentAttendance = ({ route, navigation }) => {
           }}
         >
           <View style={[styles.centeredView, { height: "100%" }]}>
-            <View style={[styles.modalView, { height: "65%" }]}>
+            <View
+              style={[
+                styles.modalView,
+                { maxHeight: "70%", paddingBottom: ms(40) },
+              ]}
+            >
               <ModelTitleView
                 tiitle={AppText.APPLY_FOR_LEAVE}
                 onPressClose={() => renderCloseClick()}
@@ -586,6 +595,70 @@ const ParentAttendance = ({ route, navigation }) => {
       </View>
     );
   };
+
+  // const AddLeaveModel = () => {
+  //   return (
+  //     <Modal
+  //       animationType="slide"
+  //       transparent={true}
+  //       visible={modalVisible}
+  //       onRequestClose={() => setModalVisible(false)}
+  //     >
+  //       <KeyboardAvoidingView
+  //         style={{ flex: 1 }}
+  //         behavior={Platform.OS === "ios" ? "padding" : "height"}
+  //         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0} // adjust as needed
+  //       >
+  //         <View style={styles.centeredView}>
+  //           <View
+  //             style={[
+  //               styles.modalView,
+  //               { maxHeight: screenHeight / 1.4 }, // don't fix height!
+  //             ]}
+  //           >
+  //             <ModelTitleView
+  //               tiitle={AppText.APPLY_FOR_LEAVE}
+  //               onPressClose={() => renderCloseClick()}
+  //               style={{
+  //                 fontSize: 16,
+  //                 fontFamily: fonts.INTER_SEMIBOLD,
+  //                 color: "#1D2939",
+  //                 marginBottom: 15,
+  //               }}
+  //             />
+
+  //             <ScrollView
+  //               style={{ width: "100%" }}
+  //               showsVerticalScrollIndicator={false}
+  //               keyboardShouldPersistTaps="handled"
+  //             >
+  //               <View style={{ marginBottom: 20, width: "100%" }}>
+  //                 {InputView(
+  //                   AppText.START_DATE,
+  //                   false,
+  //                   icon.IC_CALENDAR,
+  //                   false
+  //                 )}
+  //                 {InputView(AppText.END_DATE, false, icon.IC_CALENDAR, false)}
+  //                 {InputView(AppText.DESCRIPTION, true, "", true)}
+  //               </View>
+
+  //               {loaderView ? (
+  //                 <LoaderButtonView />
+  //               ) : (
+  //                 <ButtonView
+  //                   tiitle={"Apply Leave"}
+  //                   onClick={() => saveBtnClick()}
+  //                 />
+  //               )}
+  //             </ScrollView>
+  //           </View>
+  //         </View>
+  //       </KeyboardAvoidingView>
+  //     </Modal>
+  //   );
+  // };
+
   return (
     <SafeAreaView style={stylesCommon.safeAreaStyle}>
       <StatusBar backgroundColor={color.APP_PRIMARY} />

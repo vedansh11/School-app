@@ -41,6 +41,7 @@ import SelectDropdown from "react-native-select-dropdown";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
 import { apiSimple } from "../../API/api";
 import * as Utills from "../../API/Utills";
+import { ms } from "react-native-size-matters";
 
 const ParentSupport = ({ navigation }) => {
   const Tab = createMaterialTopTabNavigator();
@@ -128,7 +129,8 @@ const ParentSupport = ({ navigation }) => {
           flexDirection: "row",
           backgroundColor: "#EEEDF8",
           borderRadius: 50,
-          width: screenWidth - 30,
+          width: screenWidth - ms(30),
+          alignItems: "center",
           flex: 0.07,
         }}
       >

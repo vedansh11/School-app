@@ -24,6 +24,7 @@ import stylesCommon from "../../commonTheme/stylesCommon";
 import { screenWidth } from "../../Utills/dimesnion";
 import { apiSimple, apiFull } from "../../API/api";
 import { ms } from "react-native-size-matters";
+import DropShadow from "react-native-drop-shadow";
 
 const TeacherSupportTabCommon = (props) => {
   const [listData, setListData] = useState([]);

@@ -37,6 +37,7 @@ import { axiosCallAPI } from "../../API/axiosCommonService";
 import { vw } from "../../Utills/dimesnion";
 import ImageLoad from "react-native-image-placeholder";
 import { apiSimple } from "../../API/api";
+import DropShadow from "react-native-drop-shadow";
 
 const ParentDashboard = ({ navigation }) => {
   const [dataList, setDataList] = useState([]);
@@ -147,39 +148,48 @@ const ParentDashboard = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <View style={stylesCommon.mainMenu}>
-        <View
-          style={{
-            backgroundColor: "white",
-            flex: 1,
-            borderRadius: 7,
-            // paddingStart: 15,
-            // paddingEnd: 10,
-            // paddingTop: 10,
-            //paddingBottom: 10,
-            flexDirection: "row",
-          }}
-        >
-          <ImageLoad
-            style={stylesCommon.studentProfile}
-            source={
-              item.profilePic_path && item.profilePic_path !== ""
-                ? { uri: item.profilePic_path }
-                : icon.BOY
-            }
-            loadingStyle={{ size: "large", color: "blue" }}
-            borderRadius={50}
-            placeholderStyle={stylesCommon.studentProfile}
-            placeholderSource={icon.BOY} //remove this line when the profile pic working
-          />
+      <DropShadow
+        style={{
+          shadowColor: "#00000025",
+          marginHorizontal: 15,
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0.1,
+          shadowRadius: 5,
+        }}
+      >
+        <View style={stylesCommon.mainMenu}>
+          <View
+            style={{
+              backgroundColor: "white",
+              flex: 1,
+              borderRadius: 7,
+              // paddingStart: 15,
+              // paddingEnd: 10,
+              // paddingTop: 10,
+              //paddingBottom: 10,
+              flexDirection: "row",
+            }}
+          >
+            <ImageLoad
+              style={stylesCommon.studentProfile}
+              source={
+                item.profilePic_path && item.profilePic_path !== ""
+                  ? { uri: item.profilePic_path }
+                  : icon.BOY
+              }
+              loadingStyle={{ size: "large", color: "blue" }}
+              borderRadius={50}
+              placeholderStyle={stylesCommon.studentProfile}
+              placeholderSource={icon.BOY} //remove this line when the profile pic working
+            />
 
-          <View style={{ marginStart: 20, flex: 1 }}>
-            <Text style={stylesCommon.nameText}>{item.student_name}</Text>
-            <Text style={stylesCommon.deptmentText}>{item.enrollmentNo}</Text>
-            {/* <Text style={stylesCommon.deptmentText}>
+            <View style={{ marginStart: 15, flex: 1 }}>
+              <Text style={stylesCommon.nameText}>{item.student_name}</Text>
+              <Text style={stylesCommon.deptmentText}>{item.enrollmentNo}</Text>
+              {/* <Text style={stylesCommon.deptmentText}>
               {"Class : " + item.className + " - " + item.sectionName}
             </Text> */}
-            {/* <View style={stylesCommon.infoRaw}>
+              {/* <View style={stylesCommon.infoRaw}>
                             <View style={stylesCommon.infoColumn}>
                                 <Text style={stylesCommon.tiitleText}>{'Last Scane Time'}</Text>
                                 <Text style={{
@@ -200,41 +210,42 @@ const ParentDashboard = ({ navigation }) => {
                             </View>
                         </View> */}
 
-            <View
-              style={{
-                marginTop: 12,
-                flexDirection: "row",
+              <View
+                style={{
+                  marginTop: 12,
+                  flexDirection: "row",
 
-                justifyContent: "space-between",
-              }}
-            >
-              <View>
-                <Text style={stylesCommon.sSubHeading}>Last Scan Time</Text>
-                <Text style={stylesCommon.sSubText}>09: 45 AM</Text>
-              </View>
+                  justifyContent: "space-between",
+                }}
+              >
+                <View>
+                  <Text style={stylesCommon.sSubHeading}>Last Scan Time</Text>
+                  <Text style={stylesCommon.sSubText}>09: 45 AM</Text>
+                </View>
 
-              <View>
-                <Text style={stylesCommon.sSubHeading}>Last Location</Text>
-                <Text style={stylesCommon.sSubText}>School Gate 1</Text>
+                <View>
+                  <Text style={stylesCommon.sSubHeading}>Last Location</Text>
+                  <Text style={stylesCommon.sSubText}>School Gate 1</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-        <View style={stylesCommon.lineView}></View>
+          <View style={stylesCommon.lineView}></View>
 
-        <DashboardDetailMenu
-          attendance={true}
-          isShowFees={true}
-          dairy={true}
-          isShowTimeTable={true}
-          isShowHelp={true}
-          onStudentAttendanceClick={() => NavigateToAttendance(item)}
-          onSupportClick={() => NavigateToSuppport(item)}
-          onDairyClick={() => NavigateToDairy(item)}
-          onTimeTableClick={() => NavigateToTimeTable(item)}
-          onPaymentClick={() => NavigateToPayment(item)}
-        />
-      </View>
+          <DashboardDetailMenu
+            attendance={true}
+            isShowFees={true}
+            dairy={true}
+            isShowTimeTable={true}
+            isShowHelp={true}
+            onStudentAttendanceClick={() => NavigateToAttendance(item)}
+            onSupportClick={() => NavigateToSuppport(item)}
+            onDairyClick={() => NavigateToDairy(item)}
+            onTimeTableClick={() => NavigateToTimeTable(item)}
+            onPaymentClick={() => NavigateToPayment(item)}
+          />
+        </View>
+      </DropShadow>
     );
   };
 

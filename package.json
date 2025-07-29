@@ -28,6 +28,7 @@
     "react-native-countdown-component": "^2.7.1",
     "react-native-date-picker": "^4.2.2",
     "react-native-default-preference": "^1.4.3",
+    "react-native-drop-shadow": "^1.0.0",
     "react-native-htmlview": "^0.16.0",
     "react-native-image-placeholder": "^1.0.14",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",

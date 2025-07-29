@@ -178,10 +178,10 @@ export const DairyView = (props) => {
 
   useEffect(() => {
     TeacherDiaryAPI("");
-console.log("Usreeeee")
+    console.log("Usreeeee");
     if (props.dairyType === "teacher") {
       NoteTypeListAPI();
-      // GetSubjectList();
+      GetSubjectList();
     }
 
     fieldRef?.current?.setValue(moment(date).format("DD/MM/YYYY"));
@@ -224,61 +224,76 @@ console.log("Usreeeee")
   //   });
   // }
 
-
-  async function NoteTypeListAPI(){
+  async function NoteTypeListAPI() {
     try {
-      const token = await Preference.GetData(PreferenceKeys.TOKEN)
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
 
-      const res  = await apiSimple.get(Utills.NOTE_TYPE_LIST,{
-        headers:{
-          Accept:"application/json",
-          Authorization:token,
-        }
-      })
+      const res = await apiSimple.get(Utills.NOTE_TYPE_LIST, {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
+      });
 
-
-const response = res?.data;
-console.log("tenple",response)
-if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
-  setNoteType(response.result)
-}
-
-
+      const response = res?.data;
+      console.log("tenple", response);
+      if (JSON.stringify(noteType) !== JSON.stringify(response.result)) {
+        setNoteType(response.result);
+      }
     } catch (error) {
-      console.log(
-        "Error in NoteTypeListApi:",error
-      )
+      console.log("Error in NoteTypeListApi:", error);
     }
   }
 
+  // async function GetSubjectList() {
+  //   let loginFormData = new FormData();
+  //   loginFormData.append("classId", props.classID);
+
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "multipart/form-data",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+  //   axiosCallAPI(
+  //     "post",
+  //     Utills.SUBJECT_LIST,
+  //     loginFormData,
+  //     requestOptions,
+  //     true,
+  //     props.navigation
+  //   ).then((response) => {
+  //     // var subjectarray = [];
+  //     // response.map((item) =>{
+  //     //       subjectarray.push(item.subjectName);
+  //     // });
+  //     setSubjectList(response);
+  //     // if (JSON.stringify(noteType) !== JSON.stringify(response.result))
+
+  //     //     setNoteType(response.result)
+  //   });
+  // }
+
   async function GetSubjectList() {
-    let loginFormData = new FormData();
-    loginFormData.append("classId", props.classID);
+    const formData = new FormData();
+    console.log("cls", props);
+    formData.append("classId", props.classID);
 
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
-    axiosCallAPI(
-      "post",
-      Utills.SUBJECT_LIST,
-      loginFormData,
-      requestOptions,
-      true,
-      props.navigation
-    ).then((response) => {
-      // var subjectarray = [];
-      // response.map((item) =>{
-      //       subjectarray.push(item.subjectName);
-      // });
-      setSubjectList(response);
-      // if (JSON.stringify(noteType) !== JSON.stringify(response.result))
+    try {
+      const response = await apiSimple.get(Utills.SUBJECT_LIST, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+        },
+      });
 
-      //     setNoteType(response.result)
-    });
+      console.log("unires", response.data.result);
+      setSubjectList(response?.data.result); // or response.data.result if API wraps it
+    } catch (error) {
+      console.log("Error in GetSubjectList:", error);
+    }
   }
 
   // async function DeleteDairyAPI(dairyDeleteID) {
@@ -303,31 +318,28 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
   // }
 
   async function DeleteDairyAPI(dairyDeleteID) {
-  try {
-    const token = await Preference.GetData(PreferenceKeys.TOKEN);
+    try {
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
 
-    const res = await apiSimple.get(
-      Utills.TEACHER_DELETE_DIARY + "?id=" + dairyDeleteID,
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: token,
-        },
+      const res = await apiSimple.get(
+        Utills.TEACHER_DELETE_DIARY + "?id=" + dairyDeleteID,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: token,
+          },
+        }
+      );
+
+      const response = res?.data;
+      if (response !== undefined) {
+        // If you had logic to handle response, it would go here
       }
-    );
-
-    const response = res?.data;
-    if (response !== undefined) {
-      // If you had logic to handle response, it would go here
+    } catch (error) {
+      // Error is already handled globally in interceptor or logged here if needed
+      console.error("DeleteDairyAPI error", error);
     }
-
-  } catch (error) {
-    // Error is already handled globally in interceptor or logged here if needed
-    console.error("DeleteDairyAPI error", error);
   }
-}
-
-
 
   // async function TeacherDiaryAPI(selectedDate) {
   //   let requestOptions = {
@@ -362,7 +374,7 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
   //       if (response !== undefined) {
   //         setScreenLoaderView(false);
   //         if (JSON.stringify(dateList) != JSON.stringify(response.result))
-       
+
   //         setDateList(response.result);
   //       } else {
   //         setScreenLoaderView(false);
@@ -375,44 +387,44 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
   // }
 
   async function TeacherDiaryAPI(selectedDate) {
-  setScreenLoaderView(true);
+    setScreenLoaderView(true);
 
-  try {
-    const token = await Preference.GetData(PreferenceKeys.TOKEN);
+    try {
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
 
-    let dairyListURL = Utills.TEACHER_DIARY_LIST + "?sectionId=" + props.sectionId;
+      let dairyListURL =
+        Utills.TEACHER_DIARY_LIST + "?sectionId=" + props.sectionId;
 
-    if (selectedDate !== "") {
-      dairyListURL += "&search=" + moment(selectedDate).format("YYYY-MM-DD");
-    }
-
-    console.log("seL >>" + dairyListURL);
-
-    const res = await apiSimple.get(dairyListURL, {
-      headers: {
-        Accept: "application/json",
-        Authorization: token,
-      },
-    });
-
-    const response = res?.data;
-    console.log("kip", response);
-
-    if (response !== undefined) {
-      setScreenLoaderView(false);
-
-      if (JSON.stringify(dateList) !== JSON.stringify(response.result)) {
-        setDateList(response.result);
+      if (selectedDate !== "") {
+        dairyListURL += "&search=" + moment(selectedDate).format("YYYY-MM-DD");
       }
-    } else {
+
+      console.log("seL >>" + dairyListURL);
+
+      const res = await apiSimple.get(dairyListURL, {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
+      });
+
+      const response = res?.data;
+      console.log("kip", response);
+
+      if (response !== undefined) {
+        setScreenLoaderView(false);
+
+        if (JSON.stringify(dateList) !== JSON.stringify(response.result)) {
+          setDateList(response.result);
+        }
+      } else {
+        setScreenLoaderView(false);
+      }
+    } catch (error) {
+      console.log("It is error");
       setScreenLoaderView(false);
     }
-
-  } catch (error) {
-    console.log("It is error");
-    setScreenLoaderView(false);
   }
-}
 
   const handleClick = (index, mainIndex) => {
     setIndex(index);
@@ -485,7 +497,7 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
     if (
       noteTypeSelected === "" &&
       noteTypeID === "" &&
-      subjectSelectedName.length === 0
+      subjectSelectedName === ""
     ) {
       // Alert.alert(AppText.ALERT_APP_NAME, 'Please select note type')
       setISNoteType(0);
@@ -497,7 +509,7 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
       setISNoteType(0);
       return false;
     }
-    if (subjectSelectedName.length == 0) {
+    if (subjectSelectedName == "") {
       setISSubject(0);
       return false;
     }
@@ -553,9 +565,9 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
       if (dummySubjectList && dummySubjectList.length > 0) {
         dummySubjectList.map((subjectItem) => {
           console.log("Subject>>" + JSON.stringify(subjectItem), item.subject);
-          if (item.subjectId === subjectItem.subjectId)
+          if (item.subjectId === subjectItem.id)
             setSubjectSelected(subjectItem.subjectName);
-          setSubjectSelectedName(subjectItem.subjectId);
+          setSubjectSelectedName(subjectItem.id);
         });
       } else {
         console.log("subjectList is not available");
@@ -615,38 +627,41 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
   // }
 
   async function AddDiaryAPI() {
-  try {
-    setLoaderView(true);
+    try {
+      setLoaderView(true);
 
-    const token = await Preference.GetData(PreferenceKeys.TOKEN);
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
 
-    const formData = new FormData();
-    formData.append("id", dairyID);
-    formData.append("sectionId", props.sectionId);
-    formData.append("noteType", noteTypeID);
-    formData.append("effectiveDate", moment(effectiveDate).format("YYYY-MM-DD"));
-    formData.append("subject", subjectSelectedName); // subject name
-    formData.append("description", description);
-    formData.append("dueDate", moment(dueDate).format("YYYY-MM-DD"));
+      const formData = new FormData();
+      formData.append("id", dairyID);
+      formData.append("sectionId", props.sectionId);
+      formData.append("noteType", noteTypeID);
+      formData.append(
+        "effectiveDate",
+        moment(effectiveDate).format("YYYY-MM-DD")
+      );
+      formData.append("subject", subjectSelectedName); // subject name
+      formData.append("description", description);
+      formData.append("dueDate", moment(dueDate).format("YYYY-MM-DD"));
+      console.log("adddari", formData);
+      const response = await apiFull.post(Utills.TEACHER_SAVE_DIARY, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token,
+        },
+        navigation: props.navigation, // if your interceptors rely on this
+      });
 
-    const response = await apiFull.post(Utills.TEACHER_SAVE_DIARY, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: token,
-      },
-      navigation: props.navigation, // if your interceptors rely on this
-    });
-
-    if (response) {
-      setModalVisible(!modalVisible);
-      clearData();
+      if (response) {
+        setModalVisible(!modalVisible);
+        clearData();
+      }
+    } catch (error) {
+      // error will be handled by interceptor
+    } finally {
+      setLoaderView(false);
     }
-  } catch (error) {
-    // error will be handled by interceptor
-  } finally {
-    setLoaderView(false);
   }
-}
 
   const InputView = (label, isEnable, image, multiline) => {
     return (
@@ -709,13 +724,13 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
         {label == AppText.SUBJECT && (
           <View style={stylesCommon.inputMainView}>
             <SelectDropdown
-              // data={subjectList}
-              data={dummySubjectList}
+              data={subjectList}
+              // data={dummySubjectList}
               onSelect={(selectedItem, index) => {
                 // setNoteTypeID(selectedItem.id)
                 setISSubject(-1);
                 console.log(selectedItem.subjectId);
-                setSubjectSelectedName(selectedItem.subjectId);
+                setSubjectSelectedName(selectedItem.id);
               }}
               defaultButtonText={
                 subjectSelected === "" ? "Select Subject" : subjectSelected
@@ -1237,7 +1252,6 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
           style={{
             flex: 1,
             marginTop: Platform.OS === "ios" ? -50 : 0,
-
           }}
         >
           <TitileBackgroundView
@@ -1282,7 +1296,7 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
               marginTop: props.dairyType == "parent" ? 20 : 100,
               paddingStart: 15,
               paddingEnd: 15,
-              
+
               //marginTop: (props.dairyType === 'teacher') ? - 25 : 5,
             }}
           >
@@ -1389,7 +1403,7 @@ if(JSON.stringify(noteType)!==JSON.stringify(response.result)){
 
           <FlatList
             style={{ paddingStart: 15, paddingEnd: 15 }}
-           // data={dateList}
+            // data={dateList}
             data={dummyData}
             scrollEnabled={true}
             //contentContainerStyle={{ minHeight: '100%' }}

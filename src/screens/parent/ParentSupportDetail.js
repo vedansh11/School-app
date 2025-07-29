@@ -54,6 +54,7 @@ import { Linking } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AboveKeyboard from "react-native-above-keyboard";
 import { ms } from "react-native-size-matters";
+import DropShadow from "react-native-drop-shadow";
 
 const ParentSupportDetails = ({ route, navigation }) => {
   const { requestID, type, tab } = route.params;
@@ -639,113 +640,130 @@ const ParentSupportDetails = ({ route, navigation }) => {
               alignItems: "center",
             }}
           >
-            <View
+            <DropShadow
               style={{
-                backgroundColor: color.WHITE,
-                padding: 15,
-                borderRadius: 15,
+                shadowColor: "#00000025",
+                marginHorizontal: 15,
+                shadowOffset: { width: 0, height: 0 },
+                shadowOpacity: 0.1,
+                shadowRadius: 6,
                 width: "100%",
-                marginTop: ms(10),
-                //borderColor: color.GREY,
-                //borderWidth: 0.5,
-                // alignSelf: "center",
-                // shadowColor:
-                //   Platform.OS === "ios" ? color.LIGHT_GREY : color.BLACK,
-                //shadowOffset: { width: 2, height: 2 },
-                // shadowOpacity: 5,
-                // shadowRadius: 1,
-                elevation: 6,
               }}
             >
-              <TouchableOpacity
-                style={{ width: "100%" }}
-                onPress={() => {
-                  navigation.navigate("TeacherStudentProfile");
+              <View
+                style={{
+                  backgroundColor: color.WHITE,
+                  padding: 15,
+                  borderRadius: 15,
+                  width: "100%",
+                  marginTop: ms(10),
+                  //borderColor: color.GREY,
+                  //borderWidth: 0.5,
+                  // alignSelf: "center",
+                  // shadowColor:
+                  //   Platform.OS === "ios" ? color.LIGHT_GREY : color.BLACK,
+                  //shadowOffset: { width: 2, height: 2 },
+                  // shadowOpacity: 5,
+                  // shadowRadius: 1,
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 14,
-
-                    fontFamily: fonts.INTER_MEDIUM,
-                    color: color.TEXT_COLOR,
-                    marginBottom: 15,
+                <TouchableOpacity
+                  style={{ width: "100%" }}
+                  onPress={() => {
+                    navigation.navigate("TeacherStudentProfile");
                   }}
                 >
-                  {"Request #" + requestID}
-                </Text>
-                <View style={{ backgroundColor: "#EAECF0", height: 1 }}></View>
-                {true && (
-                  <View
+                  <Text
                     style={{
-                      flexDirection: "row",
+                      fontSize: 14,
 
-                      borderBottomLeftRadius: 7,
-                      borderBottomRightRadius: 7,
-                      marginTop: 15,
+                      fontFamily: fonts.INTER_MEDIUM,
+                      color: color.TEXT_COLOR,
+                      marginBottom: 15,
                     }}
                   >
-                    {/* {profilePic.length > 0 ? ( */}
-                    <ImageLoad
-                      style={[
-                        stylesCommon.studentProfile,
-                        { height: 80, width: 80, marginEnd: 10 },
-                      ]}
-                      //source={{ uri: profilePic }}
-                      source={icon.BOY}
-                      loadingStyle={{ size: "large", color: "blue" }}
-                      borderRadius={50}
-                      backgroundColor={color.YELLOW}
-                      placeholderStyle={stylesCommon.studentProfile}
-                    ></ImageLoad>
-                    {/* ) : (
+                    {"Request #" + requestID}
+                  </Text>
+                  <View
+                    style={{ backgroundColor: "#EAECF0", height: 1 }}
+                  ></View>
+                  {true && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+
+                        borderBottomLeftRadius: 7,
+                        borderBottomRightRadius: 7,
+                        marginTop: 15,
+                      }}
+                    >
+                      {/* {profilePic.length > 0 ? ( */}
+                      <ImageLoad
+                        style={[
+                          stylesCommon.studentProfile,
+                          { height: 80, width: 80, marginEnd: 10 },
+                        ]}
+                        //source={{ uri: profilePic }}
+                        source={icon.BOY}
+                        loadingStyle={{ size: "large", color: "blue" }}
+                        borderRadius={50}
+                        backgroundColor={color.YELLOW}
+                        placeholderStyle={stylesCommon.studentProfile}
+                      ></ImageLoad>
+                      {/* ) : (
                   <Image
                     style={{ height: 100, width: 100 }}
                     source={icon.IC_GIRL_IMAGE}
                   ></Image>
                 )} */}
 
-                    <View style={[{ flex: 1, marginStart: 10 }]}>
-                      <Text style={stylesCommon.nameText}>{"Ravi Parmar"}</Text>
-                      <Text
-                        style={[
-                          stylesCommon.deptmentText,
-                          { color: "#667085", marginTop: 5 },
-                        ]}
-                      >
-                        {"VI-B"}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          marginTop: 12,
-                        }}
-                      >
-                        <View style={{ marginEnd: 40 }}>
-                          <Text style={stylesCommon.supportText}>Phone</Text>
-                          <TouchableOpacity
-                            onPress={() => Linking.openURL(`tel:${phone}`)}
-                          >
-                            <Text style={stylesCommon.supportValueText}>
-                              {"9106787337"}
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-
-                        <View style={{}}>
-                          <View>
-                            <Text style={stylesCommon.supportText}>Email</Text>
+                      <View style={[{ flex: 1, marginStart: 10 }]}>
+                        <Text style={stylesCommon.nameText}>
+                          {"Ravi Parmar"}
+                        </Text>
+                        <Text
+                          style={[
+                            stylesCommon.deptmentText,
+                            { color: "#667085", marginTop: 5 },
+                          ]}
+                        >
+                          {"VI-B"}
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            marginTop: 12,
+                          }}
+                        >
+                          <View style={{ marginEnd: 40 }}>
+                            <Text style={stylesCommon.supportText}>Phone</Text>
                             <TouchableOpacity
-                              onPress={() => Linking.openURL(`mailto:${email}`)}
+                              onPress={() => Linking.openURL(`tel:${phone}`)}
                             >
                               <Text style={stylesCommon.supportValueText}>
-                                {"studentName.mail@gmai.com"}
+                                {"9106787337"}
                               </Text>
                             </TouchableOpacity>
                           </View>
+
+                          <View style={{}}>
+                            <View>
+                              <Text style={stylesCommon.supportText}>
+                                Email
+                              </Text>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  Linking.openURL(`mailto:${email}`)
+                                }
+                              >
+                                <Text style={stylesCommon.supportValueText}>
+                                  {"studentName.mail@gmai.com"}
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
                         </View>
-                      </View>
-                      {/* <View style={{ marginTop: 10 }}>
+                        {/* <View style={{ marginTop: 10 }}>
                       <TouchableOpacity
                         style={{}}
                         onPress={() => Linking.openURL(`tel:${phone}`)}
@@ -815,12 +833,12 @@ const ParentSupportDetails = ({ route, navigation }) => {
                         </View>
                       </TouchableOpacity>
                     </View> */}
+                      </View>
                     </View>
-                  </View>
-                )}
-              </TouchableOpacity>
-            </View>
-
+                  )}
+                </TouchableOpacity>
+              </View>
+            </DropShadow>
             <Text
               style={{
                 fontSize: 12,

@@ -40,6 +40,7 @@ import { axiosCallAPI } from "../../API/axiosCommonService";
 import TeacherDashboard2 from "./TeacherDashboard2";
 import { screenWidth } from "../../Utills/dimesnion";
 import { apiSimple } from "../../API/api";
+import { ms } from "react-native-size-matters";
 
 const TeacherDashboard = ({ navigation }) => {
   const [listDataSource, setListDataSource] = useState([]);
@@ -167,12 +168,13 @@ const TeacherDashboard = ({ navigation }) => {
           Authorization: token,
         },
       });
-
+      console.log("schol res", response.data);
       setLoaderView(false);
 
       setListDataSource(response?.data);
 
       if (!Array.isArray(response) || response.length === 0) {
+        console.log("das", response?.data);
         console.warn("School list response is empty");
         return;
       }
@@ -308,6 +310,10 @@ const TeacherDashboard = ({ navigation }) => {
   }
 
   const renderItem = ({ item, index }) => {
+    const fullAddress = [item?.address, item?.city, item?.state]
+      .filter((x) => x && x.trim() !== "")
+      .join(", ");
+
     return (
       <View
         style={{
@@ -315,18 +321,18 @@ const TeacherDashboard = ({ navigation }) => {
           backgroundColor: color.WHITE,
           borderRadius: 12,
           width: "100%",
-          marginTop: 10,
+          marginTop: ms(10),
           borderColor: "#CBC8E9",
           borderWidth: 1,
-          marginBottom: 10,
+          marginBottom: ms(10),
           alignSelf: "center",
           shadowColor: Platform.OS === "ios" ? color.LIGHT_GREY : color.BLACK,
           shadowOffset: { width: 2, height: 2 },
           shadowOpacity: 5,
           shadowRadius: 1,
           //elevation: 5,
-          padding: 10,
-          paddingVertical: 12,
+          padding: ms(10),
+          paddingVertical: ms(12),
         }}
       >
         <TouchableOpacity
@@ -344,9 +350,9 @@ const TeacherDashboard = ({ navigation }) => {
           <Image
             style={{
               flex: 0.25,
-              height: 70,
-              width: 70,
-              alignSelf: "center",
+              height: ms(70),
+              width: ms(70),
+
               resizeMode: "contain",
             }}
             source={icon.IC_SCHOOL}
@@ -354,18 +360,20 @@ const TeacherDashboard = ({ navigation }) => {
           <View
             style={{
               flex: 0.63,
+
               //alignSelf: "center",
+              marginStart: ms(5),
               justifyContent: "space-evenly",
             }}
           >
             <Text
               style={{
-                fontSize: 18,
+                fontSize: ms(16),
                 fontFamily: fonts.LATO_BOLD,
                 color: color.APP_PRIMARY,
               }}
             >
-              {"Vivekanad Vidhiyalaya"}
+              {item?.schoolName}
             </Text>
             <Text
               style={{
@@ -375,7 +383,7 @@ const TeacherDashboard = ({ navigation }) => {
                 color: "#667085",
               }}
             >
-              {"2248, Raipur Chakla, Nr City Garden, Gandhi Road, Rajkot"}
+              {fullAddress}
             </Text>
           </View>
           {index === clickIndex ? (
