@@ -571,7 +571,7 @@ export const RenderItemSupport = (props) => {
             fontSize: 14,
             fontFamily: fonts.INTER_MEDIUM,
 
-            marginBottom: 2,
+            marginBottom: 0,
           }}
         >
           {"#" + props.NumberDSP}

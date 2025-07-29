@@ -41,7 +41,6 @@ import TeacherDashboard2 from "./TeacherDashboard2";
 import { screenWidth } from "../../Utills/dimesnion";
 import { apiSimple } from "../../API/api";
 
-
 const TeacherDashboard = ({ navigation }) => {
   const [listDataSource, setListDataSource] = useState([]);
   const [classListData, setClassList] = useState([]);
@@ -68,7 +67,7 @@ const TeacherDashboard = ({ navigation }) => {
     };
   }, []);
   useEffect(() => {
-    console.log("Kid",clickIndex)
+    console.log("Kid", clickIndex);
     Preference.SetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX, "" + clickIndex);
   }, [clickIndex]);
   //  }, [listDataSource, classListData]);
@@ -157,26 +156,45 @@ const TeacherDashboard = ({ navigation }) => {
   //     });
   // }
 
-async function schoolListAPI() {
-  setLoaderView(true);
+  const schoolListAPI = async () => {
+    try {
+      setLoaderView(true);
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
 
-  try {
-    const res = await apiSimple.get(Utills.SCHOOL_LIST);
-    const response = res?.data;
+      const response = await apiSimple.get(Utills.SCHOOL_LIST, {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
+      });
 
+      setLoaderView(false);
 
+      setListDataSource(response?.data);
 
-    setListDataSource(response);
+      if (!Array.isArray(response) || response.length === 0) {
+        console.warn("School list response is empty");
+        return;
+      }
 
-      teacherClassListAPI(2);
-    
-  } catch (error) {
-    // Error already handled globally in interceptors
-    console.error("Error in schoolListAPI", error);
-  } finally {
-    setLoaderView(false);
-  }
-}
+      const indexString = await Preference.GetData(
+        PreferenceKeys.TEACHER_DASHBOARD_INDEX
+      );
+      let index = parseInt(indexString);
+
+      if (isNaN(index) || index < 0 || index >= response.length) {
+        index = 0;
+      }
+
+      setIndex(index);
+      teacherClassListAPI(response?.data[index].id);
+
+      setLoaderView(false);
+    } catch (error) {
+      console.error("Error in schoolListAPI:", error);
+      setLoaderView(false);
+    }
+  };
 
   // async function teacherClassListAPI(Id) {
   //   console.log("Id we are getting in classList", Id);
@@ -209,25 +227,25 @@ async function schoolListAPI() {
   // }
 
   async function teacherClassListAPI(Id) {
-  console.log("Id we are getting in classList", Id);
-  setLoaderView(true);
+    console.log("Id we are getting in classList", Id);
+    setLoaderView(true);
 
-  try {
-    const res = await apiSimple.get(`${Utills.TEACHER_CLASS_LIST}?schoolId=${Id}`);
-    const response = res?.result;
+    try {
+      const res = await apiSimple.get(
+        `${Utills.TEACHER_CLASS_LIST}?schoolId=${Id}`
+      );
+      const response = res?.result;
+      console.log("Chandu2", response);
 
-    if (JSON.stringify(classListData) !== JSON.stringify(response.result)) {
-      setClassList(removeDuplicates(response.result, "id"));
+      if (JSON.stringify(classListData) !== JSON.stringify(response.result)) {
+        setClassList(removeDuplicates(response.result, "id"));
+      }
+    } catch (error) {
+      // Error already handled in global interceptor
+    } finally {
+      setLoaderView(false);
     }
-
-    console.log("Response getting Dashboard 1 is..",response);
-  } catch (error) {
-    // Error already handled in global interceptor
-  } finally {
-    setLoaderView(false);
   }
-}
-
 
   function handleBackButtonClick() {
     BackHandler.exitApp();

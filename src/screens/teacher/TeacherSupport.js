@@ -28,6 +28,7 @@ import TeacherSupportTabCommon from "./TeacherSupportTab";
 import { screenHeight, screenWidth, vh, vw } from "../../Utills/dimesnion";
 import SelectDropdown from "react-native-select-dropdown";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
+import { ms } from "react-native-size-matters";
 
 const TeacherSupport = (navigation) => {
   //const sectionID = navigation.route.params.supportData.id;
@@ -67,7 +68,7 @@ const TeacherSupport = (navigation) => {
           flexDirection: "row",
           backgroundColor: "#EEEDF8",
           borderRadius: 50,
-          width: screenWidth - 100,
+          width: screenWidth - ms(30),
           flex: 0.07,
         }}
       >
@@ -394,21 +395,7 @@ const TeacherSupport = (navigation) => {
             backgroundColor: color.WHITE,
           }}
         >
-          <View style={{ flex: 1, zIndex: 10 }}>{MyTabs()}</View>
-          <View
-            style={{
-              backgroundColor: "#EEEDF8",
-              //  backgroundColor: "#fff",
-              width: screenWidth / 4,
-              height: 39,
-              borderTopStartRadius: 0,
-              borderTopEndRadius: 50,
-              borderBottomEndRadius: 50,
-              position: "absolute",
-              zIndex: 2,
-              right: 0,
-            }}
-          />
+          <View style={{ flex: 1, zIndex: 10, marginTop: 15 }}>{MyTabs()}</View>
         </View>
 
         {ModalVisible && AddSupportRequest()}

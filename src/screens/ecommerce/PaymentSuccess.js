@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
   iconWrapper: {
     borderRadius: 50,
 
-    marginVertical: ms(60),
+    marginTop: ms(50),
+    marginBottom: ms(30),
   },
   icon: {
     width: ms(140),
@@ -78,9 +79,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: ms(16),
     color: color.APP_PRIMARY,
-    fontWeight: "500",
+
     textAlign: "center",
     fontFamily: fonts.INTER_SEMIBOLD,
-    marginBottom: ms(60),
+    marginBottom: ms(90),
   },
 });

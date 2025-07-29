@@ -186,6 +186,7 @@ export const color = {
   Header_Back_BG: "#41398A",
   CART_GREY: "#D3D2E2",
   SHIPPING_INFO_TXT_CLR: "#66628E",
+  ORDERS_GREY: "#D0D5DD",
   // Attendace colors
   U_BG: "#FEEEEE",
   U_BR: "#DF4848",

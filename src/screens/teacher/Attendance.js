@@ -55,6 +55,7 @@ import { normalize, vh, vw } from "../../Utills/dimesnion";
 import * as Utills from "../../API/Utills";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
 import ImageLoad from "react-native-image-placeholder";
+import { apiSimple } from "../../API/api";
 const Attendance = ({ route, navigation }) => {
   const { attendanceData } = route.params;
 
@@ -268,83 +269,150 @@ const Attendance = ({ route, navigation }) => {
     setIndex();
     setTooltip(false);
   };
-  async function StudentListAPI() {
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
+  // async function StudentListAPI() {
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
 
-    if (isfilterBySearch && searchText.length > 2)
-      var listURL =
-        Utills.TEACHER_ATTENDANCE_LIST +
-        "?sectionId=" +
-        attendanceData.id +
-        "&search=" +
-        searchText;
-    else
-      var listURL =
-        Utills.TEACHER_ATTENDANCE_LIST + "?sectionId=" + attendanceData.id;
+  //   if (isfilterBySearch && searchText.length > 2)
+  //     var listURL =
+  //       Utills.TEACHER_ATTENDANCE_LIST +
+  //       "?sectionId=" +
+  //       attendanceData.id +
+  //       "&search=" +
+  //       searchText;
+  //   else
+  //     var listURL =
+  //       Utills.TEACHER_ATTENDANCE_LIST + "?sectionId=" + attendanceData.id;
 
-    axiosCallAPI("get", listURL, "", requestOptions, true, navigation)
-      .then((response) => {
-        console.log(response);
-        if (response != undefined) {
-          if (JSON.stringify(dataList) != JSON.stringify(response))
-            var isDataAvailable_ = false;
-          response.map((item) => {
-            if (item.data.length > 0) {
-              isDataAvailable_ = true;
-            }
-          });
+  //   axiosCallAPI("get", listURL, "", requestOptions, true, navigation)
+  //     .then((response) => {
+  //       console.log(response);
+  //       if (response != undefined) {
+  //         if (JSON.stringify(dataList) != JSON.stringify(response))
+  //           var isDataAvailable_ = false;
+  //         response.map((item) => {
+  //           if (item.data.length > 0) {
+  //             isDataAvailable_ = true;
+  //           }
+  //         });
 
-          if (isDataAvailable_) {
-            console.log("Attendance Data", response);
-            // setDataList(response);
-          } else {
-            setIsDataAvailable("No Data found.");
-            // setDataList([]);
-          }
-          //   setIsDataAvailable(isDataAvailable_);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+  //         if (isDataAvailable_) {
+  //           console.log("Attendance Data", response);
+  //           // setDataList(response);
+  //         } else {
+  //           setIsDataAvailable("No Data found.");
+  //           // setDataList([]);
+  //         }
+  //         //   setIsDataAvailable(isDataAvailable_);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
+  const StudentListAPI = async () => {
+    try {
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
+
+      let listURL = `${Utills.TEACHER_ATTENDANCE_LIST}?sectionId=${attendanceData.id}`;
+
+      if (isfilterBySearch && searchText.length > 2) {
+        listURL += `&search=${searchText}`;
+      }
+
+      const response = await apiSimple.get(listURL, {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
       });
-  }
-  async function saveAttendance_API() {
-    setLoaderView(true);
-    var formData = new FormData();
-    formData.append("sectionId", attendanceData.id);
-    formData.append("attendance", JSON.stringify(absentData));
 
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
+      if (!response || !Array.isArray(response)) {
+        console.warn("Invalid or empty attendance response");
+        return;
+      }
 
-    axiosCallAPI(
-      "post",
-      Utills.ATTENDANCE_SAVE,
-      formData,
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response) => {
-        clearData();
+      const isDataAvailable = response.some(
+        (item) => Array.isArray(item.data) && item.data.length > 0
+      );
 
-        setLoaderView(false);
-        StudentListAPI();
-      })
-      .catch((error) => {
-        setLoaderView(false);
+      if (isDataAvailable) {
+        console.log("Attendance Data:", response);
+        // setDataList(response);
+      } else {
+        setIsDataAvailable("No Data found.");
+        // setDataList([]);
+      }
+    } catch (error) {
+      console.error("Error in StudentListAPI:", error);
+    }
+  };
+
+  // async function saveAttendance_API() {
+  //   setLoaderView(true);
+  //   var formData = new FormData();
+  //   formData.append("sectionId", attendanceData.id);
+  //   formData.append("attendance", JSON.stringify(absentData));
+
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "multipart/form-data",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   axiosCallAPI(
+  //     "post",
+  //     Utills.ATTENDANCE_SAVE,
+  //     formData,
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   )
+  //     .then((response) => {
+  //       clearData();
+
+  //       setLoaderView(false);
+  //       StudentListAPI();
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //     });
+  // }
+
+  const saveAttendance_API = async () => {
+    try {
+      setLoaderView(true);
+
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
+
+      const formData = new FormData();
+      formData.append("sectionId", attendanceData.id);
+      formData.append("attendance", JSON.stringify(absentData));
+
+      const response = await apiSimple.post(Utills.ATTENDANCE_SAVE, formData, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: token,
+        },
       });
-  }
+
+      clearData();
+      StudentListAPI();
+    } catch (error) {
+      console.error("Error in saveAttendance_API:", error);
+    } finally {
+      setLoaderView(false);
+    }
+  };
+
   const renderItem = ({ item, index }) => {
     console.log("renderitem", item);
     var mainIndex = index;

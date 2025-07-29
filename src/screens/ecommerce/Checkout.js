@@ -247,7 +247,7 @@ export default function Checkout({ navigation }) {
                 }}
               >
                 <Image
-                  source={icon.IC_chekout_EDIT}
+                  source={icon.IC_CART_EDIT}
                   style={{
                     width: ms(13.5),
                     height: ms(13.5),

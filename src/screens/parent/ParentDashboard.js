@@ -112,26 +112,23 @@ const ParentDashboard = ({ navigation }) => {
   // }
 
   async function studentListAPI() {
-  setLoaderView(true);
-  try {
-    const res = await apiSimple.get(Utills.STUDENT_LIST);
-    const response = res?.data;
-
-
-
-    if (response !== undefined) {
-      if (JSON.stringify(dataList) !== JSON.stringify(response.result)) {
-        setDataList(response.result);
+    setLoaderView(true);
+    try {
+      const res = await apiSimple.get(Utills.STUDENT_LIST);
+      const response = res?.data;
+      console.log("sd", response.result);
+      if (response !== undefined) {
+        if (JSON.stringify(dataList) !== JSON.stringify(response.result)) {
+          setDataList(response.result);
+        }
       }
+    } catch (error) {
+      // Error already handled in interceptors (toasts, log etc.)
+      console.error("studentListAPI error", error);
+    } finally {
+      setLoaderView(false);
     }
-  } catch (error) {
-    // Error already handled in interceptors (toasts, log etc.)
-    console.error("studentListAPI error", error);
-  } finally {
-    setLoaderView(false);
   }
-}
-
 
   const DATA = [
     {
@@ -165,11 +162,17 @@ const ParentDashboard = ({ navigation }) => {
         >
           <ImageLoad
             style={stylesCommon.studentProfile}
-            source={icon.BOY}
+            source={
+              item.profilePic_path && item.profilePic_path !== ""
+                ? { uri: item.profilePic_path }
+                : icon.BOY
+            }
             loadingStyle={{ size: "large", color: "blue" }}
             borderRadius={50}
             placeholderStyle={stylesCommon.studentProfile}
-          ></ImageLoad>
+            placeholderSource={icon.BOY} //remove this line when the profile pic working
+          />
+
           <View style={{ marginStart: 20, flex: 1 }}>
             <Text style={stylesCommon.nameText}>{item.student_name}</Text>
             <Text style={stylesCommon.deptmentText}>{item.enrollmentNo}</Text>

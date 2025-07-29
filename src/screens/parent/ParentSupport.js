@@ -19,6 +19,7 @@ import {
   Platform,
   Animated,
   Modal,
+  Alert,
 } from "react-native";
 import { AppText, color, fonts, icon, PreferenceKeys } from "../../constant";
 
@@ -38,9 +39,14 @@ import stylesCommon, { SCREEN_WIDTH } from "../../commonTheme/stylesCommon";
 import { screenHeight, screenWidth, vh, vw } from "../../Utills/dimesnion";
 import SelectDropdown from "react-native-select-dropdown";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
+import { apiSimple } from "../../API/api";
+import * as Utills from "../../API/Utills";
+
 const ParentSupport = ({ navigation }) => {
   const Tab = createMaterialTopTabNavigator();
   const [ModalVisible, setModalVisible] = useState(false);
+  const [school, setSchool] = useState(null);
+  const [message, setMessage] = useState("");
   var StudentID;
   var sectionId;
   useEffect(() => {
@@ -71,6 +77,48 @@ const ParentSupport = ({ navigation }) => {
   }
   function AddNewRequest() {
     navigation.navigate("ParentAddNewRequest");
+  }
+
+  async function AddNewSupport(
+    ID,
+    sectionId,
+    classId,
+    receiverId,
+    msg,
+    navigation
+  ) {
+    try {
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
+
+      const formData = new FormData();
+      formData.append("studentId", ID);
+      formData.append("receiverType", receiverId);
+      formData.append("message", message);
+      formData.append("sectionId", sectionId);
+      formData.append("classId", classId);
+
+      console.log("Submitting support request with:", {
+        ID,
+        sectionId,
+        classId,
+        receiverId,
+        msg,
+      });
+
+      const response = await apiSimple.post(Utills.ADD_SUPPORT_DATA, formData, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: token,
+        },
+      });
+
+      onClose();
+      console.log("Support request submitted successfully:", response.data);
+    } catch (error) {
+      console.error("Error while submitting support request:", error);
+      setLoaderView(false);
+    }
   }
 
   const MyTabBar = ({ state, descriptors, navigation, position }) => {
@@ -200,6 +248,35 @@ const ParentSupport = ({ navigation }) => {
     );
   };
 
+  const onClose = () => {
+    setModalVisible(false);
+    setSchool(null);
+    setMessage("");
+  };
+
+  const onSubmit = () => {
+    if (!school) {
+      Alert.alert(AppText.ALERT_APP_NAME, "Please select a school.");
+      return;
+    }
+
+    if (message.trim() === "") {
+      Alert.alert(AppText.ALERT_APP_NAME, "Please enter your message.");
+      return;
+    }
+
+    Preference.GetData(PreferenceKeys.STUDENT_DETAIL).then(
+      (student_details) => {
+        const studentData = JSON.parse(student_details);
+        AddNewSupport(
+          studentData.id,
+          studentData.sectionId,
+          studentData.classId
+        );
+      }
+    );
+  };
+
   const AddSupportRequest = () => {
     return (
       <View>
@@ -232,17 +309,18 @@ const ParentSupport = ({ navigation }) => {
                 <View style={stylesCommon.inputMainView}>
                   <SelectDropdown
                     data={[
-                      "Navrachna Primary School",
-                      "DonBosco School",
-                      "ST Basil",
+                      { id: 1, name: "Navrachna Primary School" },
+                      { id: 2, name: "DonBosco School" },
+                      { id: 3, name: "ST Basil" },
                     ]}
                     onSelect={(selectedItem, index) => {
-                      //setSchool(selectedItem.id);
+                      setSchool(selectedItem.id);
                     }}
                     defaultButtonText={"Select School"}
-                    // buttonTextAfterSelection={(selectedItem,index)=>{
-                    //   return selectedItem.schoolName
-                    // }}
+                    buttonTextAfterSelection={(selectedItem) =>
+                      selectedItem.name
+                    }
+                    rowTextForSelection={(item) => item.name}
                     buttonTextStyle={{
                       textAlign: "left",
                       fontSize: 20,
@@ -292,6 +370,8 @@ const ParentSupport = ({ navigation }) => {
                       keyboardDismissMode={"on-drag"}
                       returnKeyType="return"
                       autoFocus={false}
+                      value={message}
+                      onChangeText={setMessage}
                     />
                   </View>
                   <View
@@ -311,6 +391,7 @@ const ParentSupport = ({ navigation }) => {
                         alignSelf: "center",
                         backgroundColor: "#CBC8E9",
                       }}
+                      onPress={onClose}
                     >
                       <Text
                         style={
@@ -334,6 +415,7 @@ const ParentSupport = ({ navigation }) => {
                         paddingHorizontal: 55,
                         alignSelf: "center",
                       }}
+                      onPress={onSubmit}
                     >
                       <Text style={stylesCommon.primaryButtonText}>Submit</Text>
                     </TouchableOpacity>

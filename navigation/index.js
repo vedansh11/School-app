@@ -39,6 +39,7 @@ import ProductDetails from "../src/screens/ecommerce/ProductDetails";
 import Cart from "../src/screens/ecommerce/Cart";
 import Checkout from "../src/screens/ecommerce/Checkout";
 import PaymentSuccess from "../src/screens/ecommerce/PaymentSuccess";
+import Orders from "../src/screens/ecommerce/Orders";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,7 +48,14 @@ export default function navigation() {
     <MenuProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen
+          {/* <Stack.Screen
+            name="Orders"
+            options={{
+              headerShown: false,
+            }}
+            component={Orders}
+          /> */}
+          {/* <Stack.Screen
             name="Products"
             options={{
               headerShown: false,
@@ -84,7 +92,7 @@ export default function navigation() {
               headerShown: false,
             }}
             component={ProductDetails}
-          />
+          /> */}
           <Stack.Screen
             name="LandingScreen"
             options={{

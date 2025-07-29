@@ -12,6 +12,7 @@ import { color, icon, fonts } from "../constant";
 import { Dimensions } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { normalize, vh, screenHeight, screenWidth } from "../Utills/dimesnion";
+import { ms } from "react-native-size-matters";
 
 export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
   Dimensions.get("window");
@@ -350,9 +351,9 @@ export default StyleSheet.create({
     //backgroundColor: color.WHITE,
     borderRadius: 15,
     width: "100%",
-    marginTop: 10,
+    marginTop: 5,
     //padding: 15,
-    marginBottom: 10,
+    marginBottom: 8,
     gap: 10,
     // borderColor: "#EAECF0",
     //borderColor: "#564CB8",
@@ -528,9 +529,10 @@ export default StyleSheet.create({
     marginBottom: 4,
   },
   feesImageView: {
-    height: 20,
-    width: 25,
+    height: ms(18),
+    width: ms(25),
     alignSelf: "center",
+    resizeMode: "contain",
   },
 
   dashboardMenuText: {
@@ -541,8 +543,8 @@ export default StyleSheet.create({
     color: "#FDC9C9",
   },
   dashboardImageView: {
-    height: 20,
-    width: 20,
+    height: ms(18),
+    width: ms(18),
     alignSelf: "center",
     resizeMode: "contain",
   },

@@ -56,6 +56,7 @@ import { apiSimple } from "../../API/api";
 
 const ParentAttendance = ({ route, navigation }) => {
   const { attendanceData } = route.params;
+  console.log("ad", attendanceData);
 
   const fromFieldRef = useRef();
   const toFieldRef = useRef();
@@ -129,38 +130,38 @@ const ParentAttendance = ({ route, navigation }) => {
   //     });
   // }
 
-async function AddLeaveAPI() {
-  setLoaderView(true);
+  async function AddLeaveAPI() {
+    setLoaderView(true);
 
-  try {
-    const loginFormData = new FormData();
-    loginFormData.append("id", attendanceData.section);
-    loginFormData.append("studentId", attendanceData.id);
-    loginFormData.append("fromDate", moment(fromDate).format("DD-MM-YYYY"));
-    loginFormData.append("toDate", moment(toDate).format("DD-MM-YYYY"));
-    loginFormData.append("description", description);
-    loginFormData.append("sectionId", attendanceData.sectionId);
+    try {
+      const loginFormData = new FormData();
+      loginFormData.append("id", attendanceData.section);
+      loginFormData.append("studentId", attendanceData.id);
+      loginFormData.append("fromDate", moment(fromDate).format("DD-MM-YYYY"));
+      loginFormData.append("toDate", moment(toDate).format("DD-MM-YYYY"));
+      loginFormData.append("description", description);
+      loginFormData.append("sectionId", attendanceData.sectionId);
 
-    const res = await apiSimple.post(Utills.LEAVE_SAVE, loginFormData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+      console.log("leave data", loginFormData);
+      const res = await apiSimple.post(Utills.LEAVE_SAVE, loginFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    const response = res?.data;
+      const response = res?.data;
 
-    if (response !== undefined) {
-      setModalVisible(!modalVisible);
-      clearData();
+      if (response !== undefined) {
+        setModalVisible(!modalVisible);
+        clearData();
+      }
+    } catch (error) {
+      console.error("AddLeaveAPI error", error);
+      // Global error already handled by interceptor
+    } finally {
+      setLoaderView(false);
     }
-  } catch (error) {
-    console.error("AddLeaveAPI error", error);
-    // Global error already handled by interceptor
-  } finally {
-    setLoaderView(false);
   }
-}
-
 
   const MyTabBar = ({ state, descriptors, navigation, position }) => {
     return (
@@ -560,8 +561,6 @@ async function AddLeaveAPI() {
                     width: "100%",
                   }}
                 >
-                
-             
                   {InputView(
                     AppText.START_DATE,
                     false,

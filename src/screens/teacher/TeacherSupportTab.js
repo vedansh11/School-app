@@ -22,7 +22,8 @@ import { axiosCallAPI } from "../../API/axiosCommonService";
 import moment from "moment";
 import stylesCommon from "../../commonTheme/stylesCommon";
 import { screenWidth } from "../../Utills/dimesnion";
-import { apiSimple,apiFull } from "../../API/api";
+import { apiSimple, apiFull } from "../../API/api";
+import { ms } from "react-native-size-matters";
 
 const TeacherSupportTabCommon = (props) => {
   const [listData, setListData] = useState([]);
@@ -225,40 +226,39 @@ const TeacherSupportTabCommon = (props) => {
   // }
 
   async function GetReplyData(ID, sectionID) {
-  try {
-    setBackgroundLoaderView(true);
+    try {
+      setBackgroundLoaderView(true);
 
-    const roleId = Role === "parent" ? ROLEID.PARENT : ROLEID.TEACHER;
-    const studentId = ID;
+      const roleId = Role === "parent" ? ROLEID.PARENT : ROLEID.TEACHER;
+      const studentId = ID;
 
-    const url =
-      Utills.GET_REPLIED_DATA +
-      `?roleId=${roleId}&studentId=${studentId}&sectionId=${sectionID}`;
+      const url =
+        Utills.GET_REPLIED_DATA +
+        `?roleId=${roleId}&studentId=${studentId}&sectionId=${sectionID}`;
 
-    const res = await apiFull.get(url);
-    const response = res?.data;
+      const res = await apiSimple.get(url);
+      const response = res?.data;
+      console.log("Here is the response 1", response.result);
+      setBackgroundLoaderView(false);
 
-    setBackgroundLoaderView(false);
+      if (response !== undefined) {
+        if (response.result.length > 0) {
+          setNoData(false);
 
-    if (response !== undefined) {
-      if (response.result.length > 0) {
-        setNoData(false);
-        console.log("Here is the response list", response.result);
-        setListData(response.result);
+          setListData(response.result);
+        } else {
+          setNoData(true);
+          setListData(response.result);
+        }
       } else {
         setNoData(true);
-        setListData(response.result);
       }
-    } else {
+    } catch (error) {
+      console.log("Error in GetReplyData:", error);
+      setBackgroundLoaderView(false);
       setNoData(true);
     }
-  } catch (error) {
-    console.log("Error in GetReplyData:", error);
-    setBackgroundLoaderView(false);
-    setNoData(true);
   }
-}
-
 
   // async function GetSupportData(ID, sectionID) {
   //   setBackgroundLoaderView(true);
@@ -322,54 +322,51 @@ const TeacherSupportTabCommon = (props) => {
   //     });
   // }
 
-  
+  async function GetSupportData(ID, sectionID) {
+    setBackgroundLoaderView(true);
 
-async function GetSupportData(ID, sectionID) {
-  setBackgroundLoaderView(true);
+    const roleId = Role == "parent" ? ROLEID.PARENT : ROLEID.TEACHER;
+    const studentId = ID;
+    const type =
+      Type === "New"
+        ? SUPPORT_TYPE.NEW
+        : Type === "Closed"
+        ? SUPPORT_TYPE.CLOSE
+        : 1;
 
-  const roleId = Role == "parent" ? ROLEID.PARENT : ROLEID.TEACHER;
-  const studentId = ID;
-  const type =
-    Type === "New"
-      ? SUPPORT_TYPE.NEW
-      : Type === "Closed"
-      ? SUPPORT_TYPE.CLOSE
-      : 1;
+    const token = await Preference.GetData(PreferenceKeys.TOKEN);
 
-  const token = await Preference.GetData(PreferenceKeys.TOKEN);
+    const params = {
+      roleId: roleId,
+      studentId: studentId,
+      type: type,
+      sectionId: sectionID,
+    };
 
-  const params = {
-    roleId: roleId,
-    studentId: studentId,
-    type: type,
-    sectionId: sectionID,
-  };
+    try {
+      const response = await apiSimple.get(Utills.GET_SUPPORT_DATA, {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
+        params,
+        navigation: props.navigation, // passed to interceptor
+      });
+      console.log("supportdata", response);
+      setBackgroundLoaderView(false);
 
-  try {
-    const response = await apiFull.get(Utills.GET_SUPPORT_DATA, {
-      headers: {
-        Accept: "application/json",
-        Authorization: token,
-      },
-      params,
-      navigation: props.navigation, // passed to interceptor
-    });
-
-    setBackgroundLoaderView(false);
-
-    if (response?.result?.length > 0) {
-      setNoData(false);
-      setListData(response.result);
-    } else {
-      setNoData(true);
-      setListData(response.result || []);
+      if (response?.result?.length > 0) {
+        setNoData(false);
+        setListData(response.result);
+      } else {
+        setNoData(true);
+        setListData(response.result || []);
+      }
+    } catch (error) {
+      setBackgroundLoaderView(false);
+      setLoaderView(false);
     }
-  } catch (error) {
-    setBackgroundLoaderView(false);
-    setLoaderView(false);
   }
-}
-
 
   function onSupportClick(requestID) {
     props.navigation.navigate("ParentSupportDetails", {
@@ -382,7 +379,7 @@ async function GetSupportData(ID, sectionID) {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: color.WHITE }}>
+    <View style={{ flex: 1, backgroundColor: color.WHITE, paddingTop: ms(10) }}>
       {console.log("Here is the list data", listData)}
       <FlatList
         data={
@@ -405,7 +402,7 @@ async function GetSupportData(ID, sectionID) {
                 item.item.parentId == "0" ? item.item.id : item.item.parentId
               }
               date={moment(item.item.updatedAt, "YYYY-MM-DD HH:mm:ss").format(
-                "MMMM DD, YYYY"
+                "MMMM DD, YYYY | hh:mm A"
               )}
               std={"(" + item.item.className + " - " + item.item.section + ")"}
               onClick={onSupportClick}

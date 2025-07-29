@@ -30,6 +30,7 @@ import {
 import * as Utills from "../../API/Utills";
 import { axiosCallAPI } from "../../API/axiosCommonService";
 import { screenWidth } from "../../Utills/dimesnion";
+import { apiSimple, apiFull } from "../../API/api";
 
 export default function TeacherDashboard2({ navigation, route }) {
   const { item, index, data } = route.params;
@@ -63,37 +64,74 @@ export default function TeacherDashboard2({ navigation, route }) {
   useEffect(() => {
     teacherClassListAPI(item.id);
   }, []);
+
+  // async function schoolListAPI() {
+  //   setLoaderView(true);
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   try {
+  //     const response = await axiosCallAPI(
+  //       "get",
+  //       Utills.SCHOOL_LIST,
+  //       "",
+  //       requestOptions,
+  //       true,
+  //       navigation
+  //     );
+
+  //     setLoaderView(false);
+  //     console.log("Response>> " + JSON.stringify(response));
+
+  //     if (JSON.stringify(listDataSource) !== JSON.stringify(response)) {
+  //       console.log(response);
+  //       setListDataSource(response);
+  //       Preference.GetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX).then(
+  //         (index) => {
+  //           if (index) {
+  //             console.log("this is the index bhai ", index);
+  //             setIndex(parseInt(index));
+  //             teacherClassListAPI(response[parseInt(index)].id);
+  //           }
+  //         }
+  //       );
+  //     }
+  //   } catch (error) {
+  //     setLoaderView(false);
+  //     console.error("Error getting Dashboard 2 is..", error);
+  //   }
+  // }
+
   async function schoolListAPI() {
     setLoaderView(true);
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
 
     try {
-      const response = await axiosCallAPI(
-        "get",
-        Utills.SCHOOL_LIST,
-        "",
-        requestOptions,
-        true,
-        navigation
-      );
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
+
+      const response = await apiSimple.get(Utills.SCHOOL_LIST, {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
+        navigation, // for interceptor
+      });
 
       setLoaderView(false);
-      console.log("Response>> " + JSON.stringify(response));
+      console.log("Response>> " + JSON.stringify(response?.data));
 
       if (JSON.stringify(listDataSource) !== JSON.stringify(response)) {
-        console.log(response);
-        setListDataSource(response);
+        setListDataSource(response?.data);
+
         Preference.GetData(PreferenceKeys.TEACHER_DASHBOARD_INDEX).then(
           (index) => {
             if (index) {
               console.log("this is the index bhai ", index);
               setIndex(parseInt(index));
-              teacherClassListAPI(response[parseInt(index)].id);
+              teacherClassListAPI(response?.data[parseInt(index)]?.id);
             }
           }
         );
@@ -105,46 +143,68 @@ export default function TeacherDashboard2({ navigation, route }) {
   }
 
   function handleBackButtonClick() {
-    console.log("====================================");
-    console.log("BHai daba diya");
-    console.log("====================================");
     navigation.goBack();
     return true;
   }
 
-  console.log("The items foun in Navigation2 is ", item.id);
-  console.log("The index foun in Navigation2 is ", index);
-  console.log("The data foun in Navigation2 is ", classListData);
+  // async function teacherClassListAPI(Id) {
+  //   setLoaderView(true);
+  //   let requestOptions = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
+  //     },
+  //   };
+
+  //   axiosCallAPI(
+  //     "get",
+  //     Utills.TEACHER_CLASS_LIST + "?schoolId=" + Id,
+  //     "",
+  //     requestOptions,
+  //     true,
+  //     navigation
+  //   )
+  //     .then((response) => {
+  //       console.log("TecherApi", response, Id);
+  //       setLoaderView(false);
+  //       if (JSON.stringify(classListData) !== JSON.stringify(response.result)) {
+  //         setClassList(removeDuplicates(response.result, "id"));
+  //         console.log("Response getting Dashboard2 is..", response);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoaderView(false);
+  //       console.log("Error getting getting Dashboard2 is..", error);
+  //     });
+  // }
 
   async function teacherClassListAPI(Id) {
     setLoaderView(true);
-    let requestOptions = {
-      headers: {
-        Accept: "application/json",
-        Authorization: await Preference.GetData(PreferenceKeys.TOKEN),
-      },
-    };
 
-    axiosCallAPI(
-      "get",
-      Utills.TEACHER_CLASS_LIST + "?schoolId=" + Id,
-      "",
-      requestOptions,
-      true,
-      navigation
-    )
-      .then((response) => {
-        console.log("TecherApi", response, Id);
-        setLoaderView(false);
-        if (JSON.stringify(classListData) !== JSON.stringify(response.result)) {
-          setClassList(removeDuplicates(response.result, "id"));
-          console.log("Response getting Dashboard2 is..", response);
+    try {
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
+
+      const response = await apiSimple.get(
+        `${Utills.TEACHER_CLASS_LIST}?schoolId=${Id}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: token,
+          },
+          navigation,
         }
-      })
-      .catch((error) => {
-        setLoaderView(false);
-        console.log("Error getting getting Dashboard2 is..", error);
-      });
+      );
+
+      console.log("TecherApi", response.data.result, Id);
+      setLoaderView(false);
+
+      if (JSON.stringify(classListData) !== JSON.stringify(response.result)) {
+        setClassList(removeDuplicates(response.data.result, "id"));
+      }
+    } catch (error) {
+      setLoaderView(false);
+      console.log("Error getting Dashboard2 is..", error);
+    }
   }
 
   function NavigateToDairy(data) {

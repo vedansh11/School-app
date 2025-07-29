@@ -53,6 +53,7 @@ import ImageLoad from "react-native-image-placeholder";
 import { Linking } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AboveKeyboard from "react-native-above-keyboard";
+import { ms } from "react-native-size-matters";
 
 const ParentSupportDetails = ({ route, navigation }) => {
   const { requestID, type, tab } = route.params;
@@ -644,15 +645,16 @@ const ParentSupportDetails = ({ route, navigation }) => {
                 padding: 15,
                 borderRadius: 15,
                 width: "100%",
+                marginTop: ms(10),
                 //borderColor: color.GREY,
                 //borderWidth: 0.5,
                 // alignSelf: "center",
                 // shadowColor:
                 //   Platform.OS === "ios" ? color.LIGHT_GREY : color.BLACK,
-                // shadowOffset: { width: 2, height: 2 },
+                //shadowOffset: { width: 2, height: 2 },
                 // shadowOpacity: 5,
                 // shadowRadius: 1,
-                elevation: 2,
+                elevation: 6,
               }}
             >
               <TouchableOpacity
