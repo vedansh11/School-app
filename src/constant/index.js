@@ -217,6 +217,7 @@ export const AppText = {
   WELCOM_TEXT: "Welcome back,\nLet's sign you in.",
 
   CONTINUE_PARENT: "Continue as Parent",
+  CONTINUE_ECOM: "Continue Ecom",
   CONTINUE_TEACHER: "Continue  as Teacher",
   MOBILE_NUMBER: "Mobile Number",
   OTP: "Enter   OTP",

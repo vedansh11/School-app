@@ -146,31 +146,31 @@ const Notification = ({ navigation }) => {
   // }
 
   async function GetNotificationData(isLoaderShow) {
-  const token = await Preference.GetData(PreferenceKeys.TOKEN);
+    const token = await Preference.GetData(PreferenceKeys.TOKEN);
 
-  try {
-    const res = await apiSimple.get(
-      `${Utills.NOTIFICATION}?per_page=${PER_PAGE}&page=${currentPage}`,
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: token,
-        },
-      }
-    );
+    try {
+      const res = await apiSimple.get(
+        `${Utills.NOTIFICATION}?per_page=${PER_PAGE}&page=${currentPage}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: token,
+          },
+        }
+      );
 
-    const response = res?.data;
-    console.log("Notiiiiii",response);
-    setTotalPages(response.pages);
-    setLoadMore(false);
-    var currentdata = [...listData];
-    var finalarray = currentdata.concat(response.result);
-    // setListData(finalarray);
-  } catch (error) {
-    // error is already globally handled by your interceptor
-    console.error("Error in GetNotificationData", error);
+      const response = res?.data;
+      console.log("Notiiiiii", response.result);
+      setTotalPages(response.pages);
+      setLoadMore(false);
+      var currentdata = [...listData];
+      var finalarray = currentdata.concat(response.result);
+      // setListData(finalarray);
+    } catch (error) {
+      // error is already globally handled by your interceptor
+      console.error("Error in GetNotificationData", error);
+    }
   }
-}
 
   const DATA = [
     {

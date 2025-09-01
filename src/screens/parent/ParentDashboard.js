@@ -184,7 +184,9 @@ const ParentDashboard = ({ navigation }) => {
             />
 
             <View style={{ marginStart: 15, flex: 1 }}>
-              <Text style={stylesCommon.nameText}>{item.student_name}</Text>
+              <Text style={stylesCommon.nameText}>
+                {item.firstName + " " + item.lastName}
+              </Text>
               <Text style={stylesCommon.deptmentText}>{item.enrollmentNo}</Text>
               {/* <Text style={stylesCommon.deptmentText}>
               {"Class : " + item.className + " - " + item.sectionName}

@@ -15,7 +15,7 @@ const PaymentSuccess = () => {
   const navigation = useNavigation();
 
   const handleClose = () => {
-    navigation.popToTop(); // or navigate to "Orders" or "Home"
+    navigation.navigate("Orders"); // or navigate to "Orders" or "Home"
   };
 
   return (
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     position: "absolute",
-    top: 10,
-    right: 10,
+    top: 15,
+    right: 15,
     padding: 8,
     zIndex: 2,
   },
@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
     marginBottom: ms(30),
   },
   icon: {
-    width: ms(140),
+    width: ms(130),
 
-    height: ms(100),
+    height: ms(90),
     resizeMode: "contain",
   },
   text: {

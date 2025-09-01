@@ -48,51 +48,6 @@ export default function navigation() {
     <MenuProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          {/* <Stack.Screen
-            name="Orders"
-            options={{
-              headerShown: false,
-            }}
-            component={Orders}
-          /> */}
-          {/* <Stack.Screen
-            name="Products"
-            options={{
-              headerShown: false,
-            }}
-            component={Products}
-          />
-          <Stack.Screen
-            name="Cart"
-            options={{
-              headerShown: false,
-            }}
-            component={Cart}
-          />
-          <Stack.Screen
-            name="Checkout"
-            options={{
-              headerShown: false,
-            }}
-            component={Checkout}
-          />
-
-          <Stack.Screen
-            name="PaymentSuccess"
-            component={PaymentSuccess}
-            options={{
-              presentation: "transparentModal",
-              headerShown: false,
-              animation: "fade",
-            }}
-          />
-          <Stack.Screen
-            name="ProductDetails"
-            options={{
-              headerShown: false,
-            }}
-            component={ProductDetails}
-          /> */}
           <Stack.Screen
             name="LandingScreen"
             options={{
@@ -225,6 +180,53 @@ export default function navigation() {
               headerShown: false,
             }}
             component={PaymentOrderScreen}
+          />
+
+          <Stack.Screen
+            name="Products"
+            options={{
+              headerShown: false,
+            }}
+            component={Products}
+          />
+          <Stack.Screen
+            name="Cart"
+            options={{
+              headerShown: false,
+            }}
+            component={Cart}
+          />
+          <Stack.Screen
+            name="Checkout"
+            options={{
+              headerShown: false,
+            }}
+            component={Checkout}
+          />
+
+          <Stack.Screen
+            name="PaymentSuccess"
+            component={PaymentSuccess}
+            options={{
+              presentation: "transparentModal",
+              headerShown: false,
+              animation: "fade",
+            }}
+          />
+          <Stack.Screen
+            name="ProductDetails"
+            options={{
+              headerShown: false,
+            }}
+            component={ProductDetails}
+          />
+
+          <Stack.Screen
+            name="Orders"
+            options={{
+              headerShown: false,
+            }}
+            component={Orders}
           />
         </Stack.Navigator>
       </NavigationContainer>

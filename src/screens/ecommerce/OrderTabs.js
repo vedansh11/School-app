@@ -128,7 +128,7 @@ const OrdersTab = (props) => {
       sellingPrice: "675",
       costPrice: "700",
       qty: 2,
-      isActive: "0",
+      isActive: "-1",
     },
     {
       id: 2,
@@ -137,7 +137,7 @@ const OrdersTab = (props) => {
       sellingPrice: "675",
       costPrice: "700",
       qty: 2,
-      isActive: "0",
+      isActive: "-1",
     },
     {
       id: 3,
@@ -146,7 +146,7 @@ const OrdersTab = (props) => {
       sellingPrice: "675",
       costPrice: "700",
       qty: 2,
-      isActive: "0",
+      isActive: "-1",
     },
     {
       id: 4,
@@ -155,7 +155,7 @@ const OrdersTab = (props) => {
       sellingPrice: "675",
       costPrice: "700",
       qty: 1,
-      isActive: "0",
+      isActive: "-1",
     },
   ];
 
@@ -288,7 +288,6 @@ const OrdersTab = (props) => {
           flexDirection: "row",
           flex: 1,
           marginBottom: ms(15),
-          opacity: Type === "CancelOrders" ? 0.5 : 1,
         }}
       >
         <Image
@@ -299,6 +298,7 @@ const OrdersTab = (props) => {
             borderRadius: ms(8),
             marginRight: 12,
             resizeMode: "cover",
+            opacity: Type === "CancelOrders" ? 0.5 : 1,
           }}
         />
 
@@ -308,6 +308,7 @@ const OrdersTab = (props) => {
               justifyContent: "space-between",
               flexDirection: "row",
               flex: 1,
+              opacity: Type === "CancelOrders" ? 0.5 : 1,
             }}
           >
             <View style={{ justifyContent: "space-between", flex: 1 }}>
@@ -363,6 +364,8 @@ const OrdersTab = (props) => {
                   color:
                     item.isActive === "1"
                       ? color.ORDERS_GREY
+                      : item.isActive === "-1"
+                      ? color.SHIPPING_INFO_TXT_CLR
                       : color.SHIPPING_INFO_TXT_CLR,
                   fontFamily: fonts.INTER_MEDIUM,
                   fontSize: ms(12),

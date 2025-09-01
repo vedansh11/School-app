@@ -22,17 +22,28 @@ import ProductCard from "../common/ProductCard";
 import { screenHeight, screenWidth } from "../../Utills/dimesnion";
 
 export default function ProductDetails({ navigation }) {
+  const productData = {
+    id: 1,
+    title: "1 set of 12pcs notebook",
+    description:
+      "Its simple and elegant shape makes it perfect for those of you who like minimalist clothes and want something stylish yet practical for everyday use.",
+    image: icon.PRODUCT_1,
+    sizes: ["S", "M", "L", "XL"],
+    price: 675,
+    originalPrice: 700,
+    rating: 5.0,
+  };
+
   const [imageHeight, setImageHeight] = useState(200);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [selectedSize, setSelectedSize] = useState("L");
-  const [quantity, setQuantity] = useState(2);
-  const sizes = ["S", "M", "L", "XL"];
+  const [selectedSize, setSelectedSize] = useState(productData.sizes[2]);
+  const [quantity, setQuantity] = useState(1);
 
-  const description =
-    "Its simple and elegant shape makes it perfect for those of you who like minimalist clothes and want something stylish yet practical for everyday use.";
+  const totalPrice = productData.price * quantity;
+  const totalOriginal = productData.originalPrice * quantity;
 
   const MAX_CHAR = 100;
-  const shortDescription = description.substring(0, MAX_CHAR);
+  const shortDescription = productData?.description.substring(0, MAX_CHAR);
 
   useEffect(() => {
     // For remote images (use URL)
@@ -50,15 +61,18 @@ export default function ProductDetails({ navigation }) {
     <SafeAreaView style={stylesCommon.safeAreaStyle}>
       <StatusBar backgroundColor={color.APP_PRIMARY} />
 
+      {/* Header */}
       <ProductHeader
-        title={"1 set of 12pcs notebook"}
+        title={productData.title}
         type={"ecommerce"}
         navigation={navigation}
         screen={"Products"}
-        // showAddress={true}
       />
-      <ScrollView>
+
+      {/* Scrollable Content */}
+      <ScrollView contentContainerStyle={{ paddingBottom: ms(20) }}>
         <View style={{ marginHorizontal: 16, marginTop: 12 }}>
+          {/* Product Image */}
           <View
             style={{
               width: "100%",
@@ -71,7 +85,7 @@ export default function ProductDetails({ navigation }) {
             }}
           >
             <Image
-              source={icon.PRODUCT_1}
+              source={productData.image}
               style={{
                 width: "100%",
                 height: "100%",
@@ -80,6 +94,7 @@ export default function ProductDetails({ navigation }) {
             />
           </View>
 
+          {/* Title */}
           <Text
             style={{
               fontFamily: fonts.INTER_SEMIBOLD,
@@ -88,14 +103,14 @@ export default function ProductDetails({ navigation }) {
               marginTop: ms(15),
             }}
           >
-            {"1 set of 12pcs notebook"}
+            {productData.title}
           </Text>
 
+          {/* Rating */}
           <View
             style={{
               flexDirection: "row",
               marginTop: ms(5),
-
               alignItems: "center",
             }}
           >
@@ -108,9 +123,10 @@ export default function ProductDetails({ navigation }) {
                 marginRight: ms(4),
               }}
             />
-            <Text>{"5.0"}</Text>
+            <Text>{productData.rating}</Text>
           </View>
 
+          {/* Description */}
           <View style={{ marginTop: ms(10) }}>
             <Text
               style={{
@@ -120,7 +136,7 @@ export default function ProductDetails({ navigation }) {
                 lineHeight: ms(20),
               }}
             >
-              {isExpanded ? description : `${shortDescription}... `}
+              {isExpanded ? productData.description : `${shortDescription}... `}
               <Text
                 onPress={() => setIsExpanded(!isExpanded)}
                 style={{
@@ -133,6 +149,7 @@ export default function ProductDetails({ navigation }) {
             </Text>
           </View>
 
+          {/* Size Selection */}
           <Text
             style={{
               fontFamily: fonts.INTER_SEMIBOLD,
@@ -151,7 +168,7 @@ export default function ProductDetails({ navigation }) {
               marginEnd: ms(5),
             }}
           >
-            {sizes.map((size) => {
+            {productData.sizes.map((size) => {
               const isSelected = selectedSize === size;
               return (
                 <TouchableOpacity
@@ -183,7 +200,7 @@ export default function ProductDetails({ navigation }) {
             })}
           </View>
 
-          {/* Price and Quantity Row */}
+          {/* Price and Quantity */}
           <View
             style={{
               marginTop: ms(20),
@@ -192,7 +209,7 @@ export default function ProductDetails({ navigation }) {
               alignItems: "center",
             }}
           >
-            {/* Price Display */}
+            {/* Price */}
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
@@ -201,7 +218,7 @@ export default function ProductDetails({ navigation }) {
                   color: color.APP_PRIMARY,
                 }}
               >
-                ₹675
+                ₹{totalPrice}
               </Text>
               <Text
                 style={{
@@ -212,55 +229,26 @@ export default function ProductDetails({ navigation }) {
                   marginLeft: ms(8),
                 }}
               >
-                ₹700.00
+                ₹{totalOriginal.toFixed(2)}
               </Text>
             </View>
 
-            {/* Quantity Selector */}
+            {/* Quantity */}
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              {/* Minus Button */}
               <TouchableOpacity
                 onPress={() =>
                   setQuantity((prev) => (prev > 1 ? prev - 1 : prev))
                 }
-                style={{
-                  width: ms(35),
-                  height: ms(35),
-                  borderRadius: ms(19),
-                  borderWidth: 1,
-                  borderColor: "#D3D2E2",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginRight: 15,
-                }}
+                style={styles.qtyButton}
               >
                 <Text style={{ fontSize: ms(20), color: "#0D083F" }}>−</Text>
               </TouchableOpacity>
 
-              {/* Quantity Text */}
-              <Text
-                style={{
-                  fontSize: ms(16),
-                  fontFamily: fonts.INTER_BOLD,
-                  color: "#0D083F",
-                  marginRight: 15,
-                }}
-              >
-                {quantity}
-              </Text>
+              <Text style={styles.qtyText}>{quantity}</Text>
 
-              {/* Plus Button */}
               <TouchableOpacity
                 onPress={() => setQuantity((prev) => prev + 1)}
-                style={{
-                  width: ms(35),
-                  height: ms(35),
-                  borderRadius: ms(19),
-                  borderWidth: 1,
-                  borderColor: "#D3D2E2",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
+                style={styles.qtyButton}
               >
                 <Text style={{ fontSize: ms(20), color: "#0D083F" }}>+</Text>
               </TouchableOpacity>
@@ -269,21 +257,14 @@ export default function ProductDetails({ navigation }) {
         </View>
       </ScrollView>
 
-      {/* Add to Cart Button */}
+      {/* Fixed Add to Cart Button */}
       <TouchableOpacity
-        style={{
-          marginTop: ms(30),
-          marginBottom: ms(40),
-          marginHorizontal: ms(16),
-          backgroundColor: "#FF6B4A",
-          borderRadius: ms(100),
-          paddingVertical: ms(14),
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-          gap: ms(10),
-        }}
-        onPress={() => navigation.navigate("Cart")}
+        style={styles.addToCartBtn}
+        onPress={() =>
+          navigation.navigate("Cart", {
+            product: { ...productData, quantity, selectedSize },
+          })
+        }
       >
         <Image
           source={icon.IC_CART}
@@ -295,29 +276,55 @@ export default function ProductDetails({ navigation }) {
             tintColor: "#fff",
           }}
         />
-        <Text
-          style={{
-            color: "#fff",
-            fontFamily: fonts.INTER_SEMIBOLD,
-            fontSize: ms(16),
-          }}
-        >
-          Add to Cart
-        </Text>
-        <Text
-          style={{
-            color: "#fff",
-            fontFamily: fonts.INTER_MEDIUM,
-            fontSize: ms(14),
-            marginLeft: ms(8),
-          }}
-        >
-          | ₹675{" "}
-          <Text style={{ textDecorationLine: "line-through" }}>₹700</Text>
+        <Text style={styles.addToCartText}>Add to Cart</Text>
+        <Text style={styles.addToCartPrice}>
+          | ₹{totalPrice}{" "}
+          <Text style={{ textDecorationLine: "line-through" }}>
+            ₹{totalOriginal.toFixed(2)}
+          </Text>
         </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  qtyButton: {
+    width: ms(35),
+    height: ms(35),
+    borderRadius: ms(19),
+    borderWidth: 1,
+    borderColor: "#D3D2E2",
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 8,
+  },
+  qtyText: {
+    fontSize: ms(16),
+    fontFamily: fonts.INTER_BOLD,
+    color: "#0D083F",
+  },
+  addToCartBtn: {
+    marginTop: ms(30),
+    marginBottom: ms(40),
+    marginHorizontal: ms(16),
+    backgroundColor: "#FF6B4A",
+    borderRadius: ms(100),
+    paddingVertical: ms(14),
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    gap: ms(10),
+  },
+  addToCartText: {
+    color: "#fff",
+    fontFamily: fonts.INTER_SEMIBOLD,
+    fontSize: ms(16),
+  },
+  addToCartPrice: {
+    color: "#fff",
+    fontFamily: fonts.INTER_MEDIUM,
+    fontSize: ms(14),
+    marginLeft: ms(8),
+  },
+});

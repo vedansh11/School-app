@@ -52,6 +52,12 @@ const WelcomScreen = ({ navigation }) => {
     Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
     navigation.navigate("ParentDashboard");
   };
+
+  EcommerceNavigate = () => {
+    Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
+    Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "false");
+    navigation.navigate("Products");
+  };
   TeacherScreeenNavigate = () => {
     Preference.SetData(PreferenceKeys.IS_TEACHER_LOGIN, "true");
     Preference.SetData(PreferenceKeys.IS_PARENTS_LOGIN, "false");
@@ -95,6 +101,19 @@ const WelcomScreen = ({ navigation }) => {
             ></Image>
             <Text style={stylesCommon.continueTextStyle}>
               {AppText.CONTINUE_TEACHER}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[stylesCommon.parentViewStyle, { marginTop: 20 }]}
+            onPress={() => EcommerceNavigate()}
+          >
+            <Image
+              style={stylesCommon.continueImage}
+              source={icon.PARENT}
+            ></Image>
+            <Text style={stylesCommon.continueTextStyle}>
+              {AppText.CONTINUE_ECOM}
             </Text>
           </TouchableOpacity>
         </View>

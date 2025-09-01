@@ -71,6 +71,22 @@ const AttendanceDetailStatus = ({ route, navigation }) => {
   const [holidayDates, setHolidayDates] = useState([]);
   const [markedDates, setMarkedDates] = useState({});
 
+  const dummyDates = {
+    "2025-08-10": {
+      selected: true,
+      selectedColor: "#4CAF50",
+    },
+    "2025-08-15": {
+      selected: true,
+      selectedColor: "#FF5722",
+    },
+    "2025-08-20": {
+      selected: true,
+      disabled: true,
+      selectedColor: "#9E9E9E",
+    },
+  };
+
   const vacation = { key: "vacation", color: "red", selectedDotColor: "blue" };
   const massage = { key: "massage", color: "blue", selectedDotColor: "blue" };
   const workout = { key: "workout", color: "green" };
@@ -223,108 +239,105 @@ const AttendanceDetailStatus = ({ route, navigation }) => {
   // }
 
   async function AttendanceDetailAPI() {
-  try {
-    const url =
-      Utills.ATTENDANCE_LIST_MONTH +
-      "?studentId=" +
-      studentData.id +
-      "&sectionId=" +
-      studentData.sectionId +
-      "&month_year=" +
-      moment(monthText).format("MMMM-YYYY");
+    try {
+      const url =
+        Utills.ATTENDANCE_LIST_MONTH +
+        "?studentId=" +
+        studentData.id +
+        "&sectionId=" +
+        studentData.sectionId +
+        "&month_year=" +
+        moment(monthText).format("MMMM-YYYY");
 
-    const res = await apiSimple.get(url);
-  
-    const response = res?.data;
+      const res = await apiSimple.get(url);
 
-    console.log(response);
+      const response = res?.data;
 
-    if (leaveData !== response.leave_average) {
-      setLeaveData(response.leave_average);
-      setLeavePersentage(response.leave_average.present);
+      console.log("detaileds", response);
 
-      if (calendarData != response.attendance_list) {
-        setCalenderData(response.attendance_list);
-      }
+      if (leaveData !== response.leave_average) {
+        setLeaveData(response.leave_average);
+        setLeavePersentage(response.leave_average.present);
 
-      const selectedDates = {};
-
-      response.attendance_list.map((item) => {
-        if (item.attendance == "P") {
-          if (!presentDates.includes(item.date)) presentDates.push(item.date);
-
-          const disabled = {
-            disabled: false,
-            disableTouchEvent: true,
-            selected: true,
-            selectedColor: color.P_BR,
-          };
-          presentDates.forEach((item) => {
-            selectedDates[item] = disabled;
-          });
-        } else if (item.attendance == "H") {
-          if (!holidayDates.includes(item.date)) holidayDates.push(item.date);
-
-          const disabled = {
-            disabled: false,
-            disableTouchEvent: true,
-            selected: true,
-            selectedColor: color.A_BR,
-          };
-          holidayDates.forEach((item) => {
-            selectedDates[item] = disabled;
-          });
-        } else if (item.attendance == "U" || item.attendance == "A") {
-          if (!untrackedDates.includes(item.date))
-            untrackedDates.push(item.date);
-
-          const disabled = {
-            disabled: false,
-            disableTouchEvent: true,
-            selected: true,
-            selectedColor: color.U_BR,
-          };
-          untrackedDates.forEach((item) => {
-            selectedDates[item] = disabled;
-          });
-        } else if (item.attendance == "L") {
-          if (!leaveDates.includes(item.date)) leaveDates.push(item.date);
-
-          const disabled = {
-            disabled: false,
-            disableTouchEvent: true,
-            selected: true,
-            selectedColor: color.O_BR,
-          };
-          leaveDates.forEach((item) => {
-            selectedDates[item] = disabled;
-          });
-        } else if (item.attendance == "") {
-          if (!notSelectedDates.includes(item.date))
-            notSelectedDates.push(item.date);
-
-          const disabled = {
-            disabled: true,
-            disableTouchEvent: true,
-            selected: false,
-            selectedColor: color.WHITE,
-          };
-          notSelectedDates.forEach((item) => {
-            selectedDates[item] = disabled;
-          });
+        if (calendarData != response.attendance_list) {
+          setCalenderData(response.attendance_list);
         }
-      });
 
-      setMarkedDates(selectedDates);
+        const selectedDates = {};
+
+        response.attendance_list.map((item) => {
+          if (item.attendance == "P") {
+            if (!presentDates.includes(item.date)) presentDates.push(item.date);
+
+            const disabled = {
+              disabled: false,
+              disableTouchEvent: true,
+              selected: true,
+              selectedColor: color.P_BR,
+            };
+            presentDates.forEach((item) => {
+              selectedDates[item] = disabled;
+            });
+          } else if (item.attendance == "H") {
+            if (!holidayDates.includes(item.date)) holidayDates.push(item.date);
+
+            const disabled = {
+              disabled: false,
+              disableTouchEvent: true,
+              selected: true,
+              selectedColor: color.A_BR,
+            };
+            holidayDates.forEach((item) => {
+              selectedDates[item] = disabled;
+            });
+          } else if (item.attendance == "U" || item.attendance == "A") {
+            if (!untrackedDates.includes(item.date))
+              untrackedDates.push(item.date);
+
+            const disabled = {
+              disabled: false,
+              disableTouchEvent: true,
+              selected: true,
+              selectedColor: color.U_BR,
+            };
+            untrackedDates.forEach((item) => {
+              selectedDates[item] = disabled;
+            });
+          } else if (item.attendance == "L") {
+            if (!leaveDates.includes(item.date)) leaveDates.push(item.date);
+
+            const disabled = {
+              disabled: false,
+              disableTouchEvent: true,
+              selected: true,
+              selectedColor: color.O_BR,
+            };
+            leaveDates.forEach((item) => {
+              selectedDates[item] = disabled;
+            });
+          } else if (item.attendance == "") {
+            if (!notSelectedDates.includes(item.date))
+              notSelectedDates.push(item.date);
+
+            const disabled = {
+              disabled: true,
+              disableTouchEvent: true,
+              selected: false,
+              selectedColor: color.WHITE,
+            };
+            notSelectedDates.forEach((item) => {
+              selectedDates[item] = disabled;
+            });
+          }
+        });
+
+        setMarkedDates(selectedDates);
+      }
+    } catch (error) {
+      console.error("AttendanceDetailAPI Error", error);
+      // global interceptor handles UI errors
     }
-  } catch (error) {
-    console.error("AttendanceDetailAPI Error", error);
-    // global interceptor handles UI errors
   }
-}
-
-
-
 
   const showPicker = useCallback((value) => setCalOpen(value), []);
 

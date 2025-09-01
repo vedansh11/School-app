@@ -31,6 +31,7 @@ import {
 import * as Utills from "../../API/Utills";
 import { axiosCallAPI } from "../../API/axiosCommonService";
 import { screenHeight, screenWidth } from "../../Utills/dimesnion";
+import DropShadow from "react-native-drop-shadow";
 
 export default function TeacherStudentProfile({ navigation }) {
   const [clickIndex, setIndex] = useState();
@@ -78,7 +79,7 @@ export default function TeacherStudentProfile({ navigation }) {
               marginStart: 14,
               position: "absolute",
               top: -82,
-              elevation: 2,
+              elevation: 3,
               zIndex: 2,
               //marginBottom: 10,
             }}
@@ -155,6 +156,7 @@ export default function TeacherStudentProfile({ navigation }) {
             </View>
           </View>
         </View>
+
         <ScrollView style={{}}>
           <View>
             <View

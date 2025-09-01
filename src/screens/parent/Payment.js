@@ -245,7 +245,7 @@ const PaymentOrderScreen = ({ navigation }) => {
     //CreateOrder();
 
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-    //  GetPaymentDetails();
+    GetPaymentDetails();
     GetClassList();
     CreateYearList();
     CFPaymentGatewayService.setEventSubscriber({
@@ -334,7 +334,8 @@ const PaymentOrderScreen = ({ navigation }) => {
         Preference.ClearSingleData(PreferenceKeys.AMOUNT);
         Preference.ClearSingleData(PreferenceKeys.REMARK);
         Preference.ClearSingleData(PreferenceKeys.STRUCTURE_ID);
-        GetPaymentDetails();
+        console.log("add py", response);
+        //  GetPaymentDetails();
       })
       .catch((error) => {
         clearData();
@@ -397,118 +398,118 @@ const PaymentOrderScreen = ({ navigation }) => {
     }
   };
 
-  // const GetPaymentDetails = async () => {
-  //   setBackgroundLoaderView(true);
+  const GetPaymentDetails = async () => {
+    setBackgroundLoaderView(true);
 
-  //   try {
-  //     const token = await Preference.GetData(PreferenceKeys.TOKEN);
-  //     const studentDetail = JSON.parse(
-  //       await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
-  //     );
-  //     console.log(studentDetail);
+    try {
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
+      const studentDetail = JSON.parse(
+        await Preference.GetData(PreferenceKeys.STUDENT_DETAIL)
+      );
+      console.log(studentDetail);
 
-  //     const ClassId_local = classId === "" ? studentDetail.classId : classId;
-  //     const Year_local =
-  //       selectedYear === ""
-  //         ? await Preference.GetData(PreferenceKeys.SAVE_YEAR)
-  //         : selectedYear;
+      const ClassId_local = classId === "" ? studentDetail.classId : classId;
+      const Year_local =
+        selectedYear === ""
+          ? await Preference.GetData(PreferenceKeys.SAVE_YEAR)
+          : selectedYear;
 
-  //     const studentId = studentDetail.id;
-  //     const schoolId = studentDetail.schoolId;
+      const studentId = studentDetail.id;
+      const schoolId = studentDetail.schoolId;
 
-  //     const URL =
-  //       Utills.GET_PAYMENT_LIST +
-  //       ClassId_local +
-  //       "&studentId=" +
-  //       studentId +
-  //       "&year=" +
-  //       Year_local +
-  //       "&schoolId=" +
-  //       schoolId;
+      const URL =
+        Utills.GET_PAYMENT_LIST +
+        ClassId_local +
+        "&studentId=" +
+        studentId +
+        "&year=" +
+        Year_local +
+        "&schoolId=" +
+        schoolId;
 
-  //       console.log("Here is the url we",URL,selectedYear)
-  //     const res = await apiSimple.get(URL, {
-  //       headers: {
-  //         Accept: "application/json",
-  //         Authorization: token,
-  //       },
-  //     });
+      console.log("Here is the url we", URL, selectedYear);
+      const res = await apiSimple.get(URL, {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
+      });
 
-  //     setBackgroundLoaderView(false);
+      setBackgroundLoaderView(false);
 
-  //     const response = res?.data;
+      const response = res?.data;
 
-  //     if (res.status) {
-  //       console.log("Here is the res", response.result);
-  //       setImagePath(icon.IC_FEES);
-  //       setPaidAmount(response.result.paid_amount);
-  //       setRemainingAmount(response.result.remain_amount);
+      if (res.status) {
+        console.log("Here is the res", response.result);
+        setImagePath(icon.IC_FEES);
+        setPaidAmount(response.result.paid_amount);
+        setRemainingAmount(response.result.remain_amount);
 
-  //       let filterArray = [];
-  //       let ListArray = [];
+        let filterArray = [];
+        let ListArray = [];
 
-  //       response.result.data_list.map((item) => {
-  //         if (item.structure_name == "Full") {
-  //           setFees(item.fees);
-  //           setFinalAmount(item.final_amount);
+        response.result.data_list.map((item) => {
+          if (item.structure_name == "Full") {
+            setFees(item.fees);
+            setFinalAmount(item.final_amount);
 
-  //           if (item.discount_value > 0) {
-  //             setIsFullPaymentShow(true);
-  //             if (item.discount_type == 0) {
-  //               setDiscount(item.discount_value + "%");
-  //             } else {
-  //               setDiscount("₹" + item.discount_value);
-  //             }
-  //           } else {
-  //             setIsFullPaymentShow(false);
-  //           }
-  //         }
+            if (item.discount_value > 0) {
+              setIsFullPaymentShow(true);
+              if (item.discount_type == 0) {
+                setDiscount(item.discount_value + "%");
+              } else {
+                setDiscount("₹" + item.discount_value);
+              }
+            } else {
+              setIsFullPaymentShow(false);
+            }
+          }
 
-  //         if (item.order_status == "paid") {
-  //           setIsFullPaymentShow(false);
-  //         }
+          if (item.order_status == "paid") {
+            setIsFullPaymentShow(false);
+          }
 
-  //         if (
-  //           item.structure_name != "Full Payment" ||
-  //           item.order_status == "paid"
-  //         ) {
-  //           ListArray.push(item);
-  //         }
+          if (
+            item.structure_name != "Full Payment" ||
+            item.order_status == "paid"
+          ) {
+            ListArray.push(item);
+          }
 
-  //         if (
-  //           item.order_status != "paid" &&
-  //           item.structure_name != "Full Payment"
-  //         ) {
-  //           filterArray.push(item);
-  //         }
-  //       });
+          if (
+            item.order_status != "paid" &&
+            item.structure_name != "Full Payment"
+          ) {
+            filterArray.push(item);
+          }
+        });
 
-  //       setImagePath(filterArray.length > 0 ? icon.IC_FEES : "");
+        setImagePath(filterArray.length > 0 ? icon.IC_FEES : "");
 
-  //       Mybooleanvalue = [];
-  //       ListArray.map(() => {
-  //         Mybooleanvalue.push(false);
-  //       });
+        Mybooleanvalue = [];
+        ListArray.map(() => {
+          Mybooleanvalue.push(false);
+        });
 
-  //       setTableState(Mybooleanvalue);
-  //       setListData(ListArray);
-  //       setDropDownlist(filterArray);
+        setTableState(Mybooleanvalue);
+        setListData(ListArray);
+        setDropDownlist(filterArray);
 
-  //       setNoData(response.result.data_list.length === 0);
-  //     } else {
-  //       setNoData(true);
-  //       setListData([]);
-  //       setDropDownlist([]);
-  //       setPaidAmount("0");
-  //       setRemainingAmount("0");
-  //       setImagePath("");
-  //       setIsFullPaymentShow(false);
-  //     }
-  //   } catch (error) {
-  //     setBackgroundLoaderView(false);
-  //     console.error("GetPaymentDetails error", error);
-  //   }
-  // };
+        setNoData(response.result.data_list.length === 0);
+      } else {
+        setNoData(true);
+        setListData([]);
+        setDropDownlist([]);
+        setPaidAmount("0");
+        setRemainingAmount("0");
+        setImagePath("");
+        setIsFullPaymentShow(false);
+      }
+    } catch (error) {
+      setBackgroundLoaderView(false);
+      console.error("GetPaymentDetails error", error);
+    }
+  };
 
   const CreateYearList = async () => {
     let CurrentYear = moment().year();
@@ -981,12 +982,12 @@ const PaymentOrderScreen = ({ navigation }) => {
           }}
         >
           <TouchableOpacity
-            onPress={() => {
-              if (item.order_status === "paid") {
-                setPaymentModalItem(item);
-                setPaymentModalVisible(true);
-              }
-            }}
+            // onPress={() => {
+            //   if (item.order_status === "paid") {
+            //     setPaymentModalItem(item);
+            //     setPaymentModalVisible(true);
+            //   }
+            // }}
             activeOpacity={0.95}
           >
             <View

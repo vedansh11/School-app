@@ -331,7 +331,7 @@ export const TitileBackgroundView = (props) => {
                 // width: 100,
                 //height: 28,
                 paddingVertical: 6,
-                paddingHorizontal: 5,
+                paddingHorizontal: 10,
                 borderColor: "#564CB8",
                 flex: 1,
                 flexDirection: "row",
@@ -348,7 +348,7 @@ export const TitileBackgroundView = (props) => {
                   style={{
                     height: 16,
                     width: 16,
-                    resizeMode: "contain",
+                    resizeMode: "center",
                   }}
                   source={props.secondViewImage}
                 />

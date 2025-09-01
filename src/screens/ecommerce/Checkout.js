@@ -27,32 +27,32 @@ export default function Checkout({ navigation }) {
       id: 1,
       image: icon.PRODUCT_1,
       name: "1 set of 12pcs notebook",
-      sellingPrice: "675",
-      costPrice: "700",
+      sellingPrice: 675, // number
+      costPrice: 700, // number
       qty: 2,
     },
     {
       id: 2,
       image: icon.PRODUCT_1,
       name: "1 set of 12pcs notebook",
-      sellingPrice: "675",
-      costPrice: "700",
+      sellingPrice: 675, // number
+      costPrice: 700, // number
       qty: 2,
     },
     {
       id: 3,
       image: icon.PRODUCT_1,
       name: "1 set of 12pcs notebook",
-      sellingPrice: "675",
-      costPrice: "700",
+      sellingPrice: 675, // number
+      costPrice: 700, // number
       qty: 2,
     },
     {
       id: 4,
       image: icon.PRODUCT_1,
       name: "1 set of 12pcs notebook",
-      sellingPrice: "675",
-      costPrice: "700",
+      sellingPrice: 675, // number
+      costPrice: 700, // number
       qty: 1,
     },
   ]);
@@ -68,6 +68,17 @@ export default function Checkout({ navigation }) {
         return { ...item, qty: newQty };
       })
     );
+  };
+
+  const getTotalPrice = () => {
+    return chekoutItems.reduce((total, item) => {
+      return total + item.qty * Number(item.sellingPrice);
+    }, 0);
+  };
+
+  const getSubTotal = () => {
+    const discount = 75; // If your discount is fixed
+    return getTotalPrice() - discount;
   };
 
   const renderItem = ({ item, index }) => {
@@ -122,7 +133,7 @@ export default function Checkout({ navigation }) {
                     marginLeft: ms(8),
                   }}
                 >
-                  ₹{item.costPrice}
+                  ₹{item?.costPrice?.toFixed(2)}
                 </Text>
               </View>
             </View>
@@ -321,7 +332,7 @@ export default function Checkout({ navigation }) {
                   fontSize: ms(12),
                 }}
               >
-                ₹2100.00
+                ₹{getTotalPrice().toFixed(2)}
               </Text>
             </View>
 
@@ -357,7 +368,7 @@ export default function Checkout({ navigation }) {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginBottom: ms(35),
+                marginBottom: ms(25),
               }}
             >
               <Text
@@ -380,7 +391,14 @@ export default function Checkout({ navigation }) {
                 ₹75.00
               </Text>
             </View>
-
+            <View
+              style={{
+                width: "100%",
+                height: 1,
+                backgroundColor: color.GREY,
+                marginBottom: ms(15),
+              }}
+            />
             <View
               style={{
                 flexDirection: "row",
@@ -405,7 +423,7 @@ export default function Checkout({ navigation }) {
                   fontSize: ms(12),
                 }}
               >
-                ₹2025.00
+                ₹{getSubTotal().toFixed(2)}
               </Text>
             </View>
           </View>

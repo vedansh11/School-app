@@ -73,26 +73,26 @@ const AttendanceTrends = ({ route, navigation }) => {
   // }
 
   async function PresentCountAPI() {
-  try {
-    const token = await Preference.GetData(PreferenceKeys.TOKEN);
-    const url = `${Utills.ATTENDANCE_PRESENT_COUNT}?studentId=${studentData.id}&sectionId=${studentData.sectionId}`;
+    try {
+      const token = await Preference.GetData(PreferenceKeys.TOKEN);
+      const url = `${Utills.ATTENDANCE_PRESENT_COUNT}?studentId=${studentData.id}&sectionId=${studentData.sectionId}`;
 
-    const res = await apiSimple.get(url, {
-      headers: {
-        Accept: "application/json",
-        Authorization: token,
-      },
-    });
+      const res = await apiSimple.get(url, {
+        headers: {
+          Accept: "application/json",
+          Authorization: token,
+        },
+      });
 
-    const response = res?.data;
-    setPrevMonth(response.previou_month);
-    setPrevYear(response.year_to_date);
-
-  } catch (error) {
-    console.error("Error in PresentCountAPI:", error);
-    // Error already handled globally (optional fallback UI update here if needed)
+      const response = res?.data;
+      console.log("hati", res);
+      setPrevMonth(response.previou_month);
+      setPrevYear(response.year_to_date);
+    } catch (error) {
+      console.error("Error in PresentCountAPI:", error);
+      // Error already handled globally (optional fallback UI update here if needed)
+    }
   }
-}
 
   const AttendanceProgress = (
     text,

@@ -18,7 +18,9 @@ export const ProductHeader = (props) => {
 
   // console.log("getting this type of props", props);
   const HomeNavigation = () => {
-    props.navigation.goBack();
+    props.title === "Orders"
+      ? props.navigation.navigate("WelcomScreen")
+      : props.navigation.goBack();
   };
   const NotificationClick = () => {
     props.navigation.navigate("Notification");

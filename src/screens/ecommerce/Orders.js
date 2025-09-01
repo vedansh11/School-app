@@ -30,8 +30,10 @@ import SelectDropdown from "react-native-select-dropdown";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
 import { ms } from "react-native-size-matters";
 import { ProductHeader } from "../common/ProductHeader";
+import { useNavigation } from "@react-navigation/native";
 
-const Orders = (navigation) => {
+const Orders = () => {
+  const navigation = useNavigation();
   //const sectionID = navigation.route.params.supportData.id;
   const sectionID = 1; //for dummy
   const Tab = createMaterialTopTabNavigator();
@@ -52,7 +54,7 @@ const Orders = (navigation) => {
   }, []);
 
   function handleBackButtonClick() {
-    navigation.navigation.goBack();
+    navigation.navigate("WelcomScreen");
     return true;
   }
 

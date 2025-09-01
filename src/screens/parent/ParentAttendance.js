@@ -134,7 +134,7 @@ const ParentAttendance = ({ route, navigation }) => {
 
   async function AddLeaveAPI() {
     setLoaderView(true);
-
+    console.log("calling the add leave");
     try {
       const loginFormData = new FormData();
       loginFormData.append("id", attendanceData.section);
@@ -152,6 +152,7 @@ const ParentAttendance = ({ route, navigation }) => {
       });
 
       const response = res?.data;
+      console.log("leave data 2", res);
 
       if (response !== undefined) {
         setModalVisible(!modalVisible);

@@ -28,6 +28,7 @@ export const TEACHER_TIMETABLE_SAVE = `${BASE_URL}timetable/save`;
 export const TEACHER_TIMETABLE_DELETE = `${BASE_URL}timetable/delete`;
 export const TEACHER_ATTENDANCE_LIST = `${BASE_URL}attendance/listStudent`;
 export const STUDENT_LIST = `${BASE_URL}students/student-list`;
+//export const STUDENT_LIST = `${BASE_URL}/students/school-student-list`;
 export const ATTENDANCE_SAVE = `${BASE_URL}attendance/save`;
 export const ATTENDANCE_PRESENT_COUNT = `${BASE_URL}attendance/presentCounter`;
 export const ATTENDANCE_LIST_MONTH = `${BASE_URL}attendance/listMonth`;

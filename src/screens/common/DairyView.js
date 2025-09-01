@@ -289,7 +289,7 @@ export const DairyView = (props) => {
         },
       });
 
-      console.log("unires", response.data.result);
+      console.log("sweet", response.data.result);
       setSubjectList(response?.data.result); // or response.data.result if API wraps it
     } catch (error) {
       console.log("Error in GetSubjectList:", error);
@@ -458,7 +458,7 @@ export const DairyView = (props) => {
             alignSelf: "center",
           }}
         >
-          {item.date}
+          {moment(item.date).format("DD-MM-YYYY")}
         </Text>
 
         <FlatList
@@ -1391,10 +1391,10 @@ export const DairyView = (props) => {
               setDate(date);
               setFilterDate(true);
               TeacherDiaryAPI(date);
-              const formatted = moment(date).format("DD/MM/YYYY");
+              const formatted = moment(date).format("DD-MM-YYYY");
               setDateText(formatted);
 
-              fieldRef?.current?.setValue(moment(date).format("DD/MM/YYYY"));
+              fieldRef?.current?.setValue(moment(date).format("DD-MM-YYYY"));
             }}
             onCancel={() => {
               setOpen(false);

@@ -61,7 +61,7 @@ import {
   RichEditor,
   RichToolbar,
 } from "react-native-pell-rich-editor";
-import moment from "moment";
+import moment, { duration } from "moment";
 import { OutlinedTextField } from "react-native-material-textfield-plus";
 import { apiSimple } from "../../API/api";
 
@@ -129,7 +129,7 @@ export function TimeTableView(props) {
       subjectName: "Maths",
       startTime: "07:40 AM",
       endTime: "08:25 AM",
-      roomNo: "04",
+      roomNo: "02",
       topic: "Integration and derivation",
       isBreak: false,
     },
@@ -197,6 +197,86 @@ export function TimeTableView(props) {
       startTime: "01:40 PM",
       endTime: "02:25 PM",
       roomNo: "Art Room",
+      topic: "<p>Sketching fruits using pencil shading</p>",
+      isBreak: false,
+    },
+  ];
+
+  const parentDummyData = [
+    {
+      id: "1",
+      subjectId: "MATH201",
+      subjectName: "Maths",
+      startTime: "07:40 AM",
+      endTime: "08:25 AM",
+      duration: "02",
+      topic: "Integration and derivation",
+      isBreak: false,
+    },
+    {
+      id: "2",
+      subjectId: "SCI301",
+      subjectName: "Science",
+      startTime: "09:45 AM",
+      endTime: "10:30 AM",
+      duration: "04",
+      topic:
+        "<p>Due date for the term fee is 26 July, 2023. Your prompt attention to this matter is greatly appreciated.</p>",
+      isBreak: false,
+    },
+    {
+      id: "3",
+      subjectName: "Break",
+      startTime: "10:30 AM",
+      duration: "15 Mins",
+      duration: "",
+      isBreak: true,
+    },
+    {
+      id: "4",
+      subjectId: "ENG101",
+      subjectName: "English",
+      startTime: "10:45 AM",
+      endTime: "11:30 AM",
+      duration: "04",
+      topic: "<p>Grammar Practice: Tenses</p>",
+      isBreak: false,
+    },
+    {
+      id: "5",
+      subjectId: "SOC501",
+      subjectName: "Social Study",
+      startTime: "11:40 AM",
+      endTime: "12:25 PM",
+      duration: "04",
+      topic: "<p>Geography: Indian Rivers</p>",
+      isBreak: false,
+    },
+    {
+      id: "6",
+      subjectName: "Lunch",
+      startTime: "12:30 PM",
+      duration: "15 Mins",
+      duration: "",
+      isBreak: true,
+    },
+    {
+      id: "7",
+      subjectId: "HIN401",
+      subjectName: "Hindi",
+      startTime: "12:45 PM",
+      endTime: "01:30 PM",
+      duration: "04",
+      topic: "<p>Vyakaran: Sangya and Sarvanaam</p>",
+      isBreak: false,
+    },
+    {
+      id: "8",
+      subjectId: "DRAW601",
+      subjectName: "Drawing",
+      startTime: "01:40 PM",
+      endTime: "02:25 PM",
+      duration: "24",
       topic: "<p>Sketching fruits using pencil shading</p>",
       isBreak: false,
     },
@@ -372,38 +452,37 @@ export function TimeTableView(props) {
   //     });
   // }
 
-async function TeacherTimeTableAPI() {
-  console.log("Teacherr-------time table api called")
-  setLoaderView(true);
+  async function TeacherTimeTableAPI() {
+    console.log("Teacherr-------time table api called");
+    setLoaderView(true);
 
-  const token = await Preference.GetData(PreferenceKeys.TOKEN);
-  const tableURL = `${Utills.TEACHER_TIMETABLE_LIST}?sectionId=${props.sectionId}&daySearch=${SelectedWeek}`;
-   console.log("TT data", tableURL);
-  try {
-    const res = await apiSimple.get(tableURL, {
-      headers: {
-        Authorization: token,
-      },
-    });
+    const token = await Preference.GetData(PreferenceKeys.TOKEN);
+    const tableURL = `${Utills.TEACHER_TIMETABLE_LIST}?sectionId=${props.sectionId}&daySearch=${SelectedWeek}`;
+    console.log("TT data", tableURL);
+    try {
+      const res = await apiSimple.get(tableURL, {
+        headers: {
+          Authorization: token,
+        },
+      });
 
-    const response = res?.data;
-    console.log("TT data",response.result);
+      const response = res?.data;
+      console.log("TT data", response.result);
 
-    if (response !== undefined) {
-      if (JSON.stringify(dateList) !== JSON.stringify(response.result)) {
-        setDateList(response.result);
+      if (response !== undefined) {
+        if (JSON.stringify(dateList) !== JSON.stringify(response.result)) {
+          setDateList(response.result);
+        }
+      } else {
+        setDateList([]);
+        renderEmptyContainer("No data found", true);
       }
-    } else {
-      setDateList([]);
+    } catch (error) {
       renderEmptyContainer("No data found", true);
+    } finally {
+      setLoaderView(false);
     }
-  } catch (error) {
-    renderEmptyContainer("No data found", true);
-  } finally {
-    setLoaderView(false);
   }
-}
-
 
   // async function AddTimeTableAPI() {
   //   setLoaderView(true);
@@ -446,41 +525,44 @@ async function TeacherTimeTableAPI() {
   //     });
   // }
 
-async function AddTimeTableAPI() {
-  setLoaderView(true);
+  async function AddTimeTableAPI() {
+    setLoaderView(true);
 
-  const token = await Preference.GetData(PreferenceKeys.TOKEN);
-  let loginFormData = new FormData();
+    const token = await Preference.GetData(PreferenceKeys.TOKEN);
+    let loginFormData = new FormData();
 
-  loginFormData.append("id", timetableID);
-  loginFormData.append("sectionId", props.sectionId);
-  loginFormData.append("day", value);
-  loginFormData.append("startTime", moment(startTime).format("hh:mm A"));
-  loginFormData.append("endTime", moment(endTime).format("hh:mm A"));
-  loginFormData.append("subject", subjectSelectedName);
-  loginFormData.append("topic", topicHTML);
+    loginFormData.append("id", timetableID);
+    loginFormData.append("sectionId", props.sectionId);
+    loginFormData.append("day", value);
+    loginFormData.append("startTime", moment(startTime).format("hh:mm A"));
+    loginFormData.append("endTime", moment(endTime).format("hh:mm A"));
+    loginFormData.append("subject", subjectSelectedName);
+    loginFormData.append("topic", topicHTML);
 
-  try {
-    const res = await apiSimple.post(Utills.TEACHER_TIMETABLE_SAVE, loginFormData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: token,
-      },
-    });
+    try {
+      const res = await apiSimple.post(
+        Utills.TEACHER_TIMETABLE_SAVE,
+        loginFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
+        }
+      );
 
-    const response = res?.data;
+      const response = res?.data;
 
-    if (response !== undefined) {
-      setModalVisible(!modalVisible);
-      clearData();
+      if (response !== undefined) {
+        setModalVisible(!modalVisible);
+        clearData();
+      }
+    } catch (error) {
+      // error will be handled by global interceptors
+    } finally {
+      setLoaderView(false);
     }
-  } catch (error) {
-    // error will be handled by global interceptors
-  } finally {
-    setLoaderView(false);
   }
-}
-
 
   // async function DeleteTimetableAPI(deleteRecordID) {
   //   setDeleteLoaderView(true);
@@ -511,32 +593,31 @@ async function AddTimeTableAPI() {
   // }
 
   async function DeleteTimetableAPI(deleteRecordID) {
-  setDeleteLoaderView(true);
+    setDeleteLoaderView(true);
 
-  const token = await Preference.GetData(PreferenceKeys.TOKEN);
+    const token = await Preference.GetData(PreferenceKeys.TOKEN);
 
-  try {
-    const res = await apiSimple.get(
-      `${Utills.TEACHER_TIMETABLE_DELETE}?id=${deleteRecordID}`,
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: token,
-        },
+    try {
+      const res = await apiSimple.get(
+        `${Utills.TEACHER_TIMETABLE_DELETE}?id=${deleteRecordID}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: token,
+          },
+        }
+      );
+
+      const response = res?.data;
+      if (response !== undefined) {
+        TeacherTimeTableAPI();
       }
-    );
-
-    const response = res?.data;
-    if (response !== undefined) {
-      TeacherTimeTableAPI();
+    } catch (error) {
+      // error handled by global interceptor
+    } finally {
+      setDeleteLoaderView(false);
     }
-  } catch (error) {
-    // error handled by global interceptor
-  } finally {
-    setDeleteLoaderView(false);
   }
-}
-
 
   const InputView = (label, isEnable, image, multiline) => {
     return (
@@ -843,7 +924,7 @@ async function AddTimeTableAPI() {
         <View style={styles.centeredView}>
           <ScrollView
             keyboardShouldPersistTaps="handled"
-            keyboardDismissMode={"on-drag"}
+            //  keyboardDismissMode={"on-drag"}
             showsVerticalScrollIndicator={true}
           >
             <View style={styles.modalView}>
@@ -1188,6 +1269,292 @@ async function AddTimeTableAPI() {
     </View>
   );
 
+  const parentRenderItem = ({ item, index }) => (
+    <View
+      style={{
+        backgroundColor: index === clickIndex ? "#FEEEEE" : "#EAECF0",
+        borderRadius: 10,
+        marginTop: 10,
+        flexDirection: "column",
+      }}
+    >
+      <TouchableOpacity
+        style={{
+          backgroundColor:
+            item.duration === ""
+              ? "#FCE4C8"
+              : index === clickIndex
+              ? "#FEEEEE"
+              : "#EAECF0",
+          borderRadius: 10,
+          alignContent: "center",
+          flexDirection: "row",
+        }}
+        onPress={() => {
+          if (item.duration !== "") {
+            index === clickIndex ? clickUp() : clickDown(index);
+          }
+        }}
+        activeOpacity={item.duration === "" ? 1 : 0.2}
+      >
+        <View style={{ flexDirection: "column" }}>
+          <View
+            style={{
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: fonts.INTER,
+                fontSize: 16,
+
+                color: item.duration === "" ? "#93642E" : "#1D2939",
+              }}
+            >
+              {item.subjectName}
+            </Text>
+            <Text
+              style={{
+                fontFamily: fonts.INTER,
+                fontSize: 12,
+                color: item.duration === "" ? "#93642E" : "#667085",
+                marginTop: 6,
+              }}
+            >
+              {item.endTime
+                ? `${item.startTime} - ${item.endTime}`
+                : item.startTime}
+            </Text>
+          </View>
+        </View>
+        {item.duration != "" && (
+          <Text
+            style={{
+              position: "absolute",
+              right: screenWidth / 5,
+              bottom: 10,
+              color: "#667085",
+              fontFamily: fonts.INTER,
+              fontSize: 12,
+            }}
+          >
+            Duration: {item.duration}
+          </Text>
+        )}
+
+        {item.isBreak !== false && (
+          <Text
+            style={{
+              position: "absolute",
+              right: 15,
+              bottom: 10,
+              color: "#93642E",
+              fontFamily: fonts.INTER,
+              fontSize: 12,
+            }}
+          >
+            {item.duration != "" ? item.duration : "10 Mins"}
+          </Text>
+        )}
+
+        {/* <View
+          style={{
+            marginHorizontal: 15,
+            marginVertical: 15,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              color: color.WHITE,
+              fontWeight: "700",
+              fontSize: 20,
+              fontFamily: fonts.LATO_REGULAR,
+            }}
+          >
+            {item.subjectName}
+          </Text>
+        </View>
+        <View
+          style={{
+            marginHorizontal: 15,
+            marginVertical: 15,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              color: color.WHITE,
+              fontWeight: "700",
+              fontSize: 12,
+              fontFamily: fonts.INTER,
+            }}
+          >
+            {item.startTime + " - " + item.endTime}
+          </Text>
+        </View> */}
+
+        {item.topic ? (
+          index === clickIndex ? (
+            <View
+              style={{
+                marginHorizontal: 15,
+                position: "absolute",
+                end: 0,
+                alignSelf: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                style={{
+                  height: 24,
+                  width: 24,
+                  marginEnd: 5,
+                  resizeMode: "contain",
+                }}
+                source={icon.IC_BLACK_UP_ARROW}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                marginHorizontal: 15,
+                position: "absolute",
+                end: 0,
+                alignSelf: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                style={{
+                  height: 24,
+                  width: 24,
+                  marginEnd: 5,
+                  resizeMode: "contain",
+                }}
+                source={icon.IC_BLACK_DOWN_ARROW}
+              />
+            </View>
+          )
+        ) : null}
+      </TouchableOpacity>
+      {index === clickIndex ? (
+        <View>
+          <View
+            style={{
+              backgroundColor: index === clickIndex ? "#FFD2C8" : color.WHITE,
+              height: 0.5,
+              marginHorizontal: vh(15),
+            }}
+          ></View>
+          <View
+            style={{
+              borderRadius: 8,
+              marginTop: vh(10),
+              marginBottom: vh(15),
+              marginHorizontal: 15,
+              flexDirection: "column",
+            }}
+          >
+            <Text
+              style={{
+                color: "#667085",
+                //fontWeight: "700",
+                fontSize: 12,
+                fontFamily: fonts.INTER,
+              }}
+            >
+              {"Topic".toUpperCase()}
+            </Text>
+            {item.topic && (
+              <Text
+                style={{
+                  color: "#667085",
+                  fontSize: 12,
+                  marginTop: 5,
+                  fontFamily: fonts.INTER,
+                }}
+              >
+                {removeHTML(item.topic)}
+              </Text>
+            )}
+          </View>
+          {props.dairyType === "teacher" && (
+            <View
+              style={{
+                borderRadius: 8,
+                marginBottom: vh(10),
+                marginHorizontal: vh(15),
+                flexDirection: "row",
+
+                paddingHorizontal: 10,
+              }}
+            >
+              <View
+                style={{
+                  width: 30,
+                  height: 30,
+                  backgroundColor: color.RED,
+                  borderRadius: 50,
+                  position: "absolute",
+                  backgroundColor: "#564CB8",
+                  right: 50,
+                  bottom: 0,
+                }}
+              >
+                <TouchableOpacity onPress={() => handleEditClick(item)}>
+                  <Image
+                    style={{
+                      height: 20,
+                      width: 20,
+                      marginEnd: 10,
+                      resizeMode: "contain",
+                      marginHorizontal: 20,
+                      position: "absolute",
+                      right: -5,
+                      bottom: -25,
+                    }}
+                    source={icon.IC_EDIT_TT}
+                  ></Image>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderColor: "#F85050",
+                  borderWidth: 1,
+
+                  borderRadius: 50,
+                  position: "relative",
+                  left: screenWidth - 100,
+                  bottom: 0,
+                }}
+              >
+                <TouchableOpacity onPress={() => handleDeleteClick(item.id)}>
+                  <Image
+                    style={{
+                      height: vh(20),
+                      width: vw(20),
+                      marginEnd: vw(10),
+                      resizeMode: "contain",
+                      marginHorizontal: 10,
+                      position: "absolute",
+                      right: -5,
+                      bottom: -23,
+                    }}
+                    source={icon.IC_DELETE_TT}
+                  ></Image>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        </View>
+      ) : null}
+    </View>
+  );
+
   function NavigateToSupportTeacher() {
     Preference.SetData(PreferenceKeys.TEACHER_SCHOOL_DETAIL);
     props.navigation.navigate("TeacherSupport");
@@ -1287,8 +1654,8 @@ async function AddTimeTableAPI() {
         >
           <FlatList
             //  data={dateList}
-            data={dummyData}
-            renderItem={renderItem}
+            data={parentDummyData}
+            renderItem={parentRenderItem}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               paddingBottom: 30, // 👈 gives space for last item
